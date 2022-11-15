@@ -1,0 +1,87 @@
+> Tokenising and annotating raw data
+> Training model on 
+> Finished training most frequent tag model on 7348 tokens
+> Predicting tags on validation set
+
+Classification report for BIO tags:
+
+               precision    recall  f1-score   support
+
+     B-adults       0.21      0.33      0.26         9
+       B-date       0.43      0.38      0.40         8
+  B-date_from       0.36      0.40      0.38        20
+B-date_period       0.12      0.22      0.15         9
+    B-date_to       0.15      0.18      0.17        11
+       B-kids       0.00      0.00      0.00         6
+     B-number       0.00      0.00      0.00         3
+     B-people       0.25      0.25      0.25         4
+B-person_name       0.00      0.00      0.00         4
+      B-rooms       0.00      0.00      0.00         9
+       B-time       0.33      0.17      0.22         6
+  B-time_from       0.00      0.00      0.00         1
+B-time_period       0.00      0.00      0.00         3
+     I-adults       1.00      0.25      0.40         8
+       I-date       0.00      0.00      0.00         5
+  I-date_from       0.33      0.07      0.11        15
+I-date_period       0.60      0.67      0.63         9
+    I-date_to       0.00      0.00      0.00         5
+       I-kids       0.00      0.00      0.00         0
+     I-number       0.00      0.00      0.00         0
+     I-people       0.00      0.00      0.00         0
+I-person_name       0.00      0.00      0.00         2
+      I-rooms       0.75      0.25      0.38        12
+       I-time       0.44      0.36      0.40        11
+  I-time_from       0.00      0.00      0.00         3
+I-time_period       1.00      0.33      0.50         3
+
+    micro avg       0.31      0.22      0.26       166
+    macro avg       0.23      0.15      0.16       166
+ weighted avg       0.32      0.22      0.24       166
+
+!!! Some BIO tag sequences were malformed, so spans may not have been correctly extracted from them !!!
+####################################################################################################
+> Tokenising and annotating raw data
+> Training model on 
+> Training logistic regression model on 7348 tokens
+> Finished training logistic regression
+> Predicting tags on validation set
+
+Classification report for BIO tags:
+
+               precision    recall  f1-score   support
+
+     B-adults       0.62      0.56      0.59         9
+       B-date       0.50      0.50      0.50         8
+  B-date_from       0.57      0.60      0.59        20
+B-date_period       0.78      0.78      0.78         9
+    B-date_to       0.64      0.64      0.64        11
+       B-kids       0.62      0.83      0.71         6
+     B-number       0.00      0.00      0.00         3
+     B-people       0.30      0.75      0.43         4
+B-person_name       0.50      0.50      0.50         4
+      B-rooms       0.33      0.33      0.33         9
+       B-time       0.57      0.67      0.62         6
+  B-time_from       0.00      0.00      0.00         1
+B-time_period       1.00      0.33      0.50         3
+     I-adults       1.00      0.38      0.55         8
+       I-date       0.00      0.00      0.00         5
+  I-date_from       0.43      0.40      0.41        15
+I-date_period       1.00      0.67      0.80         9
+    I-date_to       0.00      0.00      0.00         5
+       I-kids       0.00      0.00      0.00         0
+     I-number       0.00      0.00      0.00         0
+     I-people       0.00      0.00      0.00         0
+I-person_name       1.00      0.50      0.67         2
+      I-rooms       0.47      0.58      0.52        12
+       I-time       0.40      0.36      0.38        11
+  I-time_from       0.00      0.00      0.00         3
+I-time_period       1.00      0.33      0.50         3
+
+    micro avg       0.53      0.49      0.51       166
+    macro avg       0.45      0.37      0.38       166
+ weighted avg       0.54      0.49      0.50       166
+
+!!! Some BIO tag sequences were malformed, so spans may not have been correctly extracted from them !!!
+####################################################################################################
+probability distribution of "night" in most-frequent-model：
+[('I-date_period', -0.456758402495715), ('B-time_period', -1.791759469228055), ('I-time', -2.0149030205422647), ('I-time_period', -3.4011973816621555), ('I-time_from', -3.4011973816621555)]
