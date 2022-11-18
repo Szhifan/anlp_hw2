@@ -53,8 +53,8 @@ def train_tag_mle(data):
         tag_logprob_pairs = [(tag, math.log(tag_word_count / word_count)) for (tag, tag_word_count) in tag_count_pairs.items()]
         sorted_tag_logprob_pairs = sorted(tag_logprob_pairs, key=lambda tag_logprob_pair: -tag_logprob_pair[1]) 
         per_word_tag_mle[word] = sorted_tag_logprob_pairs
-    print("#"*100)
-    print(per_word_tag_mle["night"])
+    # print("#"*100)
+    # print(per_word_tag_mle["night"])
     model_parameters = {
         'per_word_tag_mle': per_word_tag_mle,
         # Assign O for unknown words with prob 1
@@ -132,13 +132,9 @@ def predict_independent_tags(tag_predictor, data):
     c=0 
     for sample in data:
         c+=1 
-
         pred=[tag_predictor(token)[0][0] for token in sample['annotated_text']]
         predictions.append(pred)
-        print(pred)
-        print(sample['annotated_text'])
-        if c==1:
-            break 
+        
         
         
     return predictions
@@ -155,12 +151,41 @@ def predict_bio_tags(tag_predictor, data):
         List(List(Str)): a list (one for each sample) of a list of tags (one for each word in the sample)
 
     '''
+    def bio_constraints(prev:str,cur:str):
+        """
+        This function takes the previous and the current bio tag and modify the current tag based on 
+        BIO constraints: 
+        1. If the current tag starts with B, then its label must not equal to the previous one: ((I|B)-X|O),B-Y
+        2. If the current tag starts with I, then its label must equal to the previous one: ((I|B)-X),I-X
+        Args: 
+            prev: the previous tag (i-1) in the tag sequence of each sample 
+            cur: the current tag (i) in the tag sequence of each sample 
+        Returns: 
+            string: the modified version of the current tag. 
+        """
+        import re 
+        if cur.startswith("I") and cur[1:]!=prev[1:]: #if I tag doesn't equal to the previous one
+            cur=re.sub(r"I-","B-",cur)
+        if  cur.startswith("B") and cur[1:]==prev[1:]: #if B tag equal to the previous one
+            cur=re.sub(r"B-","I-",cur)
+        return cur 
     predictions = []
     for sample in data:
-        pred=[]
+        pred=["O"] #each prediction starts with a default O,so that we don't need to decide if the tag sequence starts with I or not. 
         for tok in sample["annotated_text"]:
-            pass 
-        predictions.append([])
+            p=tag_predictor(tok)[0][0]
+            pred.append(p)
+        n=len(pred)
+        for i in range(1,n): #loop over the pred and modify the tags based on the constraints. 
+            prev=pred[i-1]
+            cur=pred[i]
+            pred[i]=bio_constraints(prev,cur) 
+        
+   
+        predictions.append(pred[1:])
+
+        
+        
 
     ################################################################
     ### TODO: Write code to predict tags, obeying BIO constraints
@@ -181,7 +206,7 @@ predict = {
     'independent_tags' : predict_independent_tags,
     'bio_tags' : predict_bio_tags,
 }
-default_predict = 'independent_tags'
+default_predict = 'bio_tags'
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
