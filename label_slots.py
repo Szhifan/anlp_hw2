@@ -100,14 +100,17 @@ def train_tag_logreg(data):
     bio_tags = sorted(bio_tags)
     
     bio_tag_map = {tag: idx for idx, tag in enumerate(bio_tags)}
- 
+    
     ################################################################
     ### TODO: Write code to set train_X, train_y, and token_count
- 
+    prev_tag="#"
+    transition_score=defaultdict(lambda: defaultdict(int))
     for sample in data:
+       
         for token in sample["annotated_text"]:
             train_X.append(token.vector)
-            train_y.append(token._.bio_slot_label)
+            cur_tag=token._.bio_slot_label
+            train_y.append(cur_tag)
             token_count+=1 
 
     print(f'> Training logistic regression model on {token_count} tokens')
@@ -129,10 +132,11 @@ def predict_independent_tags(tag_predictor, data):
 
     ''' 
     predictions = []
-    c=0 
+ 
     for sample in data:
-        c+=1 
+  
         pred=[tag_predictor(token)[0][0] for token in sample['annotated_text']]
+        
         predictions.append(pred)
         
         
@@ -150,48 +154,46 @@ def predict_bio_tags(tag_predictor, data):
     Returns:
         List(List(Str)): a list (one for each sample) of a list of tags (one for each word in the sample)
 
-    '''
-    def bio_constraints(prev:str,cur:str):
-        """
-        This function takes the previous and the current bio tag and modify the current tag based on 
-        BIO constraints: 
-        1. If the current tag starts with B, then its label must not equal to the previous one: ((I|B)-X|O),B-Y
-        2. If the current tag starts with I, then its label must equal to the previous one: ((I|B)-X),I-X
-        Args: 
-            prev: the previous tag (i-1) in the tag sequence of each sample 
-            cur: the current tag (i) in the tag sequence of each sample 
-        Returns: 
-            string: the modified version of the current tag. 
-        """
-        import re 
-        if cur.startswith("I") and cur[1:]!=prev[1:]: #if I tag doesn't equal to the previous one
-            cur=re.sub(r"I-","B-",cur)
-        if  cur.startswith("B") and cur[1:]==prev[1:]: #if B tag equal to the previous one
-            cur=re.sub(r"B-","I-",cur)
-        return cur 
+    ''' 
+    def get_correct_labels(prev:str,cur:str,cur_prob:list):
+        
+        if (cur.startswith("I") and cur[1:]!=prev[1:]):  #when the BIO condition is violated when the current tag is I
+         
+            for tp in cur_prob:
+                if  tp[0].startswith("I") ^ (tp[0][1:]!=prev[1:]): 
+                    return tp[0]
+        if  cur.startswith("B") and cur[1:]==prev[1:]:# when the BIO condition is violated when the current tag is B
+       
+            for tp in cur_prob:
+                if  (tp[0].startswith("B") ^ (tp[0][1:]==prev[1:])):  
+                    #only two right options: either the tag starts with I, or it ends with a different label. 
+                    #But these two cannot be true together. 
+                    return tp[0]
+          
+            
+        return cur #If BIO condition nis not violated. 
     predictions = []
+    
     for sample in data:
-        pred=["O"] #each prediction starts with a default O,so that we don't need to decide if the tag sequence starts with I or not. 
+ 
+        pred=[] 
+        prev_label="O"
         for tok in sample["annotated_text"]:
-            p=tag_predictor(tok)[0][0]
-            pred.append(p)
-        n=len(pred)
-        for i in range(1,n): #loop over the pred and modify the tags based on the constraints. 
-            prev=pred[i-1]
-            cur=pred[i]
-            pred[i]=bio_constraints(prev,cur) 
-        
-   
-        predictions.append(pred[1:])
+            
+            pred_prob=tag_predictor(tok)
+            cur_label=tag_predictor(tok)[0][0]
 
-        
-        
-
+            cur_label=get_correct_labels(prev_label,cur_label,pred_prob)
+              
+            
+            pred.append(cur_label)
+            prev_label=cur_label
+     
+        predictions.append(pred)
     ################################################################
     ### TODO: Write code to predict tags, obeying BIO constraints
-    ###
-    ### Include the code in Appendix B of your report
-    ################################################################
+ 
+
    
     return predictions
 
@@ -200,7 +202,7 @@ train = {
     'most_frequent_tag' : train_tag_mle,
     'logistic_regression' : train_tag_logreg
 }
-default_train = 'most_frequent_tag' 
+default_train = 'logistic_regression' 
 
 predict = {
     'independent_tags' : predict_independent_tags,
@@ -233,9 +235,8 @@ if __name__ == "__main__":
         training_data = json.load(f)
     with open(args.validation_path) as f:
         validation_data = json.load(f)
-# f = open("log.out", 'a+')
+# f = open("report_bio.txt", 'w')
 # sys.stdout = f
-
 print("> Tokenising and annotating raw data")
 nlp_analyser = spacy.load("en_core_web_sm")
 utils.tokenise_annotate_and_convert_slot_labels_to_bio_tags(training_data, nlp_analyser)
@@ -244,12 +245,11 @@ utils.tokenise_annotate_and_convert_slot_labels_to_bio_tags(validation_data, nlp
 print(f'> Training model on ')
 model = train[args.model](training_data)
 
-print(f'> Predicting tags on validation set')
-predictions = predict[args.predictor](model, validation_data)
+# print(f'> Predicting tags on validation set')
+# predictions = predict[args.predictor](model, validation_data)
 # if args.full_report:
 #     utils.visualise_bio_tags(predictions, validation_data)
 
 # utils.evaluate(predictions, validation_data)
 # print("#"*100)
 # f.close()
-
