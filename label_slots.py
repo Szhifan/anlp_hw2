@@ -93,6 +93,7 @@ def train_tag_logreg(data):
     train_X = [] 
     train_y = []
     bio_tags = set(['O'])
+
     for sample in data:
         for token in sample['annotated_text']:
             bio_tags.add(token._.bio_slot_label)
@@ -103,15 +104,17 @@ def train_tag_logreg(data):
     
     ################################################################
     ### TODO: Write code to set train_X, train_y, and token_count
-    prev_tag="#"
-    transition_score=defaultdict(lambda: defaultdict(int))
+
     for sample in data:
        
         for token in sample["annotated_text"]:
             train_X.append(token.vector)
-            cur_tag=token._.bio_slot_label
-            train_y.append(cur_tag)
+         
+   
+        
+            train_y.append(token._.bio_slot_label)
             token_count+=1 
+
 
     print(f'> Training logistic regression model on {token_count} tokens')
     model = sklearn.linear_model.LogisticRegression(multi_class='multinomial', solver='newton-cg').fit(train_X, train_y)
@@ -235,8 +238,8 @@ if __name__ == "__main__":
         training_data = json.load(f)
     with open(args.validation_path) as f:
         validation_data = json.load(f)
-# f = open("report_bio.txt", 'w')
-# sys.stdout = f
+f = open("report_bio.txt", 'w')
+sys.stdout = f
 print("> Tokenising and annotating raw data")
 nlp_analyser = spacy.load("en_core_web_sm")
 utils.tokenise_annotate_and_convert_slot_labels_to_bio_tags(training_data, nlp_analyser)
@@ -245,11 +248,11 @@ utils.tokenise_annotate_and_convert_slot_labels_to_bio_tags(validation_data, nlp
 print(f'> Training model on ')
 model = train[args.model](training_data)
 
-# print(f'> Predicting tags on validation set')
-# predictions = predict[args.predictor](model, validation_data)
-# if args.full_report:
-#     utils.visualise_bio_tags(predictions, validation_data)
+print(f'> Predicting tags on validation set')
+predictions = predict[args.predictor](model, validation_data)
+if args.full_report:
+    utils.visualise_bio_tags(predictions, validation_data)
 
-# utils.evaluate(predictions, validation_data)
-# print("#"*100)
-# f.close()
+utils.evaluate(predictions, validation_data)
+print("#"*100)
+f.close()
