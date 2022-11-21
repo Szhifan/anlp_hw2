@@ -163,10 +163,10 @@ def predict_bio_tags(tag_predictor, data):
         if (cur.startswith("I") and cur[1:]!=prev[1:]):  #when the BIO condition is violated when the current tag is I
          
             for tp in cur_prob:
-                if  tp[0].startswith("I") ^ (tp[0][1:]!=prev[1:]): 
+                if  tp[0].startswith("I") ^ (tp[0][1:]!=prev[1:]) : 
+                    
                     return tp[0]
         if  cur.startswith("B") and cur[1:]==prev[1:]:# when the BIO condition is violated when the current tag is B
-       
             for tp in cur_prob:
                 if  (tp[0].startswith("B") ^ (tp[0][1:]==prev[1:])):  
                     #only two right options: either the tag starts with I, or it ends with a different label. 
@@ -205,13 +205,13 @@ train = {
     'most_frequent_tag' : train_tag_mle,
     'logistic_regression' : train_tag_logreg
 }
-default_train = 'logistic_regression' 
+default_train = 'most_frequent_tag' 
 
 predict = {
     'independent_tags' : predict_independent_tags,
     'bio_tags' : predict_bio_tags,
 }
-default_predict = 'bio_tags'
+default_predict = 'independent_tags'
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
@@ -238,7 +238,7 @@ if __name__ == "__main__":
         training_data = json.load(f)
     with open(args.validation_path) as f:
         validation_data = json.load(f)
-f = open("report_bio.txt", 'w')
+f = open("report_mft.txt", 'w')
 sys.stdout = f
 print("> Tokenising and annotating raw data")
 nlp_analyser = spacy.load("en_core_web_sm")

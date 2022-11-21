@@ -1,6 +1,6 @@
 import re 
 import numpy as np 
-report=open("report.txt","r").readlines()
+report=open("log.txt","r").readlines()
 data=[]
 for line in report: 
     d=re.findall(r"\s[0-9]\.[0-9]+\s",line)
