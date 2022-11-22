@@ -7,13 +7,20 @@ import spacy
 import sys
 import utils
 from collections import defaultdict
-
+import numpy as np 
 DATA_DIR = "data"
 TRAINING_FILE = "training_data.json"
 VALIDATION_FILE = "validation_data.json"
 
 spacy.tokens.token.Token.set_extension("bio_slot_label", default="O")
-
+def get_one_hot_vec(tag):
+    tag_list=["VB","CD","IN","JJ","NN","VB"]
+    dict={i:0 for i in tag_list}
+    try: 
+        dict[tag[:2]]+=1 
+    except KeyError: 
+        pass
+    return np.array(list(dict.values()) ) 
 def _predict_tag_mle(token, model_parameters):
     """
     Predict most-frequent-tag baseline, i.e. argmax_{<tag>} P(<tag> | <word>).
@@ -75,7 +82,10 @@ def _predict_tag_logreg(token, model, tags):
     Returns:
         (List(Tuple(str,float))): distribution over tags, sorted from most to least probable
     """
-    log_probs = model.predict_log_proba([token.vector])[0]
+    vec=token.vector 
+    tag_vec=get_one_hot_vec(token.tag_)
+    vec=np.concatenate([vec,tag_vec])
+    log_probs = model.predict_log_proba([vec])[0]
     distribution = [tag_logprob_pair for tag_logprob_pair in zip(tags, log_probs)]
     sorted_distribution = sorted(distribution, key=lambda tag_logprob_pair: -tag_logprob_pair[1])
     return sorted_distribution
@@ -89,6 +99,7 @@ def train_tag_logreg(data):
     Returns:
         Callable: a function that returns a (sorted) distribution over tags, given a word.
     """
+
     token_count = 0
     train_X = [] 
     train_y = []
@@ -106,14 +117,14 @@ def train_tag_logreg(data):
     ### TODO: Write code to set train_X, train_y, and token_count
 
     for sample in data:
-       
+    
         for token in sample["annotated_text"]:
-            train_X.append(token.vector)
-         
-   
-        
+            vec=token.vector
+            tag_vec=get_one_hot_vec(token.tag_)
+            vec=np.concatenate([vec,tag_vec])
+            train_X.append(vec)
             train_y.append(token._.bio_slot_label)
-            token_count+=1 
+            token_count+=1
 
 
     print(f'> Training logistic regression model on {token_count} tokens')
@@ -205,13 +216,13 @@ train = {
     'most_frequent_tag' : train_tag_mle,
     'logistic_regression' : train_tag_logreg
 }
-default_train = 'most_frequent_tag' 
+default_train = 'logistic_regression' 
 
 predict = {
     'independent_tags' : predict_independent_tags,
     'bio_tags' : predict_bio_tags,
 }
-default_predict = 'independent_tags'
+default_predict = 'bio_tags'
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
@@ -238,7 +249,7 @@ if __name__ == "__main__":
         training_data = json.load(f)
     with open(args.validation_path) as f:
         validation_data = json.load(f)
-f = open("report_mft.txt", 'w')
+f = open("report_cur_tag.txt", 'w')
 sys.stdout = f
 print("> Tokenising and annotating raw data")
 nlp_analyser = spacy.load("en_core_web_sm")
