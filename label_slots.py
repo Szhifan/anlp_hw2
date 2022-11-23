@@ -287,7 +287,7 @@ if __name__ == "__main__":
         training_data = json.load(f)
     with open(args.validation_path) as f:
         validation_data = json.load(f)
-f = open("report_avVec+curtag.txt", 'w')
+f = open("reports/report_avVec+curtag.txt", 'w')
 sys.stdout = f
 print("> Tokenising and annotating raw data")
 nlp_analyser = spacy.load("en_core_web_sm")
