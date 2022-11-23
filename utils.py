@@ -1,7 +1,6 @@
 import itertools
 from collections import defaultdict
 from sklearn import metrics
-
 def tokenise_annotate_and_convert_slot_labels_to_bio_tags(data, nlp_analyser):
    """
    Preprocesses the raw data:

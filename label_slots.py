@@ -72,7 +72,7 @@ def train_tag_mle(data):
     print(f'> Finished training most frequent tag model on {token_count} tokens')
     return lambda token: _predict_tag_mle(token, model_parameters)
 
-def _predict_tag_logreg(token, model, tags):
+def _predict_tag_logreg(tok_vec, model, tags):
     """
     Predict tag according to logistic regression on word embedding
 
@@ -82,10 +82,8 @@ def _predict_tag_logreg(token, model, tags):
     Returns:
         (List(Tuple(str,float))): distribution over tags, sorted from most to least probable
     """
-    vec=token.vector 
-    tag_vec=get_one_hot_vec(token.tag_)
-    vec=np.concatenate([vec,tag_vec])
-    log_probs = model.predict_log_proba([vec])[0]
+ 
+    log_probs = model.predict_log_proba([tok_vec])[0]
     distribution = [tag_logprob_pair for tag_logprob_pair in zip(tags, log_probs)]
     sorted_distribution = sorted(distribution, key=lambda tag_logprob_pair: -tag_logprob_pair[1])
     return sorted_distribution
@@ -99,7 +97,6 @@ def train_tag_logreg(data):
     Returns:
         Callable: a function that returns a (sorted) distribution over tags, given a word.
     """
-
     token_count = 0
     train_X = [] 
     train_y = []
@@ -117,20 +114,40 @@ def train_tag_logreg(data):
     ### TODO: Write code to set train_X, train_y, and token_count
 
     for sample in data:
+        n=len(sample["annotated_text"])
+        for i in range(n): 
+            token_count+=1 
+            if n>2:
+                if i==0: 
+                    vec=(sample["annotated_text"][i].vector+
+                    sample["annotated_text"][i+1].vector)/2 
+                elif 0<i<n-1: 
+                    vec=(sample["annotated_text"][i].vector+
+                        sample["annotated_text"][i+1].vector+
+                        sample["annotated_text"][i-1].vector
+                    )/3
+                else:
+                    vec=(sample["annotated_text"][i].vector+
+                    sample["annotated_text"][i-1].vector)/2
+            else: 
+                vec=sample["annotated_text"][i].vector
+            train_X.append(vec) 
+            train_y.append(sample["annotated_text"][i]._.bio_slot_label)
+           
     
-        for token in sample["annotated_text"]:
-            vec=token.vector
-            tag_vec=get_one_hot_vec(token.tag_)
-            vec=np.concatenate([vec,tag_vec])
-            train_X.append(vec)
-            train_y.append(token._.bio_slot_label)
-            token_count+=1
+        # for token in sample["annotated_text"]:
+        #     vec=token.vector
+        #     tag_vec=get_one_hot_vec(token.tag_)
+        #     vec=np.concatenate([vec,tag_vec])
+        #     train_X.append(vec)
+        #     train_y.append(token._.bio_slot_label)
+        #     token_count+=1
 
 
     print(f'> Training logistic regression model on {token_count} tokens')
     model = sklearn.linear_model.LogisticRegression(multi_class='multinomial', solver='newton-cg').fit(train_X, train_y)
     print('> Finished training logistic regression')
-    return lambda token: _predict_tag_logreg(token, model, bio_tags)
+    return lambda tok_vec: _predict_tag_logreg(tok_vec, model, bio_tags)
 
 
 def predict_independent_tags(tag_predictor, data):
@@ -189,13 +206,33 @@ def predict_bio_tags(tag_predictor, data):
     predictions = []
     
     for sample in data:
- 
+        n=len(sample["annotated_text"])
         pred=[] 
         prev_label="O"
-        for tok in sample["annotated_text"]:
-            
-            pred_prob=tag_predictor(tok)
-            cur_label=tag_predictor(tok)[0][0]
+        for i in range(n):
+            tok=sample["annotated_text"][i]
+            if n>2:
+                if i==0: 
+                    next_tok_vec=sample["annotated_text"][i+1].vector 
+                    vec=(tok.vector+next_tok_vec)/2
+                    pred_prob=tag_predictor(vec)
+                    cur_label=pred_prob[0][0]
+                elif i<n-1: 
+                    next_tok_vec=sample["annotated_text"][i+1].vector
+                    prev_tok_vec=sample["annotated_text"][i-1].vector 
+                    vec=(next_tok_vec+prev_tok_vec+tok.vector)/3
+                    pred_prob=tag_predictor(vec)
+                    cur_label=pred_prob[0][0]
+                else: 
+                    prev_tok_vec=sample["annotated_text"][i-1].vector
+                    vec=(prev_tok_vec+tok.vector)/2 
+                    pred_prob=tag_predictor(vec)
+                    cur_label=pred_prob[0][0]
+
+            else: 
+                pred_prob=tag_predictor(tok.vector)
+                cur_label=pred_prob[0][0]
+
 
             cur_label=get_correct_labels(prev_label,cur_label,pred_prob)
               
@@ -249,7 +286,7 @@ if __name__ == "__main__":
         training_data = json.load(f)
     with open(args.validation_path) as f:
         validation_data = json.load(f)
-f = open("report_cur_tag.txt", 'w')
+f = open("report_avVec.txt", 'w')
 sys.stdout = f
 print("> Tokenising and annotating raw data")
 nlp_analyser = spacy.load("en_core_web_sm")
