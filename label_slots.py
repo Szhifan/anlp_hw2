@@ -13,7 +13,7 @@ TRAINING_FILE = "training_data.json"
 VALIDATION_FILE = "validation_data.json"
 
 spacy.tokens.token.Token.set_extension("bio_slot_label", default="O")
-def get_one_hot_vec(tag):
+def tag2vec(tag):
     tag_list=["VB","CD","IN","JJ","NN","VB"]
     dict={i:0 for i in tag_list}
     try: 
@@ -115,7 +115,8 @@ def train_tag_logreg(data):
 
     for sample in data:
         n=len(sample["annotated_text"])
-        for i in range(n): 
+        for i in range(n):
+            tag=sample["annotated_text"][i].tag_  
             token_count+=1 
             if n>2:
                 if i==0: 
@@ -130,7 +131,8 @@ def train_tag_logreg(data):
                     vec=(sample["annotated_text"][i].vector+
                     sample["annotated_text"][i-1].vector)/2
             else: 
-                vec=sample["annotated_text"][i].vector
+                vec=sample["annotated_text"][i].vector 
+            vec=np.concatenate([vec,tag2vec(tag)]) 
             train_X.append(vec) 
             train_y.append(sample["annotated_text"][i]._.bio_slot_label)
            
@@ -210,30 +212,29 @@ def predict_bio_tags(tag_predictor, data):
         pred=[] 
         prev_label="O"
         for i in range(n):
-            tok=sample["annotated_text"][i]
+            tok=sample["annotated_text"][i]  
+            tag=sample["annotated_text"][i].tag_
             if n>2:
                 if i==0: 
                     next_tok_vec=sample["annotated_text"][i+1].vector 
                     vec=(tok.vector+next_tok_vec)/2
-                    pred_prob=tag_predictor(vec)
-                    cur_label=pred_prob[0][0]
+                  
                 elif i<n-1: 
                     next_tok_vec=sample["annotated_text"][i+1].vector
                     prev_tok_vec=sample["annotated_text"][i-1].vector 
                     vec=(next_tok_vec+prev_tok_vec+tok.vector)/3
-                    pred_prob=tag_predictor(vec)
-                    cur_label=pred_prob[0][0]
+                 
                 else: 
                     prev_tok_vec=sample["annotated_text"][i-1].vector
                     vec=(prev_tok_vec+tok.vector)/2 
-                    pred_prob=tag_predictor(vec)
-                    cur_label=pred_prob[0][0]
-
+                    
             else: 
-                pred_prob=tag_predictor(tok.vector)
-                cur_label=pred_prob[0][0]
+                vec=tok.vector
 
-
+                
+            vec=np.concatenate([vec,tag2vec(tag)])
+            pred_prob=tag_predictor(vec)
+            cur_label=pred_prob[0][0]
             cur_label=get_correct_labels(prev_label,cur_label,pred_prob)
               
             
@@ -286,7 +287,7 @@ if __name__ == "__main__":
         training_data = json.load(f)
     with open(args.validation_path) as f:
         validation_data = json.load(f)
-f = open("report_avVec.txt", 'w')
+f = open("report_avVec+curtag.txt", 'w')
 sys.stdout = f
 print("> Tokenising and annotating raw data")
 nlp_analyser = spacy.load("en_core_web_sm")

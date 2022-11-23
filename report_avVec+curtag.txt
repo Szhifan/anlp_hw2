@@ -90,7 +90,7 @@ idx word            true label      predicted label correct?  lemma           ta
 2   does            O               O                 ✔       do              VBZ      aux      xxxx           
 3   a               O               O                 ✔       a               DT       det      x              
 4   full            O               O                 ✔       full            JJ       amod     xxxx           
-5   body            O               B-rooms              ✗    body            NN       compound xxxx           
+5   body            O               O                 ✔       body            NN       compound xxxx           
 6   massage         O               O                 ✔       massage         NN       nsubj    xxxx           
 7   last            O               O                 ✔       last            JJ       ROOT     xxxx           
 8   ?               O               O                 ✔       ?               .        punct    ?              
@@ -98,7 +98,6 @@ idx word            true label      predicted label correct?  lemma           ta
 true spans:
 
 predicted spans:
-  (5, 6): rooms
 
 ================================================================================================================
 
@@ -113,15 +112,15 @@ idx word            true label      predicted label correct?  lemma           ta
 3   I               O               O                 ✔       I               PRP      nsubj    X              
 4   need            O               O                 ✔       need            VBP      ROOT     xxxx           
 5   a               B-rooms         O                    ✗    a               DT       det      x              
-6   wheelchair      I-rooms         O                    ✗    wheelchair      NN       nmod     xxxx           
-7   friendly        I-rooms         B-date_from          ✗    friendly        JJ       amod     xxxx           
-8   room            I-rooms         O                    ✗    room            NN       dobj     xxxx           
+6   wheelchair      I-rooms         B-rooms              ✗    wheelchair      NN       nmod     xxxx           
+7   friendly        I-rooms         I-rooms           ✔       friendly        JJ       amod     xxxx           
+8   room            I-rooms         I-rooms           ✔       room            NN       dobj     xxxx           
 
 true spans:
   (5, 9): rooms
 
 predicted spans:
-  (7, 8): date_from
+  (6, 9): rooms
 
 ================================================================================================================
 
@@ -156,14 +155,13 @@ idx word            true label      predicted label correct?  lemma           ta
 2   it              O               O                 ✔       it              PRP      dobj     xx             
 3   ,               O               O                 ✔       ,               ,        punct    ,              
 4   but             O               O                 ✔       but             CC       cc       xxx            
-5   no              O               B-kids               ✗    no              DT       det      xx             
+5   no              O               O                 ✔       no              DT       det      xx             
 6   idea            O               O                 ✔       idea            NN       conj     xxxx           
 7   where           O               O                 ✔       where           WRB      advmod   xxxx           
 
 true spans:
 
 predicted spans:
-  (5, 6): kids
 
 ================================================================================================================
 
@@ -174,7 +172,7 @@ idx word            true label      predicted label correct?  lemma           ta
 ------------------------------------------------------------  --------------------------------------------------
 0   Goodbye         O               O                 ✔       Goodbye         NNP      ROOT     Xxxxx          
 1   ,               O               O                 ✔       ,               ,        punct    ,              
-2   my              O               B-adults             ✗    my              PRP$     poss     xx             
+2   my              O               B-rooms              ✗    my              PRP$     poss     xx             
 3   virtual         O               O                 ✔       virtual         JJ       amod     xxxx           
 4   friend          O               O                 ✔       friend          NN       appos    xxxx           
 5   !               O               O                 ✔       !               .        punct    !              
@@ -182,7 +180,7 @@ idx word            true label      predicted label correct?  lemma           ta
 true spans:
 
 predicted spans:
-  (2, 3): adults
+  (2, 3): rooms
 
 ================================================================================================================
 
@@ -191,7 +189,7 @@ Input: hiya there, I need some info about my current booking at your place
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   hiya            O               O                 ✔       hiya            NNP      npadvmod xxxx           
+0   hiya            O               B-person_name        ✗    hiya            NNP      npadvmod xxxx           
 1   there           O               O                 ✔       there           RB       advmod   xxxx           
 2   ,               O               O                 ✔       ,               ,        punct    ,              
 3   I               O               O                 ✔       I               PRP      nsubj    X              
@@ -209,6 +207,7 @@ idx word            true label      predicted label correct?  lemma           ta
 true spans:
 
 predicted spans:
+  (0, 1): person_name
 
 ================================================================================================================
 
@@ -306,14 +305,13 @@ idx word            true label      predicted label correct?  lemma           ta
 15  for             O               O                 ✔       for             IN       prep     xxx            
 16  few             B-time_period   O                    ✗    few             JJ       amod     xxx            
 17  more            I-time_period   O                    ✗    more            JJR      amod     xxxx           
-18  hours           I-time_period   B-time_period        ✗    hour            NNS      pobj     xxxx           
+18  hours           I-time_period   O                    ✗    hour            NNS      pobj     xxxx           
 19  .               O               O                 ✔       .               .        punct    .              
 
 true spans:
   (16, 19): time_period
 
 predicted spans:
-  (18, 19): time_period
 
 ================================================================================================================
 
@@ -328,24 +326,22 @@ idx word            true label      predicted label correct?  lemma           ta
 3   to              O               O                 ✔       to              TO       aux      xx             
 4   rebook          O               O                 ✔       rebook          VB       xcomp    xxxx           
 5   for             O               O                 ✔       for             IN       prep     xxx            
-6   a               O               B-rooms              ✗    a               DT       det      x              
+6   a               O               O                 ✔       a               DT       det      x              
 7   later           O               O                 ✔       later           JJ       amod     xxxx           
 8   date            O               O                 ✔       date            NN       pobj     xxxx           
 9   ,               O               O                 ✔       ,               ,        punct    ,              
-10  say             O               B-date_period        ✗    say             UH       intj     xxx            
+10  say             O               O                 ✔       say             UH       intj     xxx            
 11  ,               O               O                 ✔       ,               ,        punct    ,              
 12  Wednesday       B-date_from     B-date_to            ✗    Wednesday       NNP      compound Xxxxx          
-13  26th            I-date_from     I-date_to            ✗    26th            NN       npadvmod ddxx           
-14  October         I-date_from     B-date               ✗    October         NNP      npadvmod Xxxxx          
+13  26th            I-date_from     B-date               ✗    26th            NN       npadvmod ddxx           
+14  October         I-date_from     I-date               ✗    October         NNP      npadvmod Xxxxx          
 
 true spans:
   (12, 15): date_from
 
 predicted spans:
-  (6, 7): rooms
-  (10, 11): date_period
-  (12, 14): date_to
-  (14, 15): date
+  (12, 13): date_to
+  (13, 15): date
 
 ================================================================================================================
 
@@ -388,7 +384,7 @@ idx word            true label      predicted label correct?  lemma           ta
 0   I               O               O                 ✔       I               PRP      nsubj    X              
 1   have            O               O                 ✔       have            VBP      ccomp    xxxx           
 2   just            O               O                 ✔       just            RB       advmod   xxxx           
-3   one             O               O                 ✔       one             CD       nummod   xxx            
+3   one             O               B-adults             ✗    one             CD       nummod   xxx            
 4   dog             O               O                 ✔       dog             NN       dobj     xxx            
 5   I               O               O                 ✔       I               PRP      nsubj    X              
 6   wanted          O               O                 ✔       want            VBD      relcl    xxxx           
@@ -396,7 +392,7 @@ idx word            true label      predicted label correct?  lemma           ta
 8   have            O               O                 ✔       have            VB       xcomp    xxxx           
 9   in              O               O                 ✔       in              IN       prep     xx             
 10  my              O               O                 ✔       my              PRP$     poss     xx             
-11  room            O               B-time_period        ✗    room            NN       pobj     xxxx           
+11  room            O               O                 ✔       room            NN       pobj     xxxx           
 12  ,               O               O                 ✔       ,               ,        punct    ,              
 13  can             O               O                 ✔       can             MD       aux      xxx            
 14  I               O               O                 ✔       I               PRP      nsubj    X              
@@ -404,13 +400,12 @@ idx word            true label      predicted label correct?  lemma           ta
 16  sure            O               O                 ✔       sure            JJ       acomp    xxxx           
 17  that            O               O                 ✔       that            DT       nsubj    xxxx           
 18  is              O               O                 ✔       be              VBZ      ccomp    xx             
-19  ok              O               B-people             ✗    ok              JJ       ccomp    xx             
+19  ok              O               O                 ✔       ok              JJ       ccomp    xx             
 
 true spans:
 
 predicted spans:
-  (11, 12): time_period
-  (19, 20): people
+  (3, 4): adults
 
 ================================================================================================================
 
@@ -461,7 +456,7 @@ idx word            true label      predicted label correct?  lemma           ta
 4   conditioning    O               O                 ✔       conditioning    NN       dobj     xxxx           
 5   in              O               O                 ✔       in              IN       prep     xx             
 6   my              O               O                 ✔       my              PRP$     poss     xx             
-7   room            O               B-time_period        ✗    room            NN       pobj     xxxx           
+7   room            O               O                 ✔       room            NN       pobj     xxxx           
 8   ,               O               O                 ✔       ,               ,        punct    ,              
 9   please          O               O                 ✔       please          UH       intj     xxxx           
 10  ?               O               O                 ✔       ?               .        punct    ?              
@@ -469,7 +464,6 @@ idx word            true label      predicted label correct?  lemma           ta
 true spans:
 
 predicted spans:
-  (7, 8): time_period
 
 ================================================================================================================
 
@@ -629,9 +623,9 @@ idx word            true label      predicted label correct?  lemma           ta
 ------------------------------------------------------------  --------------------------------------------------
 0   cancel          O               O                 ✔       cancel          VB       ROOT     xxxx           
 1   the             O               O                 ✔       the             DT       det      xxx            
-2   8               B-time          B-time            ✔       8               CD       compound d              
-3   40              I-time          I-time            ✔       40              CD       dobj     dd             
-4   in              I-time          I-time            ✔       in              IN       prep     xx             
+2   8               B-time          B-date_from          ✗    8               CD       compound d              
+3   40              I-time          B-time               ✗    40              CD       dobj     dd             
+4   in              I-time          O                    ✗    in              IN       prep     xx             
 5   the             I-time          O                    ✗    the             DT       det      xxx            
 6   morning         I-time          O                    ✗    morning         NN       compound xxxx           
 7   restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
@@ -644,7 +638,8 @@ true spans:
   (10, 11): person_name
 
 predicted spans:
-  (2, 5): time
+  (2, 3): date_from
+  (3, 4): time
   (10, 11): person_name
 
 ================================================================================================================
@@ -658,18 +653,18 @@ idx word            true label      predicted label correct?  lemma           ta
 1   want            O               O                 ✔       want            VBP      ROOT     xxxx           
 2   to              O               O                 ✔       to              TO       aux      xx             
 3   book            O               O                 ✔       book            VB       xcomp    xxxx           
-4   a               O               B-rooms              ✗    a               DT       det      x              
+4   a               O               O                 ✔       a               DT       det      x              
 5   room            O               O                 ✔       room            NN       dobj     xxxx           
 6   on              O               O                 ✔       on              IN       prep     xx             
 7   behalf          O               O                 ✔       behalf          NN       pobj     xxxx           
 8   of              O               O                 ✔       of              IN       prep     xx             
 9   shaida          B-person_name   B-person_name     ✔       shaida          NNP      compound xxxx           
 10  sharon          I-person_name   I-person_name     ✔       sharon          NNP      pobj     xxxx           
-11  ,               O               O                 ✔       ,               ,        punct    ,              
+11  ,               O               I-person_name        ✗    ,               ,        punct    ,              
 12  from            O               O                 ✔       from            IN       prep     xxxx           
 13  Jan             B-date_from     B-date_from       ✔       Jan             NNP      pobj     Xxx            
 14  the             I-date_from     I-date_from       ✔       the             DT       det      xxx            
-15  12th            I-date_from     B-date_to            ✗    12th            NN       appos    ddxx           
+15  12th            I-date_from     O                    ✗    12th            NN       appos    ddxx           
 16  .               O               O                 ✔       .               .        punct    .              
 
 true spans:
@@ -677,10 +672,8 @@ true spans:
   (13, 16): date_from
 
 predicted spans:
-  (4, 5): rooms
-  (9, 11): person_name
+  (9, 12): person_name
   (13, 15): date_from
-  (15, 16): date_to
 
 ================================================================================================================
 
@@ -693,18 +686,17 @@ idx word            true label      predicted label correct?  lemma           ta
 1   want            O               O                 ✔       want            VBP      ROOT     xxxx           
 2   to              O               O                 ✔       to              TO       aux      xx             
 3   get             O               O                 ✔       get             VB       xcomp    xxx            
-4   a               O               B-rooms              ✗    a               DT       det      x              
+4   a               O               O                 ✔       a               DT       det      x              
 5   foot            O               O                 ✔       foot            NN       compound xxxx           
 6   bath            O               O                 ✔       bath            NN       dobj     xxxx           
 7   on              O               O                 ✔       on              IN       prep     xx             
-8   Sunday          B-date          B-date_to            ✗    Sunday          NNP      pobj     Xxxxx          
+8   Sunday          B-date          B-date_from          ✗    Sunday          NNP      pobj     Xxxxx          
 
 true spans:
   (8, 9): date
 
 predicted spans:
-  (4, 5): rooms
-  (8, 9): date_to
+  (8, 9): date_from
 
 ================================================================================================================
 
@@ -890,14 +882,14 @@ idx word            true label      predicted label correct?  lemma           ta
 ------------------------------------------------------------  --------------------------------------------------
 0   Looking         O               O                 ✔       look            VBG      ROOT     Xxxxx          
 1   for             O               O                 ✔       for             IN       prep     xxx            
-2   a               O               B-rooms              ✗    a               DT       det      x              
-3   room            O               I-rooms              ✗    room            NN       pobj     xxxx           
+2   a               O               O                 ✔       a               DT       det      x              
+3   room            O               B-date_from          ✗    room            NN       pobj     xxxx           
 4   from            O               O                 ✔       from            IN       prep     xxxx           
 5   the             O               O                 ✔       the             DT       det      xxx            
 6   1st             B-date_from     B-date_from       ✔       1st             NN       pobj     dxx            
 7   to              O               O                 ✔       to              IN       prep     xx             
 8   the             O               O                 ✔       the             DT       det      xxx            
-9   17th            B-date_to       B-date_from          ✗    17th            NN       pobj     ddxx           
+9   17th            B-date_to       B-date_to         ✔       17th            NN       pobj     ddxx           
 10  for             O               O                 ✔       for             IN       prep     xxx            
 11  8               B-people        B-people          ✔       8               CD       nummod   d              
 12  people          O               O                 ✔       people          NNS      pobj     xxxx           
@@ -908,9 +900,9 @@ true spans:
   (11, 12): people
 
 predicted spans:
-  (2, 4): rooms
+  (3, 4): date_from
   (6, 7): date_from
-  (9, 10): date_from
+  (9, 10): date_to
   (11, 12): people
 
 ================================================================================================================
@@ -920,16 +912,15 @@ Input: Tuesday March 3
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   Tuesday         B-date          B-date            ✔       Tuesday         NNP      ROOT     Xxxxx          
-1   March           I-date          B-date_to            ✗    March           NNP      npadvmod Xxxxx          
+0   Tuesday         B-date          B-date_to            ✗    Tuesday         NNP      ROOT     Xxxxx          
+1   March           I-date          I-date_to            ✗    March           NNP      npadvmod Xxxxx          
 2   3               I-date          I-date_to            ✗    3               CD       nummod   d              
 
 true spans:
   (0, 3): date
 
 predicted spans:
-  (0, 1): date
-  (1, 3): date_to
+  (0, 3): date_to
 
 ================================================================================================================
 
@@ -957,9 +948,9 @@ idx word            true label      predicted label correct?  lemma           ta
 1   'd              O               O                 ✔       would           MD       aux      'x             
 2   like            O               O                 ✔       like            VB       ROOT     xxxx           
 3   an              B-rooms         O                    ✗    an              DT       det      xx             
-4   en              I-rooms         B-date_from          ✗    en              NNP      compound xx             
-5   suite           I-rooms         O                    ✗    suite           NN       compound xxxx           
-6   room            I-rooms         O                    ✗    room            NN       dobj     xxxx           
+4   en              I-rooms         B-rooms              ✗    en              NNP      compound xx             
+5   suite           I-rooms         I-rooms           ✔       suite           NN       compound xxxx           
+6   room            I-rooms         I-rooms           ✔       room            NN       dobj     xxxx           
 7   for             O               O                 ✔       for             IN       prep     xxx            
 8   2               B-adults        B-adults          ✔       2               CD       nummod   d              
 9   adults          I-adults        O                    ✗    adult           NNS      pobj     xxxx           
@@ -970,7 +961,7 @@ true spans:
   (8, 10): adults
 
 predicted spans:
-  (4, 5): date_from
+  (4, 7): rooms
   (8, 9): adults
 
 ================================================================================================================
@@ -982,9 +973,9 @@ idx word            true label      predicted label correct?  lemma           ta
 ------------------------------------------------------------  --------------------------------------------------
 0   a               B-rooms         B-rooms           ✔       a               DT       det      x              
 1   double          I-rooms         I-rooms           ✔       double          JJ       amod     xxxx           
-2   room            I-rooms         O                    ✗    room            NN       ROOT     xxxx           
+2   room            I-rooms         I-rooms           ✔       room            NN       ROOT     xxxx           
 3   for             O               O                 ✔       for             IN       prep     xxx            
-4   tomorrow        B-date_from     B-date_from       ✔       tomorrow        NN       pobj     xxxx           
+4   tomorrow        B-date_from     B-date               ✗    tomorrow        NN       pobj     xxxx           
 5   for             O               O                 ✔       for             IN       prep     xxx            
 6   8               B-date_period   B-date_period     ✔       8               CD       nummod   d              
 7   days            I-date_period   I-date_period     ✔       day             NNS      pobj     xxxx           
@@ -995,8 +986,8 @@ true spans:
   (6, 8): date_period
 
 predicted spans:
-  (0, 2): rooms
-  (4, 5): date_from
+  (0, 3): rooms
+  (4, 5): date
   (6, 8): date_period
 
 ================================================================================================================
@@ -1050,13 +1041,12 @@ idx word            true label      predicted label correct?  lemma           ta
 2   to              O               O                 ✔       to              TO       aux      xx             
 3   book            O               O                 ✔       book            VB       xcomp    xxxx           
 4   for             O               O                 ✔       for             IN       prep     xxx            
-5   today           B-date_from     B-date_from       ✔       today           NN       npadvmod xxxx           
+5   today           B-date_from     O                    ✗    today           NN       npadvmod xxxx           
 
 true spans:
   (5, 6): date_from
 
 predicted spans:
-  (5, 6): date_from
 
 ================================================================================================================
 
@@ -1066,14 +1056,14 @@ Analysis:                                                     Additional annotat
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
 0   for             O               O                 ✔       for             IN       ROOT     xxx            
-1   a               B-date_period   B-date_period     ✔       a               DT       det      x              
-2   week            I-date_period   I-date_period     ✔       week            NN       pobj     xxxx           
+1   a               B-date_period   O                    ✗    a               DT       det      x              
+2   week            I-date_period   B-date_period        ✗    week            NN       pobj     xxxx           
 
 true spans:
   (1, 3): date_period
 
 predicted spans:
-  (1, 3): date_period
+  (2, 3): date_period
 
 ================================================================================================================
 
@@ -1087,7 +1077,7 @@ idx word            true label      predicted label correct?  lemma           ta
 2   from            O               O                 ✔       from            IN       prep     xxxx           
 3   15th            B-date_from     B-date_from       ✔       15th            NN       pobj     ddxx           
 4   of              I-date_from     I-date_from       ✔       of              IN       prep     xx             
-5   October         I-date_from     I-date_from       ✔       October         NNP      pobj     Xxxxx          
+5   October         I-date_from     B-date               ✗    October         NNP      pobj     Xxxxx          
 6   ?               O               O                 ✔       ?               .        punct    ?              
 
 true spans:
@@ -1096,7 +1086,8 @@ true spans:
 
 predicted spans:
   (0, 2): date_period
-  (3, 6): date_from
+  (3, 5): date_from
+  (5, 6): date
 
 ================================================================================================================
 
@@ -1106,13 +1097,13 @@ Analysis:                                                     Additional annotat
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
 0   2               B-date_period   B-date_period     ✔       2               CD       nummod   d              
-1   weeks           I-date_period   O                    ✗    week            NNS      ROOT     xxxx           
+1   weeks           I-date_period   I-date_period     ✔       week            NNS      ROOT     xxxx           
 
 true spans:
   (0, 2): date_period
 
 predicted spans:
-  (0, 1): date_period
+  (0, 2): date_period
 
 ================================================================================================================
 
@@ -1194,7 +1185,7 @@ idx word            true label      predicted label correct?  lemma           ta
 0   leaving         O               O                 ✔       leave           VBG      ROOT     xxxx           
 1   on              O               O                 ✔       on              IN       prep     xx             
 2   the             O               O                 ✔       the             DT       det      xxx            
-3   12th            B-date_to       B-date_to         ✔       12th            NN       pobj     ddxx           
+3   12th            B-date_to       O                    ✗    12th            NN       pobj     ddxx           
 4   ,               O               O                 ✔       ,               ,        punct    ,              
 5   arriving        O               O                 ✔       arrive          VBG      advcl    xxxx           
 6   on              O               O                 ✔       on              IN       prep     xx             
@@ -1206,7 +1197,6 @@ true spans:
   (8, 9): date_from
 
 predicted spans:
-  (3, 4): date_to
   (8, 9): date_from
 
 ================================================================================================================
@@ -1250,7 +1240,7 @@ idx word            true label      predicted label correct?  lemma           ta
 12  past            I-time_from     I-time               ✗    past            JJ       amod     xxxx           
 13  17              I-time_from     I-time               ✗    17              CD       nummod   dd             
 14  afternoon       I-time_from     I-time               ✗    afternoon       NN       pobj     xxxx           
-15  today           B-date          B-date_from          ✗    today           NN       npadvmod xxxx           
+15  today           B-date          B-date            ✔       today           NN       npadvmod xxxx           
 16  .               O               O                 ✔       .               .        punct    .              
 
 true spans:
@@ -1259,7 +1249,7 @@ true spans:
 
 predicted spans:
   (11, 15): time
-  (15, 16): date_from
+  (15, 16): date
 
 ================================================================================================================
 
@@ -1371,7 +1361,7 @@ idx word            true label      predicted label correct?  lemma           ta
 1   have            O               O                 ✔       have            VBP      ROOT     xxxx           
 2   doubts          O               O                 ✔       doubt           NNS      dobj     xxxx           
 3   about           O               O                 ✔       about           IN       prep     xxxx           
-4   my              O               B-adults             ✗    my              PRP$     poss     xx             
+4   my              O               O                 ✔       my              PRP$     poss     xx             
 5   check           O               O                 ✔       check           NN       pobj     xxxx           
 6   in              O               O                 ✔       in              IN       prep     xx             
 7   date            O               O                 ✔       date            NN       pobj     xxxx           
@@ -1379,7 +1369,6 @@ idx word            true label      predicted label correct?  lemma           ta
 true spans:
 
 predicted spans:
-  (4, 5): adults
 
 ================================================================================================================
 
@@ -1517,12 +1506,12 @@ idx word            true label      predicted label correct?  lemma           ta
 2   be              O               O                 ✔       be              VB       ccomp    xx             
 3   late            O               O                 ✔       late            JJ       acomp    xxxx           
 4   for             O               O                 ✔       for             IN       prep     xxx            
-5   my              O               B-people             ✗    my              PRP$     poss     xx             
+5   my              O               O                 ✔       my              PRP$     poss     xx             
 6   10              B-time          B-time            ✔       10              CD       quantmod dd             
-7   to              I-time          I-time            ✔       to              TO       quantmod xx             
-8   4               I-time          B-date               ✗    4               CD       nummod   d              
+7   to              I-time          O                    ✗    to              TO       quantmod xx             
+8   4               I-time          B-adults             ✗    4               CD       nummod   d              
 9   afternoon       I-time          O                    ✗    afternoon       NN       compound xxxx           
-10  restaurant      O               B-rooms              ✗    restaurant      NN       compound xxxx           
+10  restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
 11  reservation     O               O                 ✔       reservation     NN       pobj     xxxx           
 12  ,               O               O                 ✔       ,               ,        punct    ,              
 13  it              O               O                 ✔       it              PRP      nsubj    xx             
@@ -1535,10 +1524,8 @@ true spans:
   (15, 17): person_name
 
 predicted spans:
-  (5, 6): people
-  (6, 8): time
-  (8, 9): date
-  (10, 11): rooms
+  (6, 7): time
+  (8, 9): adults
 
 ================================================================================================================
 
@@ -1674,15 +1661,15 @@ idx word            true label      predicted label correct?  lemma           ta
 7   .               O               O                 ✔       .               .        punct    .              
 8   Check           O               O                 ✔       check           VB       ROOT     Xxxxx          
 9   in              O               O                 ✔       in              IN       prep     xx             
-10  6th             B-date_from     B-date_to            ✗    6th             NN       pobj     dxx            
-11  of              I-date_from     I-date_to            ✗    of              IN       prep     xx             
+10  6th             B-date_from     O                    ✗    6th             NN       pobj     dxx            
+11  of              I-date_from     B-date               ✗    of              IN       prep     xx             
 12  Sep             I-date_from     O                    ✗    Sep             NNP      pobj     Xxx            
 13  and             O               O                 ✔       and             CC       cc       xxx            
 14  check           O               O                 ✔       check           VB       conj     xxxx           
 15  out             O               O                 ✔       out             RP       prt      xxx            
-16  22nd            B-date_to       B-date               ✗    22nd            NN       dobj     ddxx           
+16  22nd            B-date_to       B-time               ✗    22nd            NN       dobj     ddxx           
 17  of              I-date_to       O                    ✗    of              IN       prep     xx             
-18  Sep             I-date_to       O                    ✗    sep             NN       pobj     Xxx            
+18  Sep             I-date_to       B-time               ✗    sep             NN       pobj     Xxx            
 
 true spans:
   (0, 2): rooms
@@ -1693,8 +1680,9 @@ true spans:
 predicted spans:
   (0, 2): rooms
   (3, 4): person_name
-  (10, 12): date_to
-  (16, 17): date
+  (11, 12): date
+  (16, 17): time
+  (18, 19): time
 
 ================================================================================================================
 
@@ -1836,14 +1824,14 @@ idx word            true label      predicted label correct?  lemma           ta
 7   restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
 8   booking         O               O                 ✔       booking         NN       pobj     xxxx           
 9   at              O               O                 ✔       at              IN       prep     xx             
-10  2:10            B-time          B-date_period        ✗    2:10            CD       nummod   d:dd           
-11  night           I-time          I-date_period        ✗    night           NN       pobj     xxxx           
+10  2:10            B-time          B-time            ✔       2:10            CD       nummod   d:dd           
+11  night           I-time          I-time            ✔       night           NN       pobj     xxxx           
 
 true spans:
   (10, 12): time
 
 predicted spans:
-  (10, 12): date_period
+  (10, 12): time
 
 ================================================================================================================
 
@@ -1858,7 +1846,7 @@ idx word            true label      predicted label correct?  lemma           ta
 3   that            O               O                 ✔       that            DT       det      xxxx           
 4   booking         O               O                 ✔       booking         NN       dobj     xxxx           
 5   for             O               O                 ✔       for             IN       prep     xxx            
-6   murad           B-person_name   B-person_name     ✔       murad           NNS      pobj     xxxx           
+6   murad           B-person_name   O                    ✗    murad           NNS      pobj     xxxx           
 7   as              O               O                 ✔       as              IN       mark     xx             
 8   I               O               O                 ✔       I               PRP      nsubj    X              
 9   got             O               O                 ✔       get             VBD      advcl    xxx            
@@ -1869,7 +1857,6 @@ true spans:
   (6, 7): person_name
 
 predicted spans:
-  (6, 7): person_name
 
 ================================================================================================================
 
@@ -1956,8 +1943,8 @@ Input: 6 15 I have a table booking
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   6               B-time          B-people             ✗    6               CD       compound d              
-1   15              I-time          B-adults             ✗    15              CD       dep      dd             
+0   6               B-time          B-time            ✔       6               CD       compound d              
+1   15              I-time          O                    ✗    15              CD       dep      dd             
 2   I               O               O                 ✔       I               PRP      nsubj    X              
 3   have            O               O                 ✔       have            VBP      ROOT     xxxx           
 4   a               O               O                 ✔       a               DT       det      x              
@@ -1968,8 +1955,7 @@ true spans:
   (0, 2): time
 
 predicted spans:
-  (0, 1): people
-  (1, 2): adults
+  (0, 1): time
 
 ================================================================================================================
 
@@ -1980,7 +1966,7 @@ idx word            true label      predicted label correct?  lemma           ta
 ------------------------------------------------------------  --------------------------------------------------
 0   I               O               O                 ✔       I               PRP      nsubj    X              
 1   need            O               O                 ✔       need            VBP      ROOT     xxxx           
-2   a               O               B-rooms              ✗    a               DT       det      x              
+2   a               O               O                 ✔       a               DT       det      x              
 3   dinning         O               O                 ✔       din             VBG      amod     xxxx           
 4   reservation     O               O                 ✔       reservation     NN       dobj     xxxx           
 5   for             O               O                 ✔       for             IN       prep     xxx            
@@ -1988,7 +1974,7 @@ idx word            true label      predicted label correct?  lemma           ta
 7   people          O               O                 ✔       people          NNS      pobj     xxxx           
 8   on              O               O                 ✔       on              IN       prep     xx             
 9   March           B-date          B-date_from          ✗    March           NNP      compound Xxxxx          
-10  13th            I-date          I-date_from          ✗    13th            NN       pobj     ddxx           
+10  13th            I-date          B-date_to            ✗    13th            NN       pobj     ddxx           
 11  at              O               O                 ✔       at              IN       prep     xx             
 12  9               B-time          B-time            ✔       9               CD       nummod   d              
 13  pm              I-time          I-time            ✔       pm              NN       pobj     xx             
@@ -1999,9 +1985,9 @@ true spans:
   (12, 14): time
 
 predicted spans:
-  (2, 3): rooms
   (6, 7): people
-  (9, 11): date_from
+  (9, 10): date_from
+  (10, 11): date_to
   (12, 14): time
 
 ================================================================================================================
@@ -2054,12 +2040,12 @@ idx word            true label      predicted label correct?  lemma           ta
 0   We              O               O                 ✔       we              PRP      nsubj    Xx             
 1   would           O               O                 ✔       would           MD       aux      xxxx           
 2   like            O               O                 ✔       like            VB       ROOT     xxxx           
-3   one             B-rooms         B-rooms           ✔       one             CD       nummod   xxx            
+3   one             B-rooms         B-kids               ✗    one             CD       nummod   xxx            
 4   family          O               O                 ✔       family          NN       compound xxxx           
-5   room            O               B-number             ✗    room            NN       dobj     xxxx           
+5   room            O               B-adults             ✗    room            NN       dobj     xxxx           
 6   for             O               O                 ✔       for             IN       prep     xxx            
-7   four            B-people        B-time               ✗    four            CD       pobj     xxxx           
-8   from            O               I-time               ✗    from            IN       prep     xxxx           
+7   four            B-people        B-people          ✔       four            CD       pobj     xxxx           
+8   from            O               O                 ✔       from            IN       prep     xxxx           
 9   Thursday        B-date_from     B-date_from       ✔       Thursday        NNP      pobj     Xxxxx          
 10  until           O               O                 ✔       until           IN       prep     xxxx           
 11  Thursday        B-date_to       B-date_to         ✔       Thursday        NNP      pobj     Xxxxx          
@@ -2071,9 +2057,9 @@ true spans:
   (11, 12): date_to
 
 predicted spans:
-  (3, 4): rooms
-  (5, 6): number
-  (7, 9): time
+  (3, 4): kids
+  (5, 6): adults
+  (7, 8): people
   (9, 10): date_from
   (11, 12): date_to
 
@@ -2097,7 +2083,7 @@ idx word            true label      predicted label correct?  lemma           ta
 10  from            O               O                 ✔       from            IN       prep     xxxx           
 11  Sunday          B-date_from     B-date_from       ✔       Sunday          NNP      pobj     Xxxxx          
 12  10              I-date_from     I-date_from       ✔       10              CD       nummod   dd             
-13  July            I-date_from     B-date_to            ✗    July            NNP      npadvmod Xxxx           
+13  July            I-date_from     I-date_from       ✔       July            NNP      npadvmod Xxxx           
 
 true spans:
   (8, 9): people
@@ -2105,8 +2091,7 @@ true spans:
 
 predicted spans:
   (8, 9): people
-  (11, 13): date_from
-  (13, 14): date_to
+  (11, 14): date_from
 
 ================================================================================================================
 
@@ -2116,14 +2101,15 @@ Analysis:                                                     Additional annotat
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
 0   18th            B-date          B-date_from          ✗    18th            NN       ROOT     ddxx           
-1   of              I-date          I-date_from          ✗    of              IN       prep     xx             
-2   Nov             I-date          O                    ✗    Nov             NNP      pobj     Xxx            
+1   of              I-date          O                    ✗    of              IN       prep     xx             
+2   Nov             I-date          B-person_name        ✗    Nov             NNP      pobj     Xxx            
 
 true spans:
   (0, 3): date
 
 predicted spans:
-  (0, 2): date_from
+  (0, 1): date_from
+  (2, 3): person_name
 
 ================================================================================================================
 
@@ -2132,13 +2118,13 @@ Input: One bedroom, 2 adults and one minor child.
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   One             B-rooms         B-kids               ✗    one             CD       nummod   Xxx            
+0   One             B-rooms         B-adults             ✗    one             CD       nummod   Xxx            
 1   bedroom         O               O                 ✔       bedroom         NN       ROOT     xxxx           
 2   ,               O               O                 ✔       ,               ,        punct    ,              
-3   2               B-adults        B-rooms              ✗    2               CD       nummod   d              
+3   2               B-adults        B-adults          ✔       2               CD       nummod   d              
 4   adults          O               O                 ✔       adult           NNS      appos    xxxx           
 5   and             O               O                 ✔       and             CC       cc       xxx            
-6   one             B-kids          B-kids            ✔       one             CD       nummod   xxx            
+6   one             B-kids          O                    ✗    one             CD       nummod   xxx            
 7   minor           O               O                 ✔       minor           JJ       amod     xxxx           
 8   child           O               O                 ✔       child           NN       conj     xxxx           
 9   .               O               O                 ✔       .               .        punct    .              
@@ -2149,9 +2135,8 @@ true spans:
   (6, 7): kids
 
 predicted spans:
-  (0, 1): kids
-  (3, 4): rooms
-  (6, 7): kids
+  (0, 1): adults
+  (3, 4): adults
 
 ================================================================================================================
 
@@ -2171,14 +2156,14 @@ idx word            true label      predicted label correct?  lemma           ta
 8   2               B-date_period   B-date_period     ✔       2               CD       nummod   d              
 9   nights          I-date_period   I-date_period     ✔       night           NNS      pobj     xxxx           
 10  for             O               O                 ✔       for             IN       prep     xxx            
-11  6               O               B-people             ✗    6               CD       quantmod d              
+11  6               O               B-time               ✗    6               CD       quantmod d              
 12  in              O               O                 ✔       in              IN       quantmod xx             
-13  three           B-rooms         O                    ✗    three           CD       nummod   xxxx           
+13  three           B-rooms         B-rooms           ✔       three           CD       nummod   xxxx           
 14  rooms           O               O                 ✔       room            NNS      pobj     xxxx           
 15  for             O               O                 ✔       for             IN       prep     xxx            
 16  Friday          B-date_from     B-date_from       ✔       Friday          NNP      pobj     Xxxxx          
-17  to              O               O                 ✔       to              IN       prep     xx             
-18  Sunday          B-date_to       B-date_to         ✔       Sunday          NNP      pobj     Xxxxx          
+17  to              O               I-date_from          ✗    to              IN       prep     xx             
+18  Sunday          B-date_to       I-date_from          ✗    Sunday          NNP      pobj     Xxxxx          
 19  so              O               O                 ✔       so              IN       mark     xx             
 20  we              O               O                 ✔       we              PRP      nsubj    xx             
 21  can             O               O                 ✔       can             MD       aux      xxx            
@@ -2193,9 +2178,9 @@ true spans:
 
 predicted spans:
   (8, 10): date_period
-  (11, 12): people
-  (16, 17): date_from
-  (18, 19): date_to
+  (11, 12): time
+  (13, 14): rooms
+  (16, 19): date_from
 
 ================================================================================================================
 
@@ -2211,7 +2196,7 @@ idx word            true label      predicted label correct?  lemma           ta
 4   stay            O               O                 ✔       stay            VB       xcomp    xxxx           
 5   for             O               O                 ✔       for             IN       prep     xxx            
 6   a               B-date_period   O                    ✗    a               DT       det      x              
-7   fortnight       I-date_period   O                    ✗    fortnight       NN       pobj     xxxx           
+7   fortnight       I-date_period   B-date_from          ✗    fortnight       NN       pobj     xxxx           
 8   in              O               O                 ✔       in              IN       prep     xx             
 9   the             O               O                 ✔       the             DT       det      xxx            
 10  cheapest        O               O                 ✔       cheap           JJS      amod     xxxx           
@@ -2223,6 +2208,7 @@ true spans:
   (6, 8): date_period
 
 predicted spans:
+  (7, 8): date_from
 
 ================================================================================================================
 
@@ -2236,17 +2222,17 @@ idx word            true label      predicted label correct?  lemma           ta
 2   to              O               O                 ✔       to              TO       aux      xx             
 3   book            O               O                 ✔       book            VB       xcomp    xxxx           
 4   a               B-date_period   O                    ✗    a               DT       det      x              
-5   weekend         I-date_period   B-date_period        ✗    weekend         NN       npadvmod xxxx           
+5   weekend         I-date_period   O                    ✗    weekend         NN       npadvmod xxxx           
 6   away            O               O                 ✔       away            RB       advmod   xxxx           
 7   for             O               O                 ✔       for             IN       prep     xxx            
 8   myself          B-adults        B-adults          ✔       myself          PRP      pobj     xxxx           
 9   and             I-adults        O                    ✗    and             CC       cc       xxx            
-10  my              I-adults        B-adults             ✗    my              PRP$     poss     xx             
-11  husband         I-adults        I-adults          ✔       husband         NN       conj     xxxx           
+10  my              I-adults        O                    ✗    my              PRP$     poss     xx             
+11  husband         I-adults        B-adults             ✗    husband         NN       conj     xxxx           
 12  for             O               O                 ✔       for             IN       prep     xxx            
 13  the             O               O                 ✔       the             DT       det      xxx            
-14  29              B-date_from     B-people             ✗    29              CD       nummod   dd             
-15  May             I-date_from     O                    ✗    may             NN       compound Xxx            
+14  29              B-date_from     B-date_from       ✔       29              CD       nummod   dd             
+15  May             I-date_from     I-date_from       ✔       may             NN       compound Xxx            
 16  please          O               O                 ✔       please          UH       ccomp    xxxx           
 17  .               O               O                 ✔       .               .        punct    .              
 
@@ -2256,10 +2242,9 @@ true spans:
   (14, 16): date_from
 
 predicted spans:
-  (5, 6): date_period
   (8, 9): adults
-  (10, 12): adults
-  (14, 15): people
+  (11, 12): adults
+  (14, 16): date_from
 
 ================================================================================================================
 
@@ -2273,8 +2258,8 @@ idx word            true label      predicted label correct?  lemma           ta
 2   for             O               O                 ✔       for             IN       prep     xxx            
 3   next            O               B-date_from          ✗    next            JJ       amod     xxxx           
 4   Friday          B-date_from     I-date_from          ✗    Friday          NNP      pobj     Xxxxx          
-5   the             I-date_from     O                    ✗    the             DT       det      xxx            
-6   17th            I-date_from     B-date_from          ✗    17th            NN       pobj     ddxx           
+5   the             I-date_from     I-date_from       ✔       the             DT       det      xxx            
+6   17th            I-date_from     B-date_to            ✗    17th            NN       pobj     ddxx           
 
 true spans:
   (0, 2): date_period
@@ -2282,8 +2267,8 @@ true spans:
 
 predicted spans:
   (0, 2): date_period
-  (3, 5): date_from
-  (6, 7): date_from
+  (3, 6): date_from
+  (6, 7): date_to
 
 ================================================================================================================
 
@@ -2296,7 +2281,7 @@ idx word            true label      predicted label correct?  lemma           ta
 1   nights          I-date_period   I-date_period     ✔       night           NNS      ROOT     xxxx           
 2   from            O               O                 ✔       from            IN       prep     xxxx           
 3   Friday          B-date_from     B-date_from       ✔       Friday          NNP      compound Xxxxx          
-4   29th            I-date_from     B-date_to            ✗    29th            NN       pobj     ddxx           
+4   29th            I-date_from     I-date_from       ✔       29th            NN       pobj     ddxx           
 
 true spans:
   (0, 2): date_period
@@ -2304,8 +2289,7 @@ true spans:
 
 predicted spans:
   (0, 2): date_period
-  (3, 4): date_from
-  (4, 5): date_to
+  (3, 5): date_from
 
 ================================================================================================================
 
@@ -2314,7 +2298,7 @@ Input: two little humans
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   two             B-kids          B-people             ✗    two             CD       nummod   xxx            
+0   two             B-kids          B-kids            ✔       two             CD       nummod   xxx            
 1   little          O               O                 ✔       little          JJ       amod     xxxx           
 2   humans          O               O                 ✔       human           NNS      ROOT     xxxx           
 
@@ -2322,7 +2306,7 @@ true spans:
   (0, 1): kids
 
 predicted spans:
-  (0, 1): people
+  (0, 1): kids
 
 ================================================================================================================
 
@@ -2331,9 +2315,9 @@ Input: my husband and I will be coming with our three sons
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   my              B-adults        B-people             ✗    my              PRP$     poss     xx             
-1   husband         I-adults        O                    ✗    husband         NN       nsubj    xxxx           
-2   and             I-adults        B-adults             ✗    and             CC       cc       xxx            
+0   my              B-adults        B-adults          ✔       my              PRP$     poss     xx             
+1   husband         I-adults        I-adults          ✔       husband         NN       nsubj    xxxx           
+2   and             I-adults        I-adults          ✔       and             CC       cc       xxx            
 3   I               I-adults        O                    ✗    I               PRP      conj     X              
 4   will            O               O                 ✔       will            MD       aux      xxxx           
 5   be              O               O                 ✔       be              VB       aux      xx             
@@ -2348,8 +2332,7 @@ true spans:
   (9, 10): kids
 
 predicted spans:
-  (0, 1): people
-  (2, 3): adults
+  (0, 3): adults
   (9, 10): kids
 
 ================================================================================================================
@@ -2359,13 +2342,14 @@ Input: myself only
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   myself          B-adults        O                    ✗    myself          PRP      ROOT     xxxx           
+0   myself          B-adults        B-adults          ✔       myself          PRP      ROOT     xxxx           
 1   only            O               O                 ✔       only            RB       advmod   xxxx           
 
 true spans:
   (0, 1): adults
 
 predicted spans:
+  (0, 1): adults
 
 ================================================================================================================
 
@@ -2378,8 +2362,8 @@ idx word            true label      predicted label correct?  lemma           ta
 1   to              O               O                 ✔       to              IN       prep     xx             
 2   21st            B-date_to       B-date_to         ✔       21st            NN       pobj     ddxx           
 3   of              I-date_to       O                    ✗    of              IN       prep     xx             
-4   the             I-date_to       B-date_period        ✗    the             DT       det      xxx            
-5   month           I-date_to       O                    ✗    month           NN       pobj     xxxx           
+4   the             I-date_to       O                    ✗    the             DT       det      xxx            
+5   month           I-date_to       B-date_period        ✗    month           NN       pobj     xxxx           
 
 true spans:
   (0, 1): date_from
@@ -2387,7 +2371,7 @@ true spans:
 
 predicted spans:
   (2, 3): date_to
-  (4, 5): date_period
+  (5, 6): date_period
 
 ================================================================================================================
 
@@ -2413,59 +2397,59 @@ Classification report for BIO tags:
 
                precision    recall  f1-score   support
 
-     B-adults       0.40      0.44      0.42         9
-       B-date       0.44      0.50      0.47         8
-  B-date_from       0.59      0.65      0.62        20
-B-date_period       0.58      0.78      0.67         9
-    B-date_to       0.53      0.73      0.62        11
-       B-kids       0.62      0.83      0.71         6
+     B-adults       0.54      0.78      0.64         9
+       B-date       0.40      0.50      0.44         8
+  B-date_from       0.60      0.60      0.60        20
+B-date_period       0.67      0.67      0.67         9
+    B-date_to       0.64      0.64      0.64        11
+       B-kids       0.71      0.83      0.77         6
      B-number       0.00      0.00      0.00         3
-     B-people       0.27      0.75      0.40         4
-B-person_name       0.60      0.75      0.67         4
-      B-rooms       0.25      0.33      0.29         9
-       B-time       0.67      0.67      0.67         6
+     B-people       0.80      1.00      0.89         4
+B-person_name       0.33      0.50      0.40         4
+      B-rooms       0.43      0.33      0.38         9
+       B-time       0.50      0.83      0.62         6
   B-time_from       0.00      0.00      0.00         1
-B-time_period       0.25      0.33      0.29         3
-     I-adults       1.00      0.12      0.22         8
+B-time_period       1.00      0.33      0.50         3
+     I-adults       1.00      0.25      0.40         8
        I-date       0.00      0.00      0.00         5
-  I-date_from       0.62      0.33      0.43        15
-I-date_period       0.86      0.67      0.75         9
+  I-date_from       0.73      0.53      0.62        15
+I-date_period       1.00      0.67      0.80         9
     I-date_to       0.00      0.00      0.00         5
        I-kids       0.00      0.00      0.00         0
      I-number       0.00      0.00      0.00         0
      I-people       0.00      0.00      0.00         0
-I-person_name       1.00      0.50      0.67         2
-      I-rooms       0.75      0.25      0.38        12
-       I-time       0.56      0.45      0.50        11
+I-person_name       0.50      0.50      0.50         2
+      I-rooms       1.00      0.67      0.80        12
+       I-time       0.50      0.27      0.35        11
   I-time_from       0.00      0.00      0.00         3
 I-time_period       0.00      0.00      0.00         3
 
-    micro avg       0.51      0.46      0.48       166
-    macro avg       0.38      0.35      0.34       166
- weighted avg       0.52      0.46      0.45       166
+    micro avg       0.61      0.51      0.55       166
+    macro avg       0.44      0.38      0.39       166
+ weighted avg       0.59      0.51      0.52       166
 
 
 Classification report for slot labels:
 
               precision    recall  f1-score   support
 
-      adults       0.20      0.22      0.21         9
-        date       0.33      0.38      0.35         8
-   date_from       0.45      0.50      0.48        20
- date_period       0.50      0.67      0.57         9
-     date_to       0.47      0.64      0.54        11
-        kids       0.62      0.83      0.71         6
+      adults       0.31      0.44      0.36         9
+        date       0.40      0.50      0.44         8
+   date_from       0.45      0.45      0.45        20
+ date_period       0.67      0.67      0.67         9
+     date_to       0.55      0.55      0.55        11
+        kids       0.71      0.83      0.77         6
       number       0.00      0.00      0.00         3
-      people       0.27      0.75      0.40         4
- person_name       0.60      0.75      0.67         4
-       rooms       0.17      0.22      0.19         9
-        time       0.33      0.33      0.33         6
+      people       0.80      1.00      0.89         4
+ person_name       0.17      0.25      0.20         4
+       rooms       0.43      0.33      0.38         9
+        time       0.30      0.50      0.37         6
    time_from       0.00      0.00      0.00         1
- time_period       0.25      0.33      0.29         3
+ time_period       1.00      0.33      0.50         3
 
-   micro avg       0.38      0.47      0.42        93
-   macro avg       0.32      0.43      0.36        93
-weighted avg       0.37      0.47      0.41        93
+   micro avg       0.46      0.49      0.48        93
+   macro avg       0.44      0.45      0.43        93
+weighted avg       0.47      0.49      0.47        93
 
 
 ####################################################################################################
