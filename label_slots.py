@@ -20,7 +20,7 @@ def tag2vec(tag):
         dict[tag[:2]]+=1 
     except KeyError: 
         pass
-    return np.array(list(dict.values()) ) 
+    return np.array(list(dict.values())) 
 def _predict_tag_mle(token, model_parameters):
     """
     Predict most-frequent-tag baseline, i.e. argmax_{<tag>} P(<tag> | <word>).
@@ -206,7 +206,6 @@ def predict_bio_tags(tag_predictor, data):
             
         return cur #If BIO condition nis not violated. 
     predictions = []
-    
     for sample in data:
         n=len(sample["annotated_text"])
         pred=[] 
