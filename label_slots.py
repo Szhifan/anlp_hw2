@@ -116,18 +116,18 @@ def train_tag_logreg(data):
     for sample in data:
         n=len(sample["annotated_text"])
         for i in range(n):
-            tag=sample["annotated_text"][i].tag_  
+            tag=sample["annotated_text"][i].tag_  #extrac the pos-tag of each token 
             token_count+=1 
-            if n>2:
-                if i==0: 
+            if n>2: #only average the neighboring vectors if the sentence contains more than two tokens 
+                if i==0: #add the next word vector at the start of the sentence 
                     vec=(sample["annotated_text"][i].vector+
                     sample["annotated_text"][i+1].vector)/2 
-                elif 0<i<n-1: 
+                elif 0<i<n-1: #add the surrounding word vector if neither at the start nor end 
                     vec=(sample["annotated_text"][i].vector+
                         sample["annotated_text"][i+1].vector+
                         sample["annotated_text"][i-1].vector
                     )/3
-                else:
+                else: #add the previous word vector if at the end of the sentence 
                     vec=(sample["annotated_text"][i].vector+
                     sample["annotated_text"][i-1].vector)/2
             else: 
