@@ -61,8 +61,8 @@ def train_tag_mle(data):
         tag_logprob_pairs = [(tag, math.log(tag_word_count / word_count)) for (tag, tag_word_count) in tag_count_pairs.items()]
         sorted_tag_logprob_pairs = sorted(tag_logprob_pairs, key=lambda tag_logprob_pair: -tag_logprob_pair[1]) 
         per_word_tag_mle[word] = sorted_tag_logprob_pairs
-    # print("#"*100)
-    # print(per_word_tag_mle["night"])
+    print("#"*100)
+    print(per_word_tag_mle["night"])
     model_parameters = {
         'per_word_tag_mle': per_word_tag_mle,
         # Assign O for unknown words with prob 1
@@ -254,13 +254,13 @@ train = {
     'most_frequent_tag' : train_tag_mle,
     'logistic_regression' : train_tag_logreg
 }
-default_train = 'logistic_regression' 
+default_train = 'most_frequent_tag' 
 
 predict = {
     'independent_tags' : predict_independent_tags,
     'bio_tags' : predict_bio_tags,
 }
-default_predict = 'bio_tags'
+default_predict = 'independent_tag'
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
@@ -290,7 +290,7 @@ if __name__ == "__main__":
         validation_data = json.load(f)
 
 
-f = open("reports/test2.txt",'w')
+f = open("reports/report_mft_inde.txt",'w')
 sys.stdout = f
 print("> Tokenising and annotating raw data")
 nlp_analyser = spacy.load("en_core_web_sm")
