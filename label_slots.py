@@ -11,6 +11,7 @@ import numpy as np
 DATA_DIR = "data"
 TRAINING_FILE = "training_data.json"
 VALIDATION_FILE = "validation_data.json"
+TEST_FILE="test_data.json" 
 
 spacy.tokens.token.Token.set_extension("bio_slot_label", default="O")
 def tag2vec(tag):
@@ -277,6 +278,7 @@ if __name__ == "__main__":
                    help=f'type of prediction method to use.',
                    choices=predict.keys(),
                    default=default_predict)
+                   
     p.add_argument('-f', '--full_report',
                    help=f'show complete output of tagging model on all sentences',
                    action='store_true')
@@ -286,7 +288,9 @@ if __name__ == "__main__":
         training_data = json.load(f)
     with open(args.validation_path) as f:
         validation_data = json.load(f)
-f = open("reports/report_avVec+curtag.txt", 'w')
+
+
+f = open("reports/test2.txt",'w')
 sys.stdout = f
 print("> Tokenising and annotating raw data")
 nlp_analyser = spacy.load("en_core_web_sm")
