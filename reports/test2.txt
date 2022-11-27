@@ -1,8 +1,2261 @@
 > Tokenising and annotating raw data
 > Training model on 
-####################################################################################################
-[('I-date_period', -0.456758402495715), ('B-time_period', -1.791759469228055), 
-('I-time', -2.0149030205422647), 
-('I-time_period', -3.4011973816621555), ('I-time_from', -3.4011973816621555)]
 > Finished training most frequent tag model on 7348 tokens
 > Predicting tags on validation set
+Input: we will arrive tomorrow at 25 to 7 p.m.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   we              O               O                 ✔       we              PRP      nsubj    xx             
+1   will            O               O                 ✔       will            MD       aux      xxxx           
+2   arrive          O               O                 ✔       arrive          VB       ROOT     xxxx           
+3   tomorrow        B-date_from     B-date               ✗    tomorrow        NN       npadvmod xxxx           
+4   at              O               O                 ✔       at              IN       prep     xx             
+5   25              B-time_from     B-time               ✗    25              CD       quantmod dd             
+6   to              I-time_from     O                    ✗    to              TO       quantmod xx             
+7   7               I-time_from     B-date_period        ✗    7               CD       pobj     d              
+8   p.m.            I-time_from     I-time               ✗    p.m.            NN       advmod   x.x.           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (3, 4): date_from
+  (5, 9): time_from
+
+predicted spans:
+  (3, 4): date
+  (5, 6): time
+  (7, 9): date_period
+
+================================================================================================================
+
+Input: why don't you offer massages anymore?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   why             O               O                 ✔       why             WRB      advmod   xxx            
+1   do              O               O                 ✔       do              VBP      aux      xx             
+2   n't             O               O                 ✔       not             RB       neg      x'x            
+3   you             O               O                 ✔       you             PRP      nsubj    xxx            
+4   offer           O               O                 ✔       offer           VB       ROOT     xxxx           
+5   massages        O               O                 ✔       massage         NNS      dobj     xxxx           
+6   anymore         O               O                 ✔       anymore         RB       advmod   xxxx           
+7   ?               O               O                 ✔       ?               .        punct    ?              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: how do i cancel my restaurant booking of the 20th of April
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   how             O               O                 ✔       how             WRB      advmod   xxx            
+1   do              O               O                 ✔       do              VBP      aux      xx             
+2   i               O               O                 ✔       I               PRP      nsubj    x              
+3   cancel          O               O                 ✔       cancel          VB       ROOT     xxxx           
+4   my              O               O                 ✔       my              PRP$     poss     xx             
+5   restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
+6   booking         O               O                 ✔       booking         NN       dobj     xxxx           
+7   of              O               O                 ✔       of              IN       prep     xx             
+8   the             O               O                 ✔       the             DT       det      xxx            
+9   20th            B-date          B-date_from          ✗    20th            NN       pobj     ddxx           
+10  of              I-date          O                    ✗    of              IN       prep     xx             
+11  April           I-date          I-date            ✔       April           NNP      pobj     Xxxxx          
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (9, 12): date
+
+predicted spans:
+  (9, 10): date_from
+
+================================================================================================================
+
+Input: any constraints on the number of nights we can stay during the Christmas time?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   any             O               O                 ✔       any             DT       det      xxx            
+1   constraints     O               O                 ✔       constraint      NNS      ROOT     xxxx           
+2   on              O               O                 ✔       on              IN       prep     xx             
+3   the             O               O                 ✔       the             DT       det      xxx            
+4   number          O               O                 ✔       number          NN       pobj     xxxx           
+5   of              O               O                 ✔       of              IN       prep     xx             
+6   nights          O               I-date_period        ✗    night           NNS      pobj     xxxx           
+7   we              O               O                 ✔       we              PRP      nsubj    xx             
+8   can             O               O                 ✔       can             MD       aux      xxx            
+9   stay            O               O                 ✔       stay            VB       relcl    xxxx           
+10  during          O               O                 ✔       during          IN       prep     xxxx           
+11  the             O               O                 ✔       the             DT       det      xxx            
+12  Christmas       O               O                 ✔       Christmas       NNP      compound Xxxxx          
+13  time            O               O                 ✔       time            NN       pobj     xxxx           
+14  ?               O               O                 ✔       ?               .        punct    ?              
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: got it, then just rebook me to another hotel
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   got             O               O                 ✔       get             VBD      advcl    xxx            
+1   it              O               O                 ✔       it              PRP      dobj     xx             
+2   ,               O               O                 ✔       ,               ,        punct    ,              
+3   then            O               O                 ✔       then            RB       advmod   xxxx           
+4   just            O               O                 ✔       just            RB       advmod   xxxx           
+5   rebook          O               O                 ✔       rebook          VB       ROOT     xxxx           
+6   me              O               O                 ✔       I               PRP      dobj     xx             
+7   to              O               O                 ✔       to              IN       prep     xx             
+8   another         O               O                 ✔       another         DT       det      xxxx           
+9   hotel           O               O                 ✔       hotel           NN       pobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: Laters
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Laters          O               O                 ✔       later           NNS      ROOT     Xxxxx          
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: Hi, can I get some food delivered now
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Hi              O               O                 ✔       hi              UH       intj     Xx             
+1   ,               O               O                 ✔       ,               ,        punct    ,              
+2   can             O               O                 ✔       can             MD       aux      xxx            
+3   I               O               O                 ✔       I               PRP      nsubj    X              
+4   get             O               O                 ✔       get             VB       ROOT     xxx            
+5   some            O               O                 ✔       some            DT       det      xxxx           
+6   food            O               O                 ✔       food            NN       dobj     xxxx           
+7   delivered       O               O                 ✔       deliver         VBN      acl      xxxx           
+8   now             O               O                 ✔       now             RB       advmod   xxx            
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: Speak to someone about room service
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Speak           O               O                 ✔       speak           VB       ROOT     Xxxxx          
+1   to              O               O                 ✔       to              IN       prep     xx             
+2   someone         O               O                 ✔       someone         NN       pobj     xxxx           
+3   about           O               O                 ✔       about           IN       prep     xxxx           
+4   room            O               O                 ✔       room            NN       compound xxxx           
+5   service         O               O                 ✔       service         NN       pobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: I'd like to change my current booking to a smaller and cheaper room if possible.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   'd              O               O                 ✔       would           MD       aux      'x             
+2   like            O               O                 ✔       like            VB       ROOT     xxxx           
+3   to              O               O                 ✔       to              TO       aux      xx             
+4   change          O               O                 ✔       change          VB       xcomp    xxxx           
+5   my              O               O                 ✔       my              PRP$     poss     xx             
+6   current         O               O                 ✔       current         JJ       amod     xxxx           
+7   booking         O               O                 ✔       booking         NN       dobj     xxxx           
+8   to              O               O                 ✔       to              IN       prep     xx             
+9   a               O               O                 ✔       a               DT       det      x              
+10  smaller         O               O                 ✔       small           JJR      amod     xxxx           
+11  and             O               O                 ✔       and             CC       cc       xxx            
+12  cheaper         O               O                 ✔       cheap           JJR      conj     xxxx           
+13  room            O               O                 ✔       room            NN       pobj     xxxx           
+14  if              O               O                 ✔       if              IN       mark     xx             
+15  possible        O               O                 ✔       possible        JJ       advcl    xxxx           
+16  .               O               O                 ✔       .               .        punct    .              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: what is the check in time in your hotel
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   what            O               O                 ✔       what            WP       attr     xxxx           
+1   is              O               O                 ✔       be              VBZ      ROOT     xx             
+2   the             O               O                 ✔       the             DT       det      xxx            
+3   check           O               O                 ✔       check           NN       nsubj    xxxx           
+4   in              O               O                 ✔       in              IN       prep     xx             
+5   time            O               O                 ✔       time            NN       pobj     xxxx           
+6   in              O               O                 ✔       in              IN       prep     xx             
+7   your            O               O                 ✔       your            PRP$     poss     xxxx           
+8   hotel           O               O                 ✔       hotel           NN       pobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: i slept in and will have to check out later than 6
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   i               O               O                 ✔       I               PRP      nsubj    x              
+1   slept           O               O                 ✔       sleep           VBD      ROOT     xxxx           
+2   in              O               O                 ✔       in              RP       prt      xx             
+3   and             O               O                 ✔       and             CC       cc       xxx            
+4   will            O               O                 ✔       will            MD       aux      xxxx           
+5   have            O               O                 ✔       have            VB       conj     xxxx           
+6   to              O               O                 ✔       to              TO       aux      xx             
+7   check           O               O                 ✔       check           VB       xcomp    xxxx           
+8   out             O               O                 ✔       out             RP       prt      xxx            
+9   later           O               O                 ✔       later           RB       advmod   xxxx           
+10  than            O               O                 ✔       than            IN       quantmod xxxx           
+11  6               B-time          B-date_period        ✗    6               CD       dep      d              
+
+true spans:
+  (11, 12): time
+
+predicted spans:
+  (11, 12): date_period
+
+================================================================================================================
+
+Input: put more people under the reservation rickelle kawamoto
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   put             O               O                 ✔       put             VB       ROOT     xxx            
+1   more            O               O                 ✔       more            JJR      amod     xxxx           
+2   people          O               O                 ✔       people          NNS      dobj     xxxx           
+3   under           O               O                 ✔       under           IN       prep     xxxx           
+4   the             O               O                 ✔       the             DT       det      xxx            
+5   reservation     O               O                 ✔       reservation     NN       compound xxxx           
+6   rickelle        B-person_name   O                    ✗    rickelle        NN       compound xxxx           
+7   kawamoto        I-person_name   O                    ✗    kawamoto        NN       pobj     xxxx           
+
+true spans:
+  (6, 8): person_name
+
+predicted spans:
+
+================================================================================================================
+
+Input: Sounds good yeah!
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Sounds          O               O                 ✔       sound           VBZ      ROOT     Xxxxx          
+1   good            O               O                 ✔       good            JJ       acomp    xxxx           
+2   yeah            O               O                 ✔       yeah            UH       intj     xxxx           
+3   !               O               O                 ✔       !               .        punct    !              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: I wanna open another reservation
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   wanna           O               O                 ✔       wanna           VBP      nsubj    xxxx           
+2   open            O               O                 ✔       open            VBP      ROOT     xxxx           
+3   another         O               O                 ✔       another         DT       det      xxxx           
+4   reservation     O               O                 ✔       reservation     NN       dobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: Is it allowed to bring your dog to the pool?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Is              O               O                 ✔       be              VBZ      auxpass  Xx             
+1   it              O               O                 ✔       it              PRP      nsubjpass xx             
+2   allowed         O               O                 ✔       allow           VBN      ROOT     xxxx           
+3   to              O               O                 ✔       to              TO       aux      xx             
+4   bring           O               O                 ✔       bring           VB       xcomp    xxxx           
+5   your            O               O                 ✔       your            PRP$     poss     xxxx           
+6   dog             O               O                 ✔       dog             NN       dobj     xxx            
+7   to              O               O                 ✔       to              IN       prep     xx             
+8   the             O               O                 ✔       the             DT       det      xxx            
+9   pool            O               O                 ✔       pool            NN       pobj     xxxx           
+10  ?               O               O                 ✔       ?               .        punct    ?              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: no, I'm talking about an existing one, made 3 days ago
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   no              O               O                 ✔       no              UH       intj     xx             
+1   ,               O               O                 ✔       ,               ,        punct    ,              
+2   I               O               O                 ✔       I               PRP      nsubj    X              
+3   'm              O               O                 ✔       be              VBP      aux      'x             
+4   talking         O               O                 ✔       talk            VBG      ROOT     xxxx           
+5   about           O               O                 ✔       about           IN       prep     xxxx           
+6   an              O               O                 ✔       an              DT       det      xx             
+7   existing        O               O                 ✔       exist           VBG      amod     xxxx           
+8   one             O               O                 ✔       one             NN       pobj     xxx            
+9   ,               O               O                 ✔       ,               ,        punct    ,              
+10  made            O               O                 ✔       make            VBD      advcl    xxxx           
+11  3               B-date          B-date_period        ✗    3               CD       nummod   d              
+12  days            I-date          I-date            ✔       day             NNS      npadvmod xxxx           
+13  ago             I-date          I-date            ✔       ago             IN       advmod   xxx            
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (11, 14): date
+
+predicted spans:
+  (11, 14): date_period
+
+================================================================================================================
+
+Input: wifi is broken
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   wifi            O               O                 ✔       wifi            NN       nsubjpass xxxx           
+1   is              O               O                 ✔       be              VBZ      auxpass  xx             
+2   broken          O               O                 ✔       break           VBN      ROOT     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: A room with toilet.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   A               B-rooms         B-rooms           ✔       a               DT       det      X              
+1   room            I-rooms         O                    ✗    room            NN       ROOT     xxxx           
+2   with            O               O                 ✔       with            IN       prep     xxxx           
+3   toilet          O               O                 ✔       toilet          NN       pobj     xxxx           
+4   .               O               O                 ✔       .               .        punct    .              
+
+true spans:
+  (0, 2): rooms
+
+predicted spans:
+  (0, 1): rooms
+
+================================================================================================================
+
+Input: Is there a gym
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Is              O               O                 ✔       be              VBZ      ROOT     Xx             
+1   there           O               O                 ✔       there           EX       expl     xxxx           
+2   a               O               O                 ✔       a               DT       det      x              
+3   gym             O               O                 ✔       gym             NN       attr     xxx            
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: what is the cost of the spa
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   what            O               O                 ✔       what            WP       attr     xxxx           
+1   is              O               O                 ✔       be              VBZ      ROOT     xx             
+2   the             O               O                 ✔       the             DT       det      xxx            
+3   cost            O               O                 ✔       cost            NN       nsubj    xxxx           
+4   of              O               O                 ✔       of              IN       prep     xx             
+5   the             O               O                 ✔       the             DT       det      xxx            
+6   spa             O               O                 ✔       spa             NN       pobj     xxx            
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: 3
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   3               B-number        B-date_period        ✗    3               CD       ROOT     d              
+
+true spans:
+  (0, 1): number
+
+predicted spans:
+  (0, 1): date_period
+
+================================================================================================================
+
+Input: i think i dropped my phone
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   i               O               O                 ✔       I               PRP      nsubj    x              
+1   think           O               O                 ✔       think           VBP      ROOT     xxxx           
+2   i               O               O                 ✔       I               PRP      nsubj    x              
+3   dropped         O               O                 ✔       drop            VBD      ccomp    xxxx           
+4   my              O               O                 ✔       my              PRP$     poss     xx             
+5   phone           O               O                 ✔       phone           NN       dobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: i want to park my car somewhere
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   i               O               O                 ✔       I               PRP      nsubj    x              
+1   want            O               O                 ✔       want            VBP      ROOT     xxxx           
+2   to              O               O                 ✔       to              TO       aux      xx             
+3   park            O               O                 ✔       park            VB       xcomp    xxxx           
+4   my              O               O                 ✔       my              PRP$     poss     xx             
+5   car             O               O                 ✔       car             NN       dobj     xxx            
+6   somewhere       O               O                 ✔       somewhere       RB       advmod   xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: I want to come tonight
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   want            O               O                 ✔       want            VBP      ROOT     xxxx           
+2   to              O               O                 ✔       to              TO       aux      xx             
+3   come            O               O                 ✔       come            VB       xcomp    xxxx           
+4   tonight         O               O                 ✔       tonight         NN       npadvmod xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: Could you please cancel the lunch booking for 4 at 11:45 am under shanta ricciardi?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Could           O               O                 ✔       could           MD       aux      Xxxxx          
+1   you             O               O                 ✔       you             PRP      nsubj    xxx            
+2   please          O               O                 ✔       please          UH       intj     xxxx           
+3   cancel          O               O                 ✔       cancel          VB       ROOT     xxxx           
+4   the             O               O                 ✔       the             DT       det      xxx            
+5   lunch           O               O                 ✔       lunch           NN       compound xxxx           
+6   booking         O               O                 ✔       booking         NN       dobj     xxxx           
+7   for             O               O                 ✔       for             IN       prep     xxx            
+8   4               B-people        B-people          ✔       4               CD       quantmod d              
+9   at              O               O                 ✔       at              IN       quantmod xx             
+10  11:45           B-time          B-time            ✔       11:45           CD       nummod   dd:dd          
+11  am              I-time          O                    ✗    am              NN       pobj     xx             
+12  under           O               O                 ✔       under           IN       prep     xxxx           
+13  shanta          B-person_name   O                    ✗    shanta          NN       compound xxxx           
+14  ricciardi       I-person_name   O                    ✗    ricciardi       NN       pobj     xxxx           
+15  ?               O               O                 ✔       ?               .        punct    ?              
+
+true spans:
+  (8, 9): people
+  (10, 12): time
+  (13, 15): person_name
+
+predicted spans:
+  (8, 9): people
+  (10, 11): time
+
+================================================================================================================
+
+Input: change hotel booking, my name is edens
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   change          O               O                 ✔       change          VB       advcl    xxxx           
+1   hotel           O               O                 ✔       hotel           NN       compound xxxx           
+2   booking         O               O                 ✔       booking         NN       dobj     xxxx           
+3   ,               O               O                 ✔       ,               ,        punct    ,              
+4   my              O               O                 ✔       my              PRP$     poss     xx             
+5   name            O               O                 ✔       name            NN       nsubj    xxxx           
+6   is              O               O                 ✔       be              VBZ      ROOT     xx             
+7   edens           B-person_name   O                    ✗    eden            NNS      attr     xxxx           
+
+true spans:
+  (7, 8): person_name
+
+predicted spans:
+
+================================================================================================================
+
+Input: can I get an acupuncture session for the 17 Sep at 11 00 in the morning
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   can             O               O                 ✔       can             MD       aux      xxx            
+1   I               O               O                 ✔       I               PRP      nsubj    X              
+2   get             O               O                 ✔       get             VB       ROOT     xxx            
+3   an              O               O                 ✔       an              DT       det      xx             
+4   acupuncture     O               O                 ✔       acupuncture     NN       compound xxxx           
+5   session         O               O                 ✔       session         NN       dobj     xxxx           
+6   for             O               O                 ✔       for             IN       prep     xxx            
+7   the             O               O                 ✔       the             DT       det      xxx            
+8   17              B-date          B-date_from          ✗    17              CD       nummod   dd             
+9   Sep             I-date          B-date_from          ✗    sep             NN       pobj     Xxx            
+10  at              O               O                 ✔       at              IN       prep     xx             
+11  11              B-time          B-time            ✔       11              CD       pobj     dd             
+12  00              I-time          I-time            ✔       00              CD       dobj     dd             
+13  in              I-time          O                    ✗    in              IN       prep     xx             
+14  the             I-time          O                    ✗    the             DT       det      xxx            
+15  morning         I-time          I-time            ✔       morning         NN       pobj     xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (8, 10): date
+  (11, 16): time
+
+predicted spans:
+  (8, 9): date_from
+  (9, 10): date_from
+  (11, 13): time
+
+================================================================================================================
+
+Input: what are the restaurant dinner opening hours?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   what            O               O                 ✔       what            WP       attr     xxxx           
+1   are             O               O                 ✔       be              VBP      ROOT     xxx            
+2   the             O               O                 ✔       the             DT       det      xxx            
+3   restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
+4   dinner          O               O                 ✔       dinner          NN       nsubj    xxxx           
+5   opening         O               O                 ✔       open            VBG      acl      xxxx           
+6   hours           O               I-time_period        ✗    hour            NNS      nsubj    xxxx           
+7   ?               O               O                 ✔       ?               .        punct    ?              
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: I want to order breakfast omelette room service
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   want            O               O                 ✔       want            VBP      ROOT     xxxx           
+2   to              O               O                 ✔       to              TO       aux      xx             
+3   order           O               O                 ✔       order           VB       xcomp    xxxx           
+4   breakfast       O               O                 ✔       breakfast       NN       compound xxxx           
+5   omelette        O               O                 ✔       omelette        NN       compound xxxx           
+6   room            O               O                 ✔       room            NN       compound xxxx           
+7   service         O               O                 ✔       service         NN       dobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: Can I change the start date and duration of a reservation i made the other day
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Can             O               O                 ✔       can             MD       aux      Xxx            
+1   I               O               O                 ✔       I               PRP      nsubj    X              
+2   change          O               O                 ✔       change          VB       ROOT     xxxx           
+3   the             O               O                 ✔       the             DT       det      xxx            
+4   start           O               O                 ✔       start           NN       compound xxxx           
+5   date            O               O                 ✔       date            NN       dobj     xxxx           
+6   and             O               O                 ✔       and             CC       cc       xxx            
+7   duration        O               O                 ✔       duration        NN       conj     xxxx           
+8   of              O               O                 ✔       of              IN       prep     xx             
+9   a               O               O                 ✔       a               DT       det      x              
+10  reservation     O               O                 ✔       reservation     NN       pobj     xxxx           
+11  i               O               O                 ✔       I               PRP      nsubj    x              
+12  made            O               O                 ✔       make            VBD      conj     xxxx           
+13  the             O               O                 ✔       the             DT       det      xxx            
+14  other           O               O                 ✔       other           JJ       amod     xxxx           
+15  day             O               I-date_period        ✗    day             NN       dobj     xxx            
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: a table booking for 2 people on the date 1st of Jan and the time 15 to 2 night
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   a               O               O                 ✔       a               DT       det      x              
+1   table           O               O                 ✔       table           NN       ROOT     xxxx           
+2   booking         O               O                 ✔       book            VBG      acl      xxxx           
+3   for             O               O                 ✔       for             IN       prep     xxx            
+4   2               B-people        B-adults             ✗    2               CD       nummod   d              
+5   people          O               O                 ✔       people          NNS      pobj     xxxx           
+6   on              O               O                 ✔       on              IN       prep     xx             
+7   the             O               O                 ✔       the             DT       det      xxx            
+8   date            O               O                 ✔       date            NN       pobj     xxxx           
+9   1st             B-date          I-date_to            ✗    1st             NN       amod     dxx            
+10  of              I-date          O                    ✗    of              IN       prep     xx             
+11  Jan             I-date          I-date_from          ✗    Jan             NNP      pobj     Xxx            
+12  and             O               O                 ✔       and             CC       cc       xxx            
+13  the             O               O                 ✔       the             DT       det      xxx            
+14  time            O               O                 ✔       time            NN       conj     xxxx           
+15  15              B-time          B-time            ✔       15              CD       quantmod dd             
+16  to              I-time          O                    ✗    to              TO       quantmod xx             
+17  2               I-time          B-adults             ✗    2               CD       nummod   d              
+18  night           I-time          I-date_period        ✗    night           NN       npadvmod xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (4, 5): people
+  (9, 12): date
+  (15, 19): time
+
+predicted spans:
+  (4, 5): adults
+  (15, 16): time
+  (17, 19): adults
+
+================================================================================================================
+
+Input: I just want to change the number of guests
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   just            O               O                 ✔       just            RB       advmod   xxxx           
+2   want            O               O                 ✔       want            VBP      ROOT     xxxx           
+3   to              O               O                 ✔       to              TO       aux      xx             
+4   change          O               O                 ✔       change          VB       xcomp    xxxx           
+5   the             O               O                 ✔       the             DT       det      xxx            
+6   number          O               O                 ✔       number          NN       dobj     xxxx           
+7   of              O               O                 ✔       of              IN       prep     xx             
+8   guests          O               O                 ✔       guest           NNS      pobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: Have you got any availability between 17th May to 21st May, we are three for a four night stay
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Have            O               O                 ✔       have            VBP      aux      Xxxx           
+1   you             O               O                 ✔       you             PRP      nsubj    xxx            
+2   got             O               O                 ✔       get             VBN      advcl    xxx            
+3   any             O               O                 ✔       any             DT       det      xxx            
+4   availability    O               O                 ✔       availability    NN       dobj     xxxx           
+5   between         O               O                 ✔       between         IN       prep     xxxx           
+6   17th            B-date_from     B-date_from       ✔       17th            JJ       amod     ddxx           
+7   May             I-date_from     I-date_from       ✔       May             NNP      pobj     Xxx            
+8   to              O               O                 ✔       to              TO       prep     xx             
+9   21st            B-date_to       I-date               ✗    21st            JJ       pobj     ddxx           
+10  May             I-date_to       I-date_from          ✗    May             NNP      npadvmod Xxx            
+11  ,               O               O                 ✔       ,               ,        punct    ,              
+12  we              O               O                 ✔       we              PRP      nsubj    xx             
+13  are             O               O                 ✔       be              VBP      ROOT     xxx            
+14  three           B-people        B-date_period        ✗    three           CD       attr     xxxx           
+15  for             O               O                 ✔       for             IN       prep     xxx            
+16  a               O               O                 ✔       a               DT       det      x              
+17  four            B-date_period   B-people             ✗    four            CD       nummod   xxxx           
+18  night           I-date_period   I-date_period     ✔       night           NN       compound xxxx           
+19  stay            O               O                 ✔       stay            VB       pobj     xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (6, 8): date_from
+  (9, 11): date_to
+  (14, 15): people
+  (17, 19): date_period
+
+predicted spans:
+  (6, 8): date_from
+  (14, 15): date_period
+  (17, 19): people
+
+================================================================================================================
+
+Input: Independence Day
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Independence    B-date          O                    ✗    Independence    NNP      compound Xxxxx          
+1   Day             I-date          O                    ✗    Day             NNP      ROOT     Xxx            
+
+true spans:
+  (0, 2): date
+
+predicted spans:
+
+================================================================================================================
+
+Input: Thursday 30th June
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Thursday        B-date          B-date_from          ✗    Thursday        NNP      compound Xxxxx          
+1   30th            I-date          O                    ✗    30th            JJ       ROOT     ddxx           
+2   June            I-date          I-date_from          ✗    June            NNP      npadvmod Xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (0, 3): date
+
+predicted spans:
+  (0, 1): date_from
+
+================================================================================================================
+
+Input: 4 single rooms from the 23rd until the 29 May
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   4               B-rooms         B-people             ✗    4               CD       nummod   d              
+1   single          O               I-rooms              ✗    single          JJ       amod     xxxx           
+2   rooms           O               O                 ✔       room            NNS      ROOT     xxxx           
+3   from            O               O                 ✔       from            IN       prep     xxxx           
+4   the             O               O                 ✔       the             DT       det      xxx            
+5   23rd            B-date_from     B-date_to            ✗    23rd            NN       pobj     ddxx           
+6   until           O               O                 ✔       until           IN       prep     xxxx           
+7   the             O               O                 ✔       the             DT       det      xxx            
+8   29              B-date_to       B-date_from          ✗    29              CD       nummod   dd             
+9   May             I-date_to       I-date_from          ✗    May             NNP      pobj     Xxx            
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (0, 1): rooms
+  (5, 6): date_from
+  (8, 10): date_to
+
+predicted spans:
+  (0, 2): people
+  (5, 6): date_to
+  (8, 10): date_from
+
+================================================================================================================
+
+Input: my wife and I will need a room and then another for our teenage daughter
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   my              B-adults        O                    ✗    my              PRP$     poss     xx             
+1   wife            I-adults        I-adults          ✔       wife            NN       nsubj    xxxx           
+2   and             I-adults        O                    ✗    and             CC       cc       xxx            
+3   I               I-adults        O                    ✗    I               PRP      conj     X              
+4   will            O               O                 ✔       will            MD       aux      xxxx           
+5   need            O               O                 ✔       need            VB       ROOT     xxxx           
+6   a               B-rooms         O                    ✗    a               DT       det      x              
+7   room            I-rooms         O                    ✗    room            NN       dobj     xxxx           
+8   and             I-rooms         O                    ✗    and             CC       cc       xxx            
+9   then            I-rooms         O                    ✗    then            RB       advmod   xxxx           
+10  another         I-rooms         O                    ✗    another         DT       conj     xxxx           
+11  for             O               O                 ✔       for             IN       prep     xxx            
+12  our             O               O                 ✔       our             PRP$     poss     xxx            
+13  teenage         O               O                 ✔       teenage         JJ       amod     xxxx           
+14  daughter        B-kids          I-kids               ✗    daughter        NN       pobj     xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (0, 4): adults
+  (6, 11): rooms
+  (14, 15): kids
+
+predicted spans:
+
+================================================================================================================
+
+Input: I need to book for 4 rooms
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   need            O               O                 ✔       need            VBP      ROOT     xxxx           
+2   to              O               O                 ✔       to              TO       aux      xx             
+3   book            O               O                 ✔       book            VB       xcomp    xxxx           
+4   for             O               O                 ✔       for             IN       prep     xxx            
+5   4               B-rooms         B-people             ✗    4               CD       nummod   d              
+6   rooms           O               O                 ✔       room            NNS      pobj     xxxx           
+
+true spans:
+  (5, 6): rooms
+
+predicted spans:
+  (5, 6): people
+
+================================================================================================================
+
+Input: book for tomorrow
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   book            O               O                 ✔       book            NN       ROOT     xxxx           
+1   for             O               O                 ✔       for             IN       prep     xxx            
+2   tomorrow        B-date_from     B-date               ✗    tomorrow        NN       pobj     xxxx           
+
+true spans:
+  (2, 3): date_from
+
+predicted spans:
+  (2, 3): date
+
+================================================================================================================
+
+Input: 10th to 23rd - 13 nights 14 days - 5 adults 6 children
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   10th            B-date_from     B-date_from       ✔       10th            JJ       ROOT     ddxx           
+1   to              O               O                 ✔       to              IN       prep     xx             
+2   23rd            B-date_to       B-date_to         ✔       23rd            NN       compound ddxx           
+3   -               O               O                 ✔       -               SYM      punct    -              
+4   13              B-date_period   B-date_from          ✗    13              CD       nummod   dd             
+5   nights          I-date_period   I-date_period     ✔       night           NNS      pobj     xxxx           
+6   14              I-date_period   B-date               ✗    14              CD       nummod   dd             
+7   days            I-date_period   I-date               ✗    day             NNS      npadvmod xxxx           
+8   -               O               O                 ✔       -               HYPH     punct    -              
+9   5               B-adults        B-date_period        ✗    5               CD       nummod   d              
+10  adults          O               O                 ✔       adult           NNS      appos    xxxx           
+11  6               B-kids          B-date_period        ✗    6               CD       nummod   d              
+12  children        O               O                 ✔       child           NNS      pobj     xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (0, 1): date_from
+  (2, 3): date_to
+  (4, 8): date_period
+  (9, 10): adults
+  (11, 12): kids
+
+predicted spans:
+  (0, 1): date_from
+  (2, 3): date_to
+  (4, 6): date_from
+  (6, 8): date
+  (9, 10): date_period
+  (11, 12): date_period
+
+================================================================================================================
+
+Input: arriving tomorrow and leaving after 3 days
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   arriving        O               O                 ✔       arrive          VBG      ROOT     xxxx           
+1   tomorrow        B-date_from     B-date               ✗    tomorrow        NN       npadvmod xxxx           
+2   and             O               O                 ✔       and             CC       cc       xxx            
+3   leaving         O               O                 ✔       leave           VBG      conj     xxxx           
+4   after           O               O                 ✔       after           IN       prep     xxxx           
+5   3               B-date_period   B-date_period     ✔       3               CD       nummod   d              
+6   days            I-date_period   I-date               ✗    day             NNS      pobj     xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (1, 2): date_from
+  (5, 7): date_period
+
+predicted spans:
+  (1, 2): date
+  (5, 7): date_period
+
+================================================================================================================
+
+Input: 6 kids
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   6               B-kids          B-date_period        ✗    6               CD       nummod   d              
+1   kids            O               O                 ✔       kid             NNS      ROOT     xxxx           
+
+true spans:
+  (0, 1): kids
+
+predicted spans:
+  (0, 1): date_period
+
+================================================================================================================
+
+Input: me, my wife and the little one
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   me              B-adults        O                    ✗    I               PRP      ROOT     xx             
+1   ,               I-adults        O                    ✗    ,               ,        punct    ,              
+2   my              I-adults        O                    ✗    my              PRP$     poss     xx             
+3   wife            I-adults        I-adults          ✔       wife            NN       appos    xxxx           
+4   and             O               O                 ✔       and             CC       cc       xxx            
+5   the             B-kids          O                    ✗    the             DT       det      xxx            
+6   little          I-kids          O                    ✗    little          JJ       amod     xxxx           
+7   one             I-kids          O                    ✗    one             CD       conj     xxx            
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (0, 4): adults
+  (5, 8): kids
+
+predicted spans:
+
+================================================================================================================
+
+Input: 8 adults
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   8               B-adults        B-adults          ✔       8               CD       nummod   d              
+1   adults          O               O                 ✔       adult           NNS      ROOT     xxxx           
+
+true spans:
+  (0, 1): adults
+
+predicted spans:
+  (0, 1): adults
+
+================================================================================================================
+
+Input: I would like to stay a Thursday to Friday
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   would           O               O                 ✔       would           MD       aux      xxxx           
+2   like            O               O                 ✔       like            VB       ROOT     xxxx           
+3   to              O               O                 ✔       to              TO       aux      xx             
+4   stay            O               O                 ✔       stay            VB       xcomp    xxxx           
+5   a               O               O                 ✔       a               DT       det      x              
+6   Thursday        B-date_from     B-date_from       ✔       Thursday        NNP      npadvmod Xxxxx          
+7   to              O               O                 ✔       to              IN       prep     xx             
+8   Friday          B-date_to       B-date_from          ✗    Friday          NNP      pobj     Xxxxx          
+
+true spans:
+  (6, 7): date_from
+  (8, 9): date_to
+
+predicted spans:
+  (6, 7): date_from
+  (8, 9): date_from
+
+================================================================================================================
+
+Input: She's arriving on Wednesday and will be staying until Sunday next week.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   She             O               O                 ✔       she             PRP      nsubj    Xxx            
+1   's              O               O                 ✔       be              VBZ      aux      'x             
+2   arriving        O               O                 ✔       arrive          VBG      ROOT     xxxx           
+3   on              O               O                 ✔       on              IN       prep     xx             
+4   Wednesday       B-date_from     B-date_to            ✗    Wednesday       NNP      pobj     Xxxxx          
+5   and             O               O                 ✔       and             CC       cc       xxx            
+6   will            O               O                 ✔       will            MD       aux      xxxx           
+7   be              O               O                 ✔       be              VB       aux      xx             
+8   staying         O               O                 ✔       stay            VBG      conj     xxxx           
+9   until           O               O                 ✔       until           IN       prep     xxxx           
+10  Sunday          B-date_to       B-date_to         ✔       Sunday          NNP      pobj     Xxxxx          
+11  next            I-date_to       B-date               ✗    next            JJ       amod     xxxx           
+12  week            I-date_to       I-date_period        ✗    week            NN       npadvmod xxxx           
+13  .               O               O                 ✔       .               .        punct    .              
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (4, 5): date_from
+  (10, 13): date_to
+
+predicted spans:
+  (4, 5): date_to
+  (10, 11): date_to
+  (11, 13): date
+
+================================================================================================================
+
+Input: its until the 21st
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   its             O               O                 ✔       its             PRP$     ROOT     xxx            
+1   until           O               O                 ✔       until           IN       prep     xxxx           
+2   the             O               O                 ✔       the             DT       det      xxx            
+3   21st            B-date_to       I-date               ✗    21st            NN       pobj     ddxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (3, 4): date_to
+
+predicted spans:
+
+================================================================================================================
+
+Input: thanks, when will I get the money back?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   thanks          O               O                 ✔       thank           NNS      npadvmod xxxx           
+1   ,               O               O                 ✔       ,               ,        punct    ,              
+2   when            O               O                 ✔       when            WRB      advmod   xxxx           
+3   will            O               O                 ✔       will            MD       aux      xxxx           
+4   I               O               O                 ✔       I               PRP      nsubj    X              
+5   get             O               O                 ✔       get             VB       ROOT     xxx            
+6   the             O               O                 ✔       the             DT       det      xxx            
+7   money           O               O                 ✔       money           NN       dobj     xxxx           
+8   back            O               O                 ✔       back            RB       advmod   xxxx           
+9   ?               O               O                 ✔       ?               .        punct    ?              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: why can't I cancel my reservation for tomorrow
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   why             O               O                 ✔       why             WRB      advmod   xxx            
+1   ca              O               O                 ✔       can             MD       aux      xx             
+2   n't             O               O                 ✔       not             RB       neg      x'x            
+3   I               O               O                 ✔       I               PRP      nsubj    X              
+4   cancel          O               O                 ✔       cancel          VB       ROOT     xxxx           
+5   my              O               O                 ✔       my              PRP$     poss     xx             
+6   reservation     O               O                 ✔       reservation     NN       dobj     xxxx           
+7   for             O               O                 ✔       for             IN       prep     xxx            
+8   tomorrow        B-date_from     B-date               ✗    tomorrow        NN       pobj     xxxx           
+
+true spans:
+  (8, 9): date_from
+
+predicted spans:
+  (8, 9): date
+
+================================================================================================================
+
+Input: how can I book a room for 2?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   how             O               O                 ✔       how             WRB      advmod   xxx            
+1   can             O               O                 ✔       can             MD       aux      xxx            
+2   I               O               O                 ✔       I               PRP      nsubj    X              
+3   book            O               O                 ✔       book            VB       ROOT     xxxx           
+4   a               O               O                 ✔       a               DT       det      x              
+5   room            O               O                 ✔       room            NN       dobj     xxxx           
+6   for             O               O                 ✔       for             IN       prep     xxx            
+7   2               B-people        B-adults             ✗    2               CD       pobj     d              
+8   ?               O               O                 ✔       ?               .        punct    ?              
+
+true spans:
+  (7, 8): people
+
+predicted spans:
+  (7, 8): adults
+
+================================================================================================================
+
+Input: given the new normal, is there any limit on the number of people at the pool?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   given           O               O                 ✔       give            VBN      prep     xxxx           
+1   the             O               O                 ✔       the             DT       det      xxx            
+2   new             O               O                 ✔       new             JJ       amod     xxx            
+3   normal          O               O                 ✔       normal          JJ       pobj     xxxx           
+4   ,               O               O                 ✔       ,               ,        punct    ,              
+5   is              O               O                 ✔       be              VBZ      ROOT     xx             
+6   there           O               O                 ✔       there           EX       expl     xxxx           
+7   any             O               O                 ✔       any             DT       det      xxx            
+8   limit           O               O                 ✔       limit           NN       attr     xxxx           
+9   on              O               O                 ✔       on              IN       prep     xx             
+10  the             O               O                 ✔       the             DT       det      xxx            
+11  number          O               O                 ✔       number          NN       pobj     xxxx           
+12  of              O               O                 ✔       of              IN       prep     xx             
+13  people          O               O                 ✔       people          NNS      pobj     xxxx           
+14  at              O               O                 ✔       at              IN       prep     xx             
+15  the             O               O                 ✔       the             DT       det      xxx            
+16  pool            O               O                 ✔       pool            NN       pobj     xxxx           
+17  ?               O               O                 ✔       ?               .        punct    ?              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: ok im done with this
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   ok              O               O                 ✔       ok              UH       intj     xx             
+1   i               O               O                 ✔       I               PRP      nsubjpass x              
+2   m               O               O                 ✔       m               VBP      auxpass  x              
+3   done            O               O                 ✔       do              VBN      ROOT     xxxx           
+4   with            O               O                 ✔       with            IN       prep     xxxx           
+5   this            O               O                 ✔       this            DT       pobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: I didn't quite understand you
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   did             O               O                 ✔       do              VBD      aux      xxx            
+2   n't             O               O                 ✔       not             RB       neg      x'x            
+3   quite           O               O                 ✔       quite           RB       advmod   xxxx           
+4   understand      O               O                 ✔       understand      VB       ROOT     xxxx           
+5   you             O               O                 ✔       you             PRP      dobj     xxx            
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: hello, I want to change the number of nights of my hotel booking
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   hello           O               O                 ✔       hello           UH       intj     xxxx           
+1   ,               O               O                 ✔       ,               ,        punct    ,              
+2   I               O               O                 ✔       I               PRP      nsubj    X              
+3   want            O               O                 ✔       want            VBP      ROOT     xxxx           
+4   to              O               O                 ✔       to              TO       aux      xx             
+5   change          O               O                 ✔       change          VB       xcomp    xxxx           
+6   the             O               O                 ✔       the             DT       det      xxx            
+7   number          O               O                 ✔       number          NN       dobj     xxxx           
+8   of              O               O                 ✔       of              IN       prep     xx             
+9   nights          O               I-date_period        ✗    night           NNS      pobj     xxxx           
+10  of              O               O                 ✔       of              IN       prep     xx             
+11  my              O               O                 ✔       my              PRP$     poss     xx             
+12  hotel           O               O                 ✔       hotel           NN       pobj     xxxx           
+13  booking         O               O                 ✔       booking         NN       punct    xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: spa team please
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   spa             O               O                 ✔       spa             NN       compound xxx            
+1   team            O               O                 ✔       team            NN       nsubj    xxxx           
+2   please          O               O                 ✔       please          VB       ROOT     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: is there any way to get in the gym earlier than 4:25
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   is              O               O                 ✔       be              VBZ      ROOT     xx             
+1   there           O               O                 ✔       there           EX       expl     xxxx           
+2   any             O               O                 ✔       any             DT       det      xxx            
+3   way             O               O                 ✔       way             NN       attr     xxx            
+4   to              O               O                 ✔       to              TO       aux      xx             
+5   get             O               O                 ✔       get             VB       relcl    xxx            
+6   in              O               O                 ✔       in              IN       prep     xx             
+7   the             O               O                 ✔       the             DT       det      xxx            
+8   gym             O               O                 ✔       gym             NN       pobj     xxx            
+9   earlier         O               O                 ✔       early           RBR      advmod   xxxx           
+10  than            O               O                 ✔       than            IN       prep     xxxx           
+11  4:25            B-time          O                    ✗    4:25            CD       pobj     d:dd           
+
+true spans:
+  (11, 12): time
+
+predicted spans:
+
+================================================================================================================
+
+Input: I'd like to check in at 5
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   'd              O               O                 ✔       would           MD       aux      'x             
+2   like            O               O                 ✔       like            VB       ROOT     xxxx           
+3   to              O               O                 ✔       to              TO       aux      xx             
+4   check           O               O                 ✔       check           VB       xcomp    xxxx           
+5   in              O               O                 ✔       in              RP       prt      xx             
+6   at              O               O                 ✔       at              IN       prep     xx             
+7   5               B-time          B-date_period        ✗    5               CD       pobj     d              
+
+true spans:
+  (7, 8): time
+
+predicted spans:
+  (7, 8): date_period
+
+================================================================================================================
+
+Input: we're still in the room we are going to leave later
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   we              O               O                 ✔       we              PRP      nsubj    xx             
+1   're             O               O                 ✔       be              VBP      ROOT     'xx            
+2   still           O               O                 ✔       still           RB       advmod   xxxx           
+3   in              O               O                 ✔       in              IN       prep     xx             
+4   the             O               O                 ✔       the             DT       det      xxx            
+5   room            O               O                 ✔       room            NN       pobj     xxxx           
+6   we              O               O                 ✔       we              PRP      nsubj    xx             
+7   are             O               O                 ✔       be              VBP      aux      xxx            
+8   going           O               O                 ✔       go              VBG      relcl    xxxx           
+9   to              O               O                 ✔       to              TO       aux      xx             
+10  leave           O               O                 ✔       leave           VB       xcomp    xxxx           
+11  later           O               O                 ✔       later           RB       advmod   xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: any free rooms with jacuzzi after Tuesday?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   any             O               O                 ✔       any             DT       det      xxx            
+1   free            O               O                 ✔       free            JJ       amod     xxxx           
+2   rooms           O               O                 ✔       room            NNS      ROOT     xxxx           
+3   with            O               O                 ✔       with            IN       prep     xxxx           
+4   jacuzzi         O               O                 ✔       jacuzzi         NNP      pobj     xxxx           
+5   after           O               O                 ✔       after           IN       prep     xxxx           
+6   Tuesday         B-date_from     B-date_from       ✔       Tuesday         NNP      pobj     Xxxxx          
+7   ?               O               O                 ✔       ?               .        punct    ?              
+
+true spans:
+  (6, 7): date_from
+
+predicted spans:
+  (6, 7): date_from
+
+================================================================================================================
+
+Input: Yes, that's brilliant.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Yes             O               O                 ✔       yes             UH       intj     Xxx            
+1   ,               O               O                 ✔       ,               ,        punct    ,              
+2   that            O               O                 ✔       that            DT       nsubj    xxxx           
+3   's              O               O                 ✔       be              VBZ      ROOT     'x             
+4   brilliant       O               O                 ✔       brilliant       JJ       acomp    xxxx           
+5   .               O               O                 ✔       .               .        punct    .              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: I made one booking two weeks ago, but would like to make a new one now.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   made            O               O                 ✔       make            VBD      ROOT     xxxx           
+2   one             O               O                 ✔       one             CD       nsubj    xxx            
+3   booking         O               O                 ✔       booking         NN       ccomp    xxxx           
+4   two             B-date          B-adults             ✗    two             CD       nummod   xxx            
+5   weeks           I-date          O                    ✗    week            NNS      npadvmod xxxx           
+6   ago             I-date          I-date            ✔       ago             RB       advmod   xxx            
+7   ,               O               O                 ✔       ,               ,        punct    ,              
+8   but             O               O                 ✔       but             CC       cc       xxx            
+9   would           O               O                 ✔       would           MD       aux      xxxx           
+10  like            O               O                 ✔       like            VB       conj     xxxx           
+11  to              O               O                 ✔       to              TO       aux      xx             
+12  make            O               O                 ✔       make            VB       xcomp    xxxx           
+13  a               O               O                 ✔       a               DT       det      x              
+14  new             O               O                 ✔       new             JJ       amod     xxx            
+15  one             O               O                 ✔       one             NN       dobj     xxx            
+16  now             B-time          O                    ✗    now             RB       advmod   xxx            
+17  .               O               O                 ✔       .               .        punct    .              
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (4, 7): date
+  (16, 17): time
+
+predicted spans:
+  (4, 5): adults
+
+================================================================================================================
+
+Input: I've got a couple of small dogs, is it ok if I bring them
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   've             O               O                 ✔       've             VBP      aux      'xx            
+2   got             O               O                 ✔       get             VBN      ccomp    xxx            
+3   a               O               O                 ✔       a               DT       det      x              
+4   couple          O               I-date               ✗    couple          NN       dobj     xxxx           
+5   of              O               O                 ✔       of              IN       prep     xx             
+6   small           O               I-kids               ✗    small           JJ       amod     xxxx           
+7   dogs            O               O                 ✔       dog             NNS      pobj     xxxx           
+8   ,               O               O                 ✔       ,               ,        punct    ,              
+9   is              O               O                 ✔       be              VBZ      ROOT     xx             
+10  it              O               O                 ✔       it              PRP      nsubj    xx             
+11  ok              O               O                 ✔       ok              JJ       acomp    xx             
+12  if              O               O                 ✔       if              IN       mark     xx             
+13  I               O               O                 ✔       I               PRP      nsubj    X              
+14  bring           O               O                 ✔       bring           VBP      advcl    xxxx           
+15  them            O               O                 ✔       they            PRP      dobj     xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: no, I don't need a stove in the room.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   no              O               O                 ✔       no              UH       intj     xx             
+1   ,               O               O                 ✔       ,               ,        punct    ,              
+2   I               O               O                 ✔       I               PRP      nsubj    X              
+3   do              O               O                 ✔       do              VBP      aux      xx             
+4   n't             O               O                 ✔       not             RB       neg      x'x            
+5   need            O               O                 ✔       need            VB       ROOT     xxxx           
+6   a               O               O                 ✔       a               DT       det      x              
+7   stove           O               O                 ✔       stove           NN       dobj     xxxx           
+8   in              O               O                 ✔       in              IN       prep     xx             
+9   the             O               O                 ✔       the             DT       det      xxx            
+10  room            O               O                 ✔       room            NN       pobj     xxxx           
+11  .               O               O                 ✔       .               .        punct    .              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: The WiFi signal is so bad.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   The             O               O                 ✔       the             DT       det      Xxx            
+1   WiFi            O               O                 ✔       WiFi            NNP      compound XxXx           
+2   signal          O               O                 ✔       signal          NN       nsubj    xxxx           
+3   is              O               O                 ✔       be              VBZ      ROOT     xx             
+4   so              O               O                 ✔       so              RB       advmod   xx             
+5   bad             O               O                 ✔       bad             JJ       acomp    xxx            
+6   .               O               O                 ✔       .               .        punct    .              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: there's no shampoo in the shower, please send me one.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   there           O               O                 ✔       there           EX       expl     xxxx           
+1   's              O               O                 ✔       be              VBZ      ROOT     'x             
+2   no              O               O                 ✔       no              DT       det      xx             
+3   shampoo         O               O                 ✔       shampoo         NN       attr     xxxx           
+4   in              O               O                 ✔       in              IN       prep     xx             
+5   the             O               O                 ✔       the             DT       det      xxx            
+6   shower          O               O                 ✔       shower          NN       pobj     xxxx           
+7   ,               O               O                 ✔       ,               ,        punct    ,              
+8   please          O               O                 ✔       please          UH       intj     xxxx           
+9   send            O               O                 ✔       send            VB       dep      xxxx           
+10  me              O               O                 ✔       I               PRP      dative   xx             
+11  one             O               O                 ✔       one             CD       dobj     xxx            
+12  .               O               O                 ✔       .               .        punct    .              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: does the gym have an exercise bike
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   does            O               O                 ✔       do              VBZ      aux      xxxx           
+1   the             O               O                 ✔       the             DT       det      xxx            
+2   gym             O               O                 ✔       gym             NN       nsubj    xxx            
+3   have            O               O                 ✔       have            VB       ROOT     xxxx           
+4   an              O               O                 ✔       an              DT       det      xx             
+5   exercise        O               O                 ✔       exercise        NN       compound xxxx           
+6   bike            O               O                 ✔       bike            NN       dobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: how much do body treatments cost?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   how             O               O                 ✔       how             WRB      advmod   xxx            
+1   much            O               O                 ✔       much            JJ       dobj     xxxx           
+2   do              O               O                 ✔       do              VBP      aux      xx             
+3   body            O               O                 ✔       body            NN       compound xxxx           
+4   treatments      O               O                 ✔       treatment       NNS      nsubj    xxxx           
+5   cost            O               O                 ✔       cost            VB       ROOT     xxxx           
+6   ?               O               O                 ✔       ?               .        punct    ?              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: none
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   none            B-number        O                    ✗    none            NN       ROOT     xxxx           
+
+true spans:
+  (0, 1): number
+
+predicted spans:
+
+================================================================================================================
+
+Input: my daughter left left a teddy bear downstairs did someone hand it in
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   my              O               O                 ✔       my              PRP$     poss     xx             
+1   daughter        O               I-kids               ✗    daughter        NN       nsubj    xxxx           
+2   left            O               O                 ✔       leave           VBD      ccomp    xxxx           
+3   left            O               O                 ✔       leave           VBD      xcomp    xxxx           
+4   a               O               O                 ✔       a               DT       det      x              
+5   teddy           O               O                 ✔       teddy           NNP      compound xxxx           
+6   bear            O               O                 ✔       bear            NNP      dobj     xxxx           
+7   downstairs      O               O                 ✔       downstairs      RB       advmod   xxxx           
+8   did             O               O                 ✔       do              VBD      aux      xxx            
+9   someone         O               O                 ✔       someone         NN       nsubj    xxxx           
+10  hand            O               O                 ✔       hand            VB       ROOT     xxxx           
+11  it              O               O                 ✔       it              PRP      dobj     xx             
+12  in              O               O                 ✔       in              IN       prep     xx             
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: can i leave my car on the parking overnight
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   can             O               O                 ✔       can             MD       aux      xxx            
+1   i               O               O                 ✔       I               PRP      nsubj    x              
+2   leave           O               O                 ✔       leave           VB       ROOT     xxxx           
+3   my              O               O                 ✔       my              PRP$     poss     xx             
+4   car             O               O                 ✔       car             NN       dobj     xxx            
+5   on              O               O                 ✔       on              IN       prep     xx             
+6   the             O               O                 ✔       the             DT       det      xxx            
+7   parking         O               O                 ✔       parking         NN       pobj     xxxx           
+8   overnight       B-time_period   B-time_period     ✔       overnight       RB       advmod   xxxx           
+
+true spans:
+  (8, 9): time_period
+
+predicted spans:
+  (8, 9): time_period
+
+================================================================================================================
+
+Input: till Friday morning
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   till            O               O                 ✔       till            IN       ROOT     xxxx           
+1   Friday          B-date_to       B-date_from          ✗    Friday          NNP      compound Xxxxx          
+2   morning         B-time_period   I-time               ✗    morning         NN       pobj     xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (1, 2): date_to
+  (2, 3): time_period
+
+predicted spans:
+  (1, 3): date_from
+
+================================================================================================================
+
+Input: Cancel the restaurant reservation for 18 45 in the evening under sammijo oaks
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Cancel          O               O                 ✔       cancel          VB       ROOT     Xxxxx          
+1   the             O               O                 ✔       the             DT       det      xxx            
+2   restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
+3   reservation     O               O                 ✔       reservation     NN       dobj     xxxx           
+4   for             O               O                 ✔       for             IN       prep     xxx            
+5   18              B-time          I-time               ✗    18              CD       nummod   dd             
+6   45              I-time          I-time            ✔       45              CD       pobj     dd             
+7   in              I-time          O                    ✗    in              IN       prep     xx             
+8   the             I-time          O                    ✗    the             DT       det      xxx            
+9   evening         I-time          I-time            ✔       evening         NN       pobj     xxxx           
+10  under           O               O                 ✔       under           IN       prep     xxxx           
+11  sammijo         B-person_name   O                    ✗    sammijo         NNP      compound xxxx           
+12  oaks            I-person_name   O                    ✗    oak             VBZ      pobj     xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (5, 10): time
+  (11, 13): person_name
+
+predicted spans:
+
+================================================================================================================
+
+Input: confirm room booking under charis
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   confirm         O               O                 ✔       confirm         VB       ROOT     xxxx           
+1   room            O               O                 ✔       room            NN       compound xxxx           
+2   booking         O               O                 ✔       booking         NN       dobj     xxxx           
+3   under           O               O                 ✔       under           IN       prep     xxxx           
+4   charis          B-person_name   O                    ✗    charis          NNP      pobj     xxxx           
+
+true spans:
+  (4, 5): person_name
+
+predicted spans:
+
+================================================================================================================
+
+Input: do you offer waxing?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   do              O               O                 ✔       do              VBP      aux      xx             
+1   you             O               O                 ✔       you             PRP      nsubj    xxx            
+2   offer           O               O                 ✔       offer           VB       ROOT     xxxx           
+3   waxing          O               O                 ✔       wax             VBG      xcomp    xxxx           
+4   ?               O               O                 ✔       ?               .        punct    ?              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: can i book a restaurant table here?
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   can             O               O                 ✔       can             MD       aux      xxx            
+1   i               O               O                 ✔       I               PRP      nsubj    x              
+2   book            O               O                 ✔       book            VB       ROOT     xxxx           
+3   a               O               O                 ✔       a               DT       det      x              
+4   restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
+5   table           O               O                 ✔       table           NN       dobj     xxxx           
+6   here            O               O                 ✔       here            RB       advmod   xxxx           
+7   ?               O               O                 ✔       ?               .        punct    ?              
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: please bring me a ham sandwich
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   please          O               O                 ✔       please          UH       intj     xxxx           
+1   bring           O               O                 ✔       bring           VB       ROOT     xxxx           
+2   me              O               O                 ✔       I               PRP      dative   xx             
+3   a               O               O                 ✔       a               DT       det      x              
+4   ham             O               O                 ✔       ham             NN       compound xxx            
+5   sandwich        O               O                 ✔       sandwich        NN       dobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: I have a room booking for Saturday 3 December and I am going to need to change the checkout date to December 12
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   have            O               O                 ✔       have            VBP      ROOT     xxxx           
+2   a               B-rooms         O                    ✗    a               DT       det      x              
+3   room            I-rooms         O                    ✗    room            NN       compound xxxx           
+4   booking         O               O                 ✔       booking         NN       dobj     xxxx           
+5   for             O               O                 ✔       for             IN       prep     xxx            
+6   Saturday        B-date_from     B-date_to            ✗    Saturday        NNP      pobj     Xxxxx          
+7   3               I-date_from     B-date_period        ✗    3               CD       nummod   d              
+8   December        I-date_from     I-date               ✗    December        NNP      npadvmod Xxxxx          
+9   and             O               O                 ✔       and             CC       cc       xxx            
+10  I               O               O                 ✔       I               PRP      nsubj    X              
+11  am              O               O                 ✔       be              VBP      aux      xx             
+12  going           O               O                 ✔       go              VBG      ROOT     xxxx           
+13  to              O               O                 ✔       to              TO       aux      xx             
+14  need            O               O                 ✔       need            VB       xcomp    xxxx           
+15  to              O               O                 ✔       to              TO       aux      xx             
+16  change          O               O                 ✔       change          VB       xcomp    xxxx           
+17  the             O               O                 ✔       the             DT       det      xxx            
+18  checkout        O               O                 ✔       checkout        NN       compound xxxx           
+19  date            O               O                 ✔       date            NN       dobj     xxxx           
+20  to              O               O                 ✔       to              IN       prep     xx             
+21  December        B-date_to       I-date               ✗    December        NNP      pobj     Xxxxx          
+22  12              I-date_to       B-time               ✗    12              CD       nummod   dd             
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (2, 4): rooms
+  (6, 9): date_from
+  (21, 23): date_to
+
+predicted spans:
+  (6, 7): date_to
+  (7, 9): date_period
+  (22, 23): time
+
+================================================================================================================
+
+Input: change my restaurant reservation to 25 past 15 afternoon
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   change          O               O                 ✔       change          VB       ROOT     xxxx           
+1   my              O               O                 ✔       my              PRP$     poss     xx             
+2   restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
+3   reservation     O               O                 ✔       reservation     NN       dobj     xxxx           
+4   to              O               O                 ✔       to              IN       prep     xx             
+5   25              B-time          B-time            ✔       25              CD       quantmod dd             
+6   past            I-time          I-time            ✔       past            JJ       amod     xxxx           
+7   15              I-time          B-time               ✗    15              CD       nummod   dd             
+8   afternoon       I-time          I-time            ✔       afternoon       NN       pobj     xxxx           
+
+true spans:
+  (5, 9): time
+
+predicted spans:
+  (5, 7): time
+  (7, 9): time
+
+================================================================================================================
+
+Input: I'm coming with my dad on Thursday, arriving around 8 in the evening
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               B-adults        O                    ✗    I               PRP      nsubj    X              
+1   'm              I-adults        O                    ✗    be              VBP      aux      'x             
+2   coming          I-adults        O                    ✗    come            VBG      ROOT     xxxx           
+3   with            I-adults        O                    ✗    with            IN       prep     xxxx           
+4   my              I-adults        O                    ✗    my              PRP$     poss     xx             
+5   dad             I-adults        I-adults          ✔       dad             NN       pobj     xxx            
+6   on              O               O                 ✔       on              IN       prep     xx             
+7   Thursday        B-date_from     B-date_from       ✔       Thursday        NNP      pobj     Xxxxx          
+8   ,               O               O                 ✔       ,               ,        punct    ,              
+9   arriving        O               O                 ✔       arrive          VBG      advcl    xxxx           
+10  around          O               O                 ✔       around          RB       advmod   xxxx           
+11  8               B-time          B-adults             ✗    8               CD       dobj     d              
+12  in              I-time          O                    ✗    in              IN       prep     xx             
+13  the             I-time          O                    ✗    the             DT       det      xxx            
+14  evening         I-time          I-time            ✔       evening         NN       pobj     xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (0, 6): adults
+  (7, 8): date_from
+  (11, 15): time
+
+predicted spans:
+  (7, 8): date_from
+  (11, 12): adults
+
+================================================================================================================
+
+Input: I want to modify the number of rooms
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   want            O               O                 ✔       want            VBP      ROOT     xxxx           
+2   to              O               O                 ✔       to              TO       aux      xx             
+3   modify          O               O                 ✔       modify          VB       xcomp    xxxx           
+4   the             O               O                 ✔       the             DT       det      xxx            
+5   number          O               O                 ✔       number          NN       dobj     xxxx           
+6   of              O               O                 ✔       of              IN       prep     xx             
+7   rooms           O               O                 ✔       room            NNS      pobj     xxxx           
+
+true spans:
+
+predicted spans:
+
+================================================================================================================
+
+Input: book a room from tomorrow to Saturday for 1
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   book            O               O                 ✔       book            NN       ROOT     xxxx           
+1   a               B-rooms         O                    ✗    a               DT       det      x              
+2   room            I-rooms         O                    ✗    room            NN       appos    xxxx           
+3   from            O               O                 ✔       from            IN       prep     xxxx           
+4   tomorrow        B-date_from     B-date               ✗    tomorrow        NN       pobj     xxxx           
+5   to              O               O                 ✔       to              IN       prep     xx             
+6   Saturday        B-date_to       B-date_to         ✔       Saturday        NNP      pobj     Xxxxx          
+7   for             O               O                 ✔       for             IN       prep     xxx            
+8   1               B-people        B-date_period        ✗    1               CD       pobj     d              
+
+true spans:
+  (1, 3): rooms
+  (4, 5): date_from
+  (6, 7): date_to
+  (8, 9): people
+
+predicted spans:
+  (4, 5): date
+  (6, 7): date_to
+  (8, 9): date_period
+
+================================================================================================================
+
+Input: new years eve 2025
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   new             B-date          O                    ✗    new             JJ       amod     xxx            
+1   years           I-date          O                    ✗    year            NNS      nsubj    xxxx           
+2   eve             I-date          O                    ✗    eve             VBP      ROOT     xxx            
+3   2025            I-date          O                    ✗    2025            CD       dobj     dddd           
+
+true spans:
+  (0, 4): date
+
+predicted spans:
+
+================================================================================================================
+
+Input: 24th Jan 2016
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   24th            B-date          B-date_from          ✗    24th            JJ       amod     ddxx           
+1   Jan             I-date          I-date_from          ✗    Jan             NNP      ROOT     Xxx            
+2   2016            I-date          O                    ✗    2016            CD       nummod   dddd           
+
+true spans:
+  (0, 3): date
+
+predicted spans:
+  (0, 2): date_from
+
+================================================================================================================
+
+Input: A room for three adult people.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   A               B-rooms         B-rooms           ✔       a               DT       det      X              
+1   room            I-rooms         O                    ✗    room            NN       ROOT     xxxx           
+2   for             O               O                 ✔       for             IN       prep     xxx            
+3   three           B-adults        B-date_period        ✗    three           CD       nummod   xxxx           
+4   adult           O               O                 ✔       adult           NN       compound xxxx           
+5   people          O               O                 ✔       people          NNS      pobj     xxxx           
+6   .               O               O                 ✔       .               .        punct    .              
+
+true spans:
+  (0, 2): rooms
+  (3, 4): adults
+
+predicted spans:
+  (0, 1): rooms
+  (3, 4): date_period
+
+================================================================================================================
+
+Input: I’d like to book two rooms a fortnight today.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   ’d              O               O                 ✔       ’d              RB       aux      ’x             
+2   like            O               O                 ✔       like            VBP      ROOT     xxxx           
+3   to              O               O                 ✔       to              TO       aux      xx             
+4   book            O               O                 ✔       book            VB       xcomp    xxxx           
+5   two             B-rooms         B-adults             ✗    two             CD       nummod   xxx            
+6   rooms           I-rooms         O                    ✗    room            NNS      dobj     xxxx           
+7   a               B-date_from     O                    ✗    a               DT       det      x              
+8   fortnight       I-date_from     I-date_period        ✗    fortnight       JJ       dobj     xxxx           
+9   today           I-date_from     B-date               ✗    today           NN       npadvmod xxxx           
+10  .               O               O                 ✔       .               .        punct    .              
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (5, 7): rooms
+  (7, 10): date_from
+
+predicted spans:
+  (5, 6): adults
+  (9, 10): date
+
+================================================================================================================
+
+Input: book for Aug the 18th to August 26th
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   book            O               O                 ✔       book            NN       ROOT     xxxx           
+1   for             O               O                 ✔       for             IN       prep     xxx            
+2   Aug             B-date_from     I-date_from          ✗    Aug             NNP      pobj     Xxx            
+3   the             I-date_from     O                    ✗    the             DT       det      xxx            
+4   18th            I-date_from     B-date_from          ✗    18th            NN       appos    ddxx           
+5   to              O               O                 ✔       to              IN       prep     xx             
+6   August          B-date_to       I-date_from          ✗    August          NNP      compound Xxxxx          
+7   26th            I-date_to       B-date_to            ✗    26th            NN       pobj     ddxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (2, 5): date_from
+  (6, 8): date_to
+
+predicted spans:
+  (4, 5): date_from
+  (7, 8): date_to
+
+================================================================================================================
+
+Input: Family room for a weekend break
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Family          O               O                 ✔       family          NN       compound Xxxxx          
+1   room            O               O                 ✔       room            NN       ROOT     xxxx           
+2   for             O               O                 ✔       for             IN       prep     xxx            
+3   a               B-date_period   O                    ✗    a               DT       det      x              
+4   weekend         I-date_period   B-date_period        ✗    weekend         NN       compound xxxx           
+5   break           O               O                 ✔       break           NN       pobj     xxxx           
+
+true spans:
+  (3, 5): date_period
+
+predicted spans:
+  (4, 5): date_period
+
+================================================================================================================
+
+Input: My husband and I will be arriving on Friday 7th of Jan and plan to stay for 9 days
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   My              B-adults        O                    ✗    my              PRP$     poss     Xx             
+1   husband         I-adults        I-adults          ✔       husband         NN       nsubj    xxxx           
+2   and             I-adults        O                    ✗    and             CC       cc       xxx            
+3   I               I-adults        O                    ✗    I               PRP      conj     X              
+4   will            O               O                 ✔       will            MD       aux      xxxx           
+5   be              O               O                 ✔       be              VB       aux      xx             
+6   arriving        O               O                 ✔       arrive          VBG      ROOT     xxxx           
+7   on              O               O                 ✔       on              IN       prep     xx             
+8   Friday          B-date_from     B-date_from       ✔       Friday          NNP      compound Xxxxx          
+9   7th             I-date_from     B-date_from          ✗    7th             NN       pobj     dxx            
+10  of              I-date_from     O                    ✗    of              IN       prep     xx             
+11  Jan             I-date_from     I-date_from       ✔       Jan             NNP      pobj     Xxx            
+12  and             O               O                 ✔       and             CC       cc       xxx            
+13  plan            O               O                 ✔       plan            VBP      conj     xxxx           
+14  to              O               O                 ✔       to              TO       aux      xx             
+15  stay            O               O                 ✔       stay            VB       xcomp    xxxx           
+16  for             O               O                 ✔       for             IN       prep     xxx            
+17  9               B-date_period   B-adults             ✗    9               CD       nummod   d              
+18  days            I-date_period   I-date               ✗    day             NNS      pobj     xxxx           
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (0, 4): adults
+  (8, 12): date_from
+  (17, 19): date_period
+
+predicted spans:
+  (8, 9): date_from
+  (9, 10): date_from
+  (17, 19): adults
+
+================================================================================================================
+
+Input: arriving on Monday leaving on Thursday 2 adults one child
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   arriving        O               O                 ✔       arrive          VBG      ROOT     xxxx           
+1   on              O               O                 ✔       on              IN       prep     xx             
+2   Monday          B-date_from     B-date_from       ✔       Monday          NNP      pobj     Xxxxx          
+3   leaving         O               O                 ✔       leave           VBG      advcl    xxxx           
+4   on              O               O                 ✔       on              IN       prep     xx             
+5   Thursday        B-date_to       B-date_from          ✗    Thursday        NNP      pobj     Xxxxx          
+6   2               B-adults        B-adults          ✔       2               CD       nummod   d              
+7   adults          I-adults        O                    ✗    adult           NNS      appos    xxxx           
+8   one             B-kids          O                    ✗    one             CD       nummod   xxx            
+9   child           I-kids          O                    ✗    child           NN       dobj     xxxx           
+
+true spans:
+  (2, 3): date_from
+  (5, 6): date_to
+  (6, 8): adults
+  (8, 10): kids
+
+predicted spans:
+  (2, 3): date_from
+  (5, 6): date_from
+  (6, 7): adults
+
+================================================================================================================
+
+Input: in total 5 adults and 2 kids
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   in              O               O                 ✔       in              IN       ROOT     xx             
+1   total           O               O                 ✔       total           JJ       amod     xxxx           
+2   5               B-adults        B-date_period        ✗    5               CD       nummod   d              
+3   adults          O               O                 ✔       adult           NNS      pobj     xxxx           
+4   and             O               O                 ✔       and             CC       cc       xxx            
+5   2               B-kids          B-adults             ✗    2               CD       nummod   d              
+6   kids            O               O                 ✔       kid             NNS      conj     xxxx           
+
+true spans:
+  (2, 3): adults
+  (5, 6): kids
+
+predicted spans:
+  (2, 3): date_period
+  (5, 6): adults
+
+================================================================================================================
+
+Input: We're two adults with 3 kids traveling around Europe.
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   We              O               O                 ✔       we              PRP      nsubj    Xx             
+1   're             O               O                 ✔       be              VBP      ROOT     'xx            
+2   two             B-adults        B-adults          ✔       two             CD       nummod   xxx            
+3   adults          O               O                 ✔       adult           NNS      attr     xxxx           
+4   with            O               O                 ✔       with            IN       prep     xxxx           
+5   3               B-kids          B-date_period        ✗    3               CD       nummod   d              
+6   kids            O               O                 ✔       kid             NNS      pobj     xxxx           
+7   traveling       O               O                 ✔       travel          VBG      acl      xxxx           
+8   around          O               O                 ✔       around          IN       prep     xxxx           
+9   Europe          O               O                 ✔       Europe          NNP      pobj     Xxxxx          
+10  .               O               O                 ✔       .               .        punct    .              
+
+true spans:
+  (2, 3): adults
+  (5, 6): kids
+
+predicted spans:
+  (2, 3): adults
+  (5, 6): date_period
+
+================================================================================================================
+
+Input: 1 adult
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   1               B-adults        B-date_period        ✗    1               CD       nummod   d              
+1   adult           I-adults        O                    ✗    adult           NN       ROOT     xxxx           
+
+true spans:
+  (0, 2): adults
+
+predicted spans:
+  (0, 1): date_period
+
+================================================================================================================
+
+Input: Arriving Saturday leave on Wednesday
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   Arriving        O               O                 ✔       arrive          VBG      compound Xxxxx          
+1   Saturday        B-date_from     B-date_to            ✗    Saturday        NNP      dobj     Xxxxx          
+2   leave           O               O                 ✔       leave           NN       ROOT     xxxx           
+3   on              O               O                 ✔       on              IN       prep     xx             
+4   Wednesday       B-date_to       B-date_to         ✔       Wednesday       NNP      pobj     Xxxxx          
+
+true spans:
+  (1, 2): date_from
+  (4, 5): date_to
+
+predicted spans:
+  (1, 2): date_to
+  (4, 5): date_to
+
+================================================================================================================
+
+Input: leaving on the 12th of Oct arrive on Thursday
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   leaving         O               O                 ✔       leave           VBG      ROOT     xxxx           
+1   on              O               O                 ✔       on              IN       prep     xx             
+2   the             O               O                 ✔       the             DT       det      xxx            
+3   12th            B-date_to       B-date_from          ✗    12th            NN       pobj     ddxx           
+4   of              I-date_to       O                    ✗    of              IN       prep     xx             
+5   Oct             I-date_to       I-date_from          ✗    Oct             NNP      compound Xxx            
+6   arrive          O               O                 ✔       arrive          NN       pobj     xxxx           
+7   on              O               O                 ✔       on              IN       prep     xx             
+8   Thursday        B-date_from     B-date_from       ✔       Thursday        NNP      pobj     Xxxxx          
+
+!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+
+true spans:
+  (3, 6): date_to
+  (8, 9): date_from
+
+predicted spans:
+  (3, 4): date_from
+  (8, 9): date_from
+
+================================================================================================================
+
+Input: I'm leaving on Wednesday
+
+Analysis:                                                     Additional annotations:                           
+idx word            true label      predicted label correct?  lemma           tag      dep      shape           
+------------------------------------------------------------  --------------------------------------------------
+0   I               O               O                 ✔       I               PRP      nsubj    X              
+1   'm              O               O                 ✔       be              VBP      aux      'x             
+2   leaving         O               O                 ✔       leave           VBG      ROOT     xxxx           
+3   on              O               O                 ✔       on              IN       prep     xx             
+4   Wednesday       B-date_to       B-date_to         ✔       Wednesday       NNP      pobj     Xxxxx          
+
+true spans:
+  (4, 5): date_to
+
+predicted spans:
+  (4, 5): date_to
+
+================================================================================================================
+
+
+Classification report for BIO tags:
+
+               precision    recall  f1-score   support
+
+     B-adults       0.27      0.27      0.27        11
+       B-date       0.00      0.00      0.00         9
+  B-date_from       0.38      0.42      0.40        19
+B-date_period       0.06      0.20      0.09         5
+    B-date_to       0.50      0.36      0.42        14
+       B-kids       0.00      0.00      0.00         7
+     B-number       0.00      0.00      0.00         2
+     B-people       0.25      0.20      0.22         5
+B-person_name       0.00      0.00      0.00         5
+      B-rooms       1.00      0.25      0.40         8
+       B-time       0.57      0.40      0.47        10
+  B-time_from       0.00      0.00      0.00         1
+B-time_period       1.00      0.50      0.67         2
+     I-adults       1.00      0.25      0.40        16
+       I-date       0.33      0.24      0.28        17
+  I-date_from       0.20      0.20      0.20        10
+I-date_period       0.25      0.29      0.27         7
+    I-date_to       0.00      0.00      0.00         8
+       I-kids       0.00      0.00      0.00         3
+     I-number       0.00      0.00      0.00         0
+     I-people       0.00      0.00      0.00         0
+I-person_name       0.00      0.00      0.00         3
+      I-rooms       0.00      0.00      0.00         9
+       I-time       0.70      0.39      0.50        18
+  I-time_from       0.00      0.00      0.00         3
+I-time_period       0.00      0.00      0.00         0
+
+    micro avg       0.34      0.23      0.27       192
+    macro avg       0.25      0.15      0.18       192
+ weighted avg       0.38      0.23      0.27       192
+
+!!! Some BIO tag sequences were malformed, so spans may not have been correctly extracted from them !!!
+####################################################################################################

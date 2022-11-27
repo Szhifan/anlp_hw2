@@ -15,7 +15,15 @@ TEST_FILE="test_data.json"
 
 spacy.tokens.token.Token.set_extension("bio_slot_label", default="O")
 def tag2vec(tag):
+    """ 
+    Args: 
+        tag: the spacy POS tag of a token 
+    Returns: 
+        np.array: a binary vector representing the pre/absence of a POS tag. 
+    
+    """
     tag_list=["VB","CD","IN","JJ","NN","VB"]
+    #we belive these POS tags are most the relevant to our task. 
     dict={i:0 for i in tag_list}
     try: 
         dict[tag[:2]]+=1 
@@ -61,8 +69,8 @@ def train_tag_mle(data):
         tag_logprob_pairs = [(tag, math.log(tag_word_count / word_count)) for (tag, tag_word_count) in tag_count_pairs.items()]
         sorted_tag_logprob_pairs = sorted(tag_logprob_pairs, key=lambda tag_logprob_pair: -tag_logprob_pair[1]) 
         per_word_tag_mle[word] = sorted_tag_logprob_pairs
-    print("#"*100)
-    print(per_word_tag_mle["night"])
+    # print("#"*100)
+    # print(per_word_tag_mle["night"])
     model_parameters = {
         'per_word_tag_mle': per_word_tag_mle,
         # Assign O for unknown words with prob 1
@@ -117,7 +125,7 @@ def train_tag_logreg(data):
     for sample in data:
         n=len(sample["annotated_text"])
         for i in range(n):
-            tag=sample["annotated_text"][i].tag_  #extrac the pos-tag of each token 
+            tag=sample["annotated_text"][i].tag_  #extract the POS tag of each token 
             token_count+=1 
             if n>2: #only average the neighboring vectors if the sentence contains more than two tokens 
                 if i==0: #add the next word vector at the start of the sentence 
@@ -134,18 +142,9 @@ def train_tag_logreg(data):
             else: 
                 vec=sample["annotated_text"][i].vector 
             vec=np.concatenate([vec,tag2vec(tag)]) 
+            #concatenate the averaged word vector and the POS tag vector. 
             train_X.append(vec) 
             train_y.append(sample["annotated_text"][i]._.bio_slot_label)
-           
-    
-        # for token in sample["annotated_text"]:
-        #     vec=token.vector
-        #     tag_vec=get_one_hot_vec(token.tag_)
-        #     vec=np.concatenate([vec,tag_vec])
-        #     train_X.append(vec)
-        #     train_y.append(token._.bio_slot_label)
-        #     token_count+=1
-
 
     print(f'> Training logistic regression model on {token_count} tokens')
     model = sklearn.linear_model.LogisticRegression(multi_class='multinomial', solver='newton-cg').fit(train_X, train_y)
@@ -190,27 +189,45 @@ def predict_bio_tags(tag_predictor, data):
 
     ''' 
     def get_correct_labels(prev:str,cur:str,cur_prob:list):
-        
-        if (cur.startswith("I") and cur[1:]!=prev[1:]):  #when the BIO condition is violated when the current tag is I
+        """
+        A helper function that correct the current label based on the previous label
+
+        Args: 
+            prev: the previous label 
+            cur: the current label 
+            cur_prob: the probability distribution of the current token. 
+
+        Return:
+            str: the correct label according to the BIO constraints. 
+        """
+        if (cur.startswith("I") and cur[1:]!=prev[1:]):  
+#when the BIO condition is violated when the current tag is I
          
             for tp in cur_prob:
                 if  tp[0].startswith("I") ^ (tp[0][1:]!=prev[1:]) : 
-                    
+#either the new tag starts with I and comes from the same class as the previous one 
+#or the new tag starts with B and DOESN'T come from the same class as the previous one.
+#Note that the conditions between ^ must not simultaneously be false, i.e. it doesn't start with 
+#I AND has the same class as previous one. Otherwise: 
+# B-X,I-Y -> B-X,B-X  
                     return tp[0]
-        if  cur.startswith("B") and cur[1:]==prev[1:]:# when the BIO condition is violated when the current tag is B
+        if  cur.startswith("B") and cur[1:]==prev[1:]:
+# when the BIO condition is violated when the current tag is B
             for tp in cur_prob:
                 if  (tp[0].startswith("B") ^ (tp[0][1:]==prev[1:])):  
-                    #only two right options: either the tag starts with I, or it ends with a different label. 
-                    #But these two cannot be true together. 
-                    return tp[0]
-          
-            
-        return cur #If BIO condition nis not violated. 
+#either the new tag starts with B and doesn't come from the same class as the previous one. 
+#or the new tag starts with I and come from the same class as the previous one. 
+#The conditions on both sides of ^ must not simultaneously be false. 
+# Otherwise:I-X,B-X -> I-X,I-Y.  
+                    return tp[0] 
+        return cur 
     predictions = []
     for sample in data:
         n=len(sample["annotated_text"])
         pred=[] 
-        prev_label="O"
+        prev_label="O" 
+        #initialize the start of the sequence, 
+        #so that we don't need to check if I-tag is at the start of the sentence 
         for i in range(n):
             tok=sample["annotated_text"][i]  
             tag=sample["annotated_text"][i].tag_
@@ -260,7 +277,7 @@ predict = {
     'independent_tags' : predict_independent_tags,
     'bio_tags' : predict_bio_tags,
 }
-default_predict = 'independent_tag'
+default_predict = 'independent_tags' 
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
@@ -290,7 +307,7 @@ if __name__ == "__main__":
         validation_data = json.load(f)
 
 
-f = open("reports/report_mft_inde.txt",'w')
+f = open("reports/test2.txt",'w')
 sys.stdout = f
 print("> Tokenising and annotating raw data")
 nlp_analyser = spacy.load("en_core_web_sm")
