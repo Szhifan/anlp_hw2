@@ -1,6 +1,7 @@
 > Tokenising and annotating raw data
 > Training model on 
-> Finished training most frequent tag model on 7348 tokens
+> Training logistic regression model on 7348 tokens
+> Finished training logistic regression
 > Predicting tags on validation set
 Input: we will arrive tomorrow at 25 to 7 p.m.
 
@@ -13,11 +14,9 @@ idx word            true label      predicted label correct?  lemma           ta
 3   tomorrow        B-date_from     B-date               ✗    tomorrow        NN       npadvmod xxxx           
 4   at              O               O                 ✔       at              IN       prep     xx             
 5   25              B-time_from     B-time               ✗    25              CD       quantmod dd             
-6   to              I-time_from     O                    ✗    to              TO       quantmod xx             
-7   7               I-time_from     B-date_period        ✗    7               CD       pobj     d              
+6   to              I-time_from     I-time               ✗    to              TO       quantmod xx             
+7   7               I-time_from     I-time               ✗    7               CD       pobj     d              
 8   p.m.            I-time_from     I-time               ✗    p.m.            NN       advmod   x.x.           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
   (3, 4): date_from
@@ -25,8 +24,7 @@ true spans:
 
 predicted spans:
   (3, 4): date
-  (5, 6): time
-  (7, 9): date_period
+  (5, 9): time
 
 ================================================================================================================
 
@@ -65,16 +63,14 @@ idx word            true label      predicted label correct?  lemma           ta
 7   of              O               O                 ✔       of              IN       prep     xx             
 8   the             O               O                 ✔       the             DT       det      xxx            
 9   20th            B-date          B-date_from          ✗    20th            NN       pobj     ddxx           
-10  of              I-date          O                    ✗    of              IN       prep     xx             
-11  April           I-date          I-date            ✔       April           NNP      pobj     Xxxxx          
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+10  of              I-date          I-date_from          ✗    of              IN       prep     xx             
+11  April           I-date          I-date_from          ✗    April           NNP      pobj     Xxxxx          
 
 true spans:
   (9, 12): date
 
 predicted spans:
-  (9, 10): date_from
+  (9, 12): date_from
 
 ================================================================================================================
 
@@ -89,7 +85,7 @@ idx word            true label      predicted label correct?  lemma           ta
 3   the             O               O                 ✔       the             DT       det      xxx            
 4   number          O               O                 ✔       number          NN       pobj     xxxx           
 5   of              O               O                 ✔       of              IN       prep     xx             
-6   nights          O               I-date_period        ✗    night           NNS      pobj     xxxx           
+6   nights          O               O                 ✔       night           NNS      pobj     xxxx           
 7   we              O               O                 ✔       we              PRP      nsubj    xx             
 8   can             O               O                 ✔       can             MD       aux      xxx            
 9   stay            O               O                 ✔       stay            VB       relcl    xxxx           
@@ -98,8 +94,6 @@ idx word            true label      predicted label correct?  lemma           ta
 12  Christmas       O               O                 ✔       Christmas       NNP      compound Xxxxx          
 13  time            O               O                 ✔       time            NN       pobj     xxxx           
 14  ?               O               O                 ✔       ?               .        punct    ?              
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
 
@@ -134,11 +128,12 @@ Input: Laters
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   Laters          O               O                 ✔       later           NNS      ROOT     Xxxxx          
+0   Laters          O               B-people             ✗    later           NNS      ROOT     Xxxxx          
 
 true spans:
 
 predicted spans:
+  (0, 1): people
 
 ================================================================================================================
 
@@ -247,13 +242,13 @@ idx word            true label      predicted label correct?  lemma           ta
 8   out             O               O                 ✔       out             RP       prt      xxx            
 9   later           O               O                 ✔       later           RB       advmod   xxxx           
 10  than            O               O                 ✔       than            IN       quantmod xxxx           
-11  6               B-time          B-date_period        ✗    6               CD       dep      d              
+11  6               B-time          B-time            ✔       6               CD       dep      d              
 
 true spans:
   (11, 12): time
 
 predicted spans:
-  (11, 12): date_period
+  (11, 12): time
 
 ================================================================================================================
 
@@ -350,17 +345,15 @@ idx word            true label      predicted label correct?  lemma           ta
 8   one             O               O                 ✔       one             NN       pobj     xxx            
 9   ,               O               O                 ✔       ,               ,        punct    ,              
 10  made            O               O                 ✔       make            VBD      advcl    xxxx           
-11  3               B-date          B-date_period        ✗    3               CD       nummod   d              
+11  3               B-date          B-date            ✔       3               CD       nummod   d              
 12  days            I-date          I-date            ✔       day             NNS      npadvmod xxxx           
 13  ago             I-date          I-date            ✔       ago             IN       advmod   xxx            
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
   (11, 14): date
 
 predicted spans:
-  (11, 14): date_period
+  (11, 14): date
 
 ================================================================================================================
 
@@ -438,13 +431,13 @@ Input: 3
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   3               B-number        B-date_period        ✗    3               CD       ROOT     d              
+0   3               B-number        B-number          ✔       3               CD       ROOT     d              
 
 true spans:
   (0, 1): number
 
 predicted spans:
-  (0, 1): date_period
+  (0, 1): number
 
 ================================================================================================================
 
@@ -518,7 +511,7 @@ idx word            true label      predicted label correct?  lemma           ta
 8   4               B-people        B-people          ✔       4               CD       quantmod d              
 9   at              O               O                 ✔       at              IN       quantmod xx             
 10  11:45           B-time          B-time            ✔       11:45           CD       nummod   dd:dd          
-11  am              I-time          O                    ✗    am              NN       pobj     xx             
+11  am              I-time          I-time            ✔       am              NN       pobj     xx             
 12  under           O               O                 ✔       under           IN       prep     xxxx           
 13  shanta          B-person_name   O                    ✗    shanta          NN       compound xxxx           
 14  ricciardi       I-person_name   O                    ✗    ricciardi       NN       pobj     xxxx           
@@ -531,7 +524,7 @@ true spans:
 
 predicted spans:
   (8, 9): people
-  (10, 11): time
+  (10, 12): time
 
 ================================================================================================================
 
@@ -570,24 +563,22 @@ idx word            true label      predicted label correct?  lemma           ta
 6   for             O               O                 ✔       for             IN       prep     xxx            
 7   the             O               O                 ✔       the             DT       det      xxx            
 8   17              B-date          B-date_from          ✗    17              CD       nummod   dd             
-9   Sep             I-date          B-date_from          ✗    sep             NN       pobj     Xxx            
+9   Sep             I-date          I-date_from          ✗    sep             NN       pobj     Xxx            
 10  at              O               O                 ✔       at              IN       prep     xx             
 11  11              B-time          B-time            ✔       11              CD       pobj     dd             
 12  00              I-time          I-time            ✔       00              CD       dobj     dd             
 13  in              I-time          O                    ✗    in              IN       prep     xx             
 14  the             I-time          O                    ✗    the             DT       det      xxx            
-15  morning         I-time          I-time            ✔       morning         NN       pobj     xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+15  morning         I-time          B-time_period        ✗    morning         NN       pobj     xxxx           
 
 true spans:
   (8, 10): date
   (11, 16): time
 
 predicted spans:
-  (8, 9): date_from
-  (9, 10): date_from
+  (8, 10): date_from
   (11, 13): time
+  (15, 16): time_period
 
 ================================================================================================================
 
@@ -602,10 +593,8 @@ idx word            true label      predicted label correct?  lemma           ta
 3   restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
 4   dinner          O               O                 ✔       dinner          NN       nsubj    xxxx           
 5   opening         O               O                 ✔       open            VBG      acl      xxxx           
-6   hours           O               I-time_period        ✗    hour            NNS      nsubj    xxxx           
+6   hours           O               O                 ✔       hour            NNS      nsubj    xxxx           
 7   ?               O               O                 ✔       ?               .        punct    ?              
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
 
@@ -623,13 +612,14 @@ idx word            true label      predicted label correct?  lemma           ta
 2   to              O               O                 ✔       to              TO       aux      xx             
 3   order           O               O                 ✔       order           VB       xcomp    xxxx           
 4   breakfast       O               O                 ✔       breakfast       NN       compound xxxx           
-5   omelette        O               O                 ✔       omelette        NN       compound xxxx           
+5   omelette        O               B-date               ✗    omelette        NN       compound xxxx           
 6   room            O               O                 ✔       room            NN       compound xxxx           
 7   service         O               O                 ✔       service         NN       dobj     xxxx           
 
 true spans:
 
 predicted spans:
+  (5, 6): date
 
 ================================================================================================================
 
@@ -653,9 +643,7 @@ idx word            true label      predicted label correct?  lemma           ta
 12  made            O               O                 ✔       make            VBD      conj     xxxx           
 13  the             O               O                 ✔       the             DT       det      xxx            
 14  other           O               O                 ✔       other           JJ       amod     xxxx           
-15  day             O               I-date_period        ✗    day             NN       dobj     xxx            
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+15  day             O               O                 ✔       day             NN       dobj     xxx            
 
 true spans:
 
@@ -672,23 +660,21 @@ idx word            true label      predicted label correct?  lemma           ta
 1   table           O               O                 ✔       table           NN       ROOT     xxxx           
 2   booking         O               O                 ✔       book            VBG      acl      xxxx           
 3   for             O               O                 ✔       for             IN       prep     xxx            
-4   2               B-people        B-adults             ✗    2               CD       nummod   d              
+4   2               B-people        B-people          ✔       2               CD       nummod   d              
 5   people          O               O                 ✔       people          NNS      pobj     xxxx           
 6   on              O               O                 ✔       on              IN       prep     xx             
 7   the             O               O                 ✔       the             DT       det      xxx            
 8   date            O               O                 ✔       date            NN       pobj     xxxx           
-9   1st             B-date          I-date_to            ✗    1st             NN       amod     dxx            
-10  of              I-date          O                    ✗    of              IN       prep     xx             
-11  Jan             I-date          I-date_from          ✗    Jan             NNP      pobj     Xxx            
+9   1st             B-date          B-date            ✔       1st             NN       amod     dxx            
+10  of              I-date          I-date            ✔       of              IN       prep     xx             
+11  Jan             I-date          B-date_from          ✗    Jan             NNP      pobj     Xxx            
 12  and             O               O                 ✔       and             CC       cc       xxx            
 13  the             O               O                 ✔       the             DT       det      xxx            
 14  time            O               O                 ✔       time            NN       conj     xxxx           
 15  15              B-time          B-time            ✔       15              CD       quantmod dd             
 16  to              I-time          O                    ✗    to              TO       quantmod xx             
-17  2               I-time          B-adults             ✗    2               CD       nummod   d              
-18  night           I-time          I-date_period        ✗    night           NN       npadvmod xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+17  2               I-time          B-time_to            ✗    2               CD       nummod   d              
+18  night           I-time          O                    ✗    night           NN       npadvmod xxxx           
 
 true spans:
   (4, 5): people
@@ -696,9 +682,11 @@ true spans:
   (15, 19): time
 
 predicted spans:
-  (4, 5): adults
+  (4, 5): people
+  (9, 11): date
+  (11, 12): date_from
   (15, 16): time
-  (17, 19): adults
+  (17, 18): time_to
 
 ================================================================================================================
 
@@ -734,22 +722,20 @@ idx word            true label      predicted label correct?  lemma           ta
 3   any             O               O                 ✔       any             DT       det      xxx            
 4   availability    O               O                 ✔       availability    NN       dobj     xxxx           
 5   between         O               O                 ✔       between         IN       prep     xxxx           
-6   17th            B-date_from     B-date_from       ✔       17th            JJ       amod     ddxx           
-7   May             I-date_from     I-date_from       ✔       May             NNP      pobj     Xxx            
+6   17th            B-date_from     O                    ✗    17th            JJ       amod     ddxx           
+7   May             I-date_from     O                    ✗    May             NNP      pobj     Xxx            
 8   to              O               O                 ✔       to              TO       prep     xx             
-9   21st            B-date_to       I-date               ✗    21st            JJ       pobj     ddxx           
-10  May             I-date_to       I-date_from          ✗    May             NNP      npadvmod Xxx            
+9   21st            B-date_to       B-date_to         ✔       21st            JJ       pobj     ddxx           
+10  May             I-date_to       I-date_to         ✔       May             NNP      npadvmod Xxx            
 11  ,               O               O                 ✔       ,               ,        punct    ,              
 12  we              O               O                 ✔       we              PRP      nsubj    xx             
 13  are             O               O                 ✔       be              VBP      ROOT     xxx            
-14  three           B-people        B-date_period        ✗    three           CD       attr     xxxx           
+14  three           B-people        B-people          ✔       three           CD       attr     xxxx           
 15  for             O               O                 ✔       for             IN       prep     xxx            
 16  a               O               O                 ✔       a               DT       det      x              
-17  four            B-date_period   B-people             ✗    four            CD       nummod   xxxx           
+17  four            B-date_period   B-date_period     ✔       four            CD       nummod   xxxx           
 18  night           I-date_period   I-date_period     ✔       night           NN       compound xxxx           
 19  stay            O               O                 ✔       stay            VB       pobj     xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
   (6, 8): date_from
@@ -758,9 +744,9 @@ true spans:
   (17, 19): date_period
 
 predicted spans:
-  (6, 8): date_from
-  (14, 15): date_period
-  (17, 19): people
+  (9, 11): date_to
+  (14, 15): people
+  (17, 19): date_period
 
 ================================================================================================================
 
@@ -770,12 +756,13 @@ Analysis:                                                     Additional annotat
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
 0   Independence    B-date          O                    ✗    Independence    NNP      compound Xxxxx          
-1   Day             I-date          O                    ✗    Day             NNP      ROOT     Xxx            
+1   Day             I-date          B-date_from          ✗    Day             NNP      ROOT     Xxx            
 
 true spans:
   (0, 2): date
 
 predicted spans:
+  (1, 2): date_from
 
 ================================================================================================================
 
@@ -784,17 +771,15 @@ Input: Thursday 30th June
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   Thursday        B-date          B-date_from          ✗    Thursday        NNP      compound Xxxxx          
-1   30th            I-date          O                    ✗    30th            JJ       ROOT     ddxx           
-2   June            I-date          I-date_from          ✗    June            NNP      npadvmod Xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+0   Thursday        B-date          B-date            ✔       Thursday        NNP      compound Xxxxx          
+1   30th            I-date          I-date            ✔       30th            JJ       ROOT     ddxx           
+2   June            I-date          I-date            ✔       June            NNP      npadvmod Xxxx           
 
 true spans:
   (0, 3): date
 
 predicted spans:
-  (0, 1): date_from
+  (0, 3): date
 
 ================================================================================================================
 
@@ -803,18 +788,16 @@ Input: 4 single rooms from the 23rd until the 29 May
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   4               B-rooms         B-people             ✗    4               CD       nummod   d              
-1   single          O               I-rooms              ✗    single          JJ       amod     xxxx           
+0   4               B-rooms         B-rooms           ✔       4               CD       nummod   d              
+1   single          O               O                 ✔       single          JJ       amod     xxxx           
 2   rooms           O               O                 ✔       room            NNS      ROOT     xxxx           
 3   from            O               O                 ✔       from            IN       prep     xxxx           
-4   the             O               O                 ✔       the             DT       det      xxx            
+4   the             O               B-date_from          ✗    the             DT       det      xxx            
 5   23rd            B-date_from     B-date_to            ✗    23rd            NN       pobj     ddxx           
 6   until           O               O                 ✔       until           IN       prep     xxxx           
 7   the             O               O                 ✔       the             DT       det      xxx            
 8   29              B-date_to       B-date_from          ✗    29              CD       nummod   dd             
 9   May             I-date_to       I-date_from          ✗    May             NNP      pobj     Xxx            
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
   (0, 1): rooms
@@ -822,7 +805,8 @@ true spans:
   (8, 10): date_to
 
 predicted spans:
-  (0, 2): people
+  (0, 1): rooms
+  (4, 5): date_from
   (5, 6): date_to
   (8, 10): date_from
 
@@ -833,9 +817,9 @@ Input: my wife and I will need a room and then another for our teenage daughter
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   my              B-adults        O                    ✗    my              PRP$     poss     xx             
+0   my              B-adults        B-adults          ✔       my              PRP$     poss     xx             
 1   wife            I-adults        I-adults          ✔       wife            NN       nsubj    xxxx           
-2   and             I-adults        O                    ✗    and             CC       cc       xxx            
+2   and             I-adults        I-adults          ✔       and             CC       cc       xxx            
 3   I               I-adults        O                    ✗    I               PRP      conj     X              
 4   will            O               O                 ✔       will            MD       aux      xxxx           
 5   need            O               O                 ✔       need            VB       ROOT     xxxx           
@@ -847,9 +831,7 @@ idx word            true label      predicted label correct?  lemma           ta
 11  for             O               O                 ✔       for             IN       prep     xxx            
 12  our             O               O                 ✔       our             PRP$     poss     xxx            
 13  teenage         O               O                 ✔       teenage         JJ       amod     xxxx           
-14  daughter        B-kids          I-kids               ✗    daughter        NN       pobj     xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+14  daughter        B-kids          O                    ✗    daughter        NN       pobj     xxxx           
 
 true spans:
   (0, 4): adults
@@ -857,6 +839,7 @@ true spans:
   (14, 15): kids
 
 predicted spans:
+  (0, 3): adults
 
 ================================================================================================================
 
@@ -906,18 +889,16 @@ idx word            true label      predicted label correct?  lemma           ta
 0   10th            B-date_from     B-date_from       ✔       10th            JJ       ROOT     ddxx           
 1   to              O               O                 ✔       to              IN       prep     xx             
 2   23rd            B-date_to       B-date_to         ✔       23rd            NN       compound ddxx           
-3   -               O               O                 ✔       -               SYM      punct    -              
-4   13              B-date_period   B-date_from          ✗    13              CD       nummod   dd             
-5   nights          I-date_period   I-date_period     ✔       night           NNS      pobj     xxxx           
-6   14              I-date_period   B-date               ✗    14              CD       nummod   dd             
-7   days            I-date_period   I-date               ✗    day             NNS      npadvmod xxxx           
+3   -               O               B-date               ✗    -               SYM      punct    -              
+4   13              B-date_period   B-date_period     ✔       13              CD       nummod   dd             
+5   nights          I-date_period   B-date               ✗    night           NNS      pobj     xxxx           
+6   14              I-date_period   B-date_period        ✗    14              CD       nummod   dd             
+7   days            I-date_period   I-date_period     ✔       day             NNS      npadvmod xxxx           
 8   -               O               O                 ✔       -               HYPH     punct    -              
-9   5               B-adults        B-date_period        ✗    5               CD       nummod   d              
+9   5               B-adults        B-adults          ✔       5               CD       nummod   d              
 10  adults          O               O                 ✔       adult           NNS      appos    xxxx           
-11  6               B-kids          B-date_period        ✗    6               CD       nummod   d              
+11  6               B-kids          B-kids            ✔       6               CD       nummod   d              
 12  children        O               O                 ✔       child           NNS      pobj     xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
   (0, 1): date_from
@@ -929,10 +910,12 @@ true spans:
 predicted spans:
   (0, 1): date_from
   (2, 3): date_to
-  (4, 6): date_from
-  (6, 8): date
-  (9, 10): date_period
-  (11, 12): date_period
+  (3, 4): date
+  (4, 5): date_period
+  (5, 6): date
+  (6, 8): date_period
+  (9, 10): adults
+  (11, 12): kids
 
 ================================================================================================================
 
@@ -942,21 +925,18 @@ Analysis:                                                     Additional annotat
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
 0   arriving        O               O                 ✔       arrive          VBG      ROOT     xxxx           
-1   tomorrow        B-date_from     B-date               ✗    tomorrow        NN       npadvmod xxxx           
+1   tomorrow        B-date_from     O                    ✗    tomorrow        NN       npadvmod xxxx           
 2   and             O               O                 ✔       and             CC       cc       xxx            
 3   leaving         O               O                 ✔       leave           VBG      conj     xxxx           
 4   after           O               O                 ✔       after           IN       prep     xxxx           
 5   3               B-date_period   B-date_period     ✔       3               CD       nummod   d              
-6   days            I-date_period   I-date               ✗    day             NNS      pobj     xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+6   days            I-date_period   I-date_period     ✔       day             NNS      pobj     xxxx           
 
 true spans:
   (1, 2): date_from
   (5, 7): date_period
 
 predicted spans:
-  (1, 2): date
   (5, 7): date_period
 
 ================================================================================================================
@@ -966,14 +946,14 @@ Input: 6 kids
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   6               B-kids          B-date_period        ✗    6               CD       nummod   d              
+0   6               B-kids          B-kids            ✔       6               CD       nummod   d              
 1   kids            O               O                 ✔       kid             NNS      ROOT     xxxx           
 
 true spans:
   (0, 1): kids
 
 predicted spans:
-  (0, 1): date_period
+  (0, 1): kids
 
 ================================================================================================================
 
@@ -982,22 +962,23 @@ Input: me, my wife and the little one
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   me              B-adults        O                    ✗    I               PRP      ROOT     xx             
+0   me              B-adults        B-adults          ✔       I               PRP      ROOT     xx             
 1   ,               I-adults        O                    ✗    ,               ,        punct    ,              
-2   my              I-adults        O                    ✗    my              PRP$     poss     xx             
+2   my              I-adults        B-adults             ✗    my              PRP$     poss     xx             
 3   wife            I-adults        I-adults          ✔       wife            NN       appos    xxxx           
-4   and             O               O                 ✔       and             CC       cc       xxx            
+4   and             O               I-adults             ✗    and             CC       cc       xxx            
 5   the             B-kids          O                    ✗    the             DT       det      xxx            
 6   little          I-kids          O                    ✗    little          JJ       amod     xxxx           
-7   one             I-kids          O                    ✗    one             CD       conj     xxx            
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+7   one             I-kids          B-people             ✗    one             CD       conj     xxx            
 
 true spans:
   (0, 4): adults
   (5, 8): kids
 
 predicted spans:
+  (0, 1): adults
+  (2, 5): adults
+  (7, 8): people
 
 ================================================================================================================
 
@@ -1006,14 +987,14 @@ Input: 8 adults
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   8               B-adults        B-adults          ✔       8               CD       nummod   d              
+0   8               B-adults        B-number             ✗    8               CD       nummod   d              
 1   adults          O               O                 ✔       adult           NNS      ROOT     xxxx           
 
 true spans:
   (0, 1): adults
 
 predicted spans:
-  (0, 1): adults
+  (0, 1): number
 
 ================================================================================================================
 
@@ -1030,7 +1011,7 @@ idx word            true label      predicted label correct?  lemma           ta
 5   a               O               O                 ✔       a               DT       det      x              
 6   Thursday        B-date_from     B-date_from       ✔       Thursday        NNP      npadvmod Xxxxx          
 7   to              O               O                 ✔       to              IN       prep     xx             
-8   Friday          B-date_to       B-date_from          ✗    Friday          NNP      pobj     Xxxxx          
+8   Friday          B-date_to       B-date_to         ✔       Friday          NNP      pobj     Xxxxx          
 
 true spans:
   (6, 7): date_from
@@ -1038,7 +1019,7 @@ true spans:
 
 predicted spans:
   (6, 7): date_from
-  (8, 9): date_from
+  (8, 9): date_to
 
 ================================================================================================================
 
@@ -1051,26 +1032,24 @@ idx word            true label      predicted label correct?  lemma           ta
 1   's              O               O                 ✔       be              VBZ      aux      'x             
 2   arriving        O               O                 ✔       arrive          VBG      ROOT     xxxx           
 3   on              O               O                 ✔       on              IN       prep     xx             
-4   Wednesday       B-date_from     B-date_to            ✗    Wednesday       NNP      pobj     Xxxxx          
+4   Wednesday       B-date_from     B-date_from       ✔       Wednesday       NNP      pobj     Xxxxx          
 5   and             O               O                 ✔       and             CC       cc       xxx            
 6   will            O               O                 ✔       will            MD       aux      xxxx           
 7   be              O               O                 ✔       be              VB       aux      xx             
 8   staying         O               O                 ✔       stay            VBG      conj     xxxx           
 9   until           O               O                 ✔       until           IN       prep     xxxx           
-10  Sunday          B-date_to       B-date_to         ✔       Sunday          NNP      pobj     Xxxxx          
+10  Sunday          B-date_to       B-date_from          ✗    Sunday          NNP      pobj     Xxxxx          
 11  next            I-date_to       B-date               ✗    next            JJ       amod     xxxx           
-12  week            I-date_to       I-date_period        ✗    week            NN       npadvmod xxxx           
+12  week            I-date_to       I-date               ✗    week            NN       npadvmod xxxx           
 13  .               O               O                 ✔       .               .        punct    .              
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
   (4, 5): date_from
   (10, 13): date_to
 
 predicted spans:
-  (4, 5): date_to
-  (10, 11): date_to
+  (4, 5): date_from
+  (10, 11): date_from
   (11, 13): date
 
 ================================================================================================================
@@ -1083,9 +1062,7 @@ idx word            true label      predicted label correct?  lemma           ta
 0   its             O               O                 ✔       its             PRP$     ROOT     xxx            
 1   until           O               O                 ✔       until           IN       prep     xxxx           
 2   the             O               O                 ✔       the             DT       det      xxx            
-3   21st            B-date_to       I-date               ✗    21st            NN       pobj     ddxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+3   21st            B-date_to       O                    ✗    21st            NN       pobj     ddxx           
 
 true spans:
   (3, 4): date_to
@@ -1148,17 +1125,18 @@ idx word            true label      predicted label correct?  lemma           ta
 1   can             O               O                 ✔       can             MD       aux      xxx            
 2   I               O               O                 ✔       I               PRP      nsubj    X              
 3   book            O               O                 ✔       book            VB       ROOT     xxxx           
-4   a               O               O                 ✔       a               DT       det      x              
-5   room            O               O                 ✔       room            NN       dobj     xxxx           
+4   a               O               B-rooms              ✗    a               DT       det      x              
+5   room            O               I-rooms              ✗    room            NN       dobj     xxxx           
 6   for             O               O                 ✔       for             IN       prep     xxx            
-7   2               B-people        B-adults             ✗    2               CD       pobj     d              
+7   2               B-people        B-people          ✔       2               CD       pobj     d              
 8   ?               O               O                 ✔       ?               .        punct    ?              
 
 true spans:
   (7, 8): people
 
 predicted spans:
-  (7, 8): adults
+  (4, 6): rooms
+  (7, 8): people
 
 ================================================================================================================
 
@@ -1242,13 +1220,11 @@ idx word            true label      predicted label correct?  lemma           ta
 6   the             O               O                 ✔       the             DT       det      xxx            
 7   number          O               O                 ✔       number          NN       dobj     xxxx           
 8   of              O               O                 ✔       of              IN       prep     xx             
-9   nights          O               I-date_period        ✗    night           NNS      pobj     xxxx           
+9   nights          O               O                 ✔       night           NNS      pobj     xxxx           
 10  of              O               O                 ✔       of              IN       prep     xx             
 11  my              O               O                 ✔       my              PRP$     poss     xx             
 12  hotel           O               O                 ✔       hotel           NN       pobj     xxxx           
 13  booking         O               O                 ✔       booking         NN       punct    xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
 
@@ -1287,12 +1263,13 @@ idx word            true label      predicted label correct?  lemma           ta
 8   gym             O               O                 ✔       gym             NN       pobj     xxx            
 9   earlier         O               O                 ✔       early           RBR      advmod   xxxx           
 10  than            O               O                 ✔       than            IN       prep     xxxx           
-11  4:25            B-time          O                    ✗    4:25            CD       pobj     d:dd           
+11  4:25            B-time          B-time            ✔       4:25            CD       pobj     d:dd           
 
 true spans:
   (11, 12): time
 
 predicted spans:
+  (11, 12): time
 
 ================================================================================================================
 
@@ -1308,13 +1285,13 @@ idx word            true label      predicted label correct?  lemma           ta
 4   check           O               O                 ✔       check           VB       xcomp    xxxx           
 5   in              O               O                 ✔       in              RP       prt      xx             
 6   at              O               O                 ✔       at              IN       prep     xx             
-7   5               B-time          B-date_period        ✗    5               CD       pobj     d              
+7   5               B-time          B-time            ✔       5               CD       pobj     d              
 
 true spans:
   (7, 8): time
 
 predicted spans:
-  (7, 8): date_period
+  (7, 8): time
 
 ================================================================================================================
 
@@ -1351,16 +1328,17 @@ idx word            true label      predicted label correct?  lemma           ta
 1   free            O               O                 ✔       free            JJ       amod     xxxx           
 2   rooms           O               O                 ✔       room            NNS      ROOT     xxxx           
 3   with            O               O                 ✔       with            IN       prep     xxxx           
-4   jacuzzi         O               O                 ✔       jacuzzi         NNP      pobj     xxxx           
+4   jacuzzi         O               B-date_from          ✗    jacuzzi         NNP      pobj     xxxx           
 5   after           O               O                 ✔       after           IN       prep     xxxx           
-6   Tuesday         B-date_from     B-date_from       ✔       Tuesday         NNP      pobj     Xxxxx          
+6   Tuesday         B-date_from     B-date_to            ✗    Tuesday         NNP      pobj     Xxxxx          
 7   ?               O               O                 ✔       ?               .        punct    ?              
 
 true spans:
   (6, 7): date_from
 
 predicted spans:
-  (6, 7): date_from
+  (4, 5): date_from
+  (6, 7): date_to
 
 ================================================================================================================
 
@@ -1391,9 +1369,9 @@ idx word            true label      predicted label correct?  lemma           ta
 1   made            O               O                 ✔       make            VBD      ROOT     xxxx           
 2   one             O               O                 ✔       one             CD       nsubj    xxx            
 3   booking         O               O                 ✔       booking         NN       ccomp    xxxx           
-4   two             B-date          B-adults             ✗    two             CD       nummod   xxx            
-5   weeks           I-date          O                    ✗    week            NNS      npadvmod xxxx           
-6   ago             I-date          I-date            ✔       ago             RB       advmod   xxx            
+4   two             B-date          B-date            ✔       two             CD       nummod   xxx            
+5   weeks           I-date          I-date            ✔       week            NNS      npadvmod xxxx           
+6   ago             I-date          O                    ✗    ago             RB       advmod   xxx            
 7   ,               O               O                 ✔       ,               ,        punct    ,              
 8   but             O               O                 ✔       but             CC       cc       xxx            
 9   would           O               O                 ✔       would           MD       aux      xxxx           
@@ -1406,14 +1384,12 @@ idx word            true label      predicted label correct?  lemma           ta
 16  now             B-time          O                    ✗    now             RB       advmod   xxx            
 17  .               O               O                 ✔       .               .        punct    .              
 
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
-
 true spans:
   (4, 7): date
   (16, 17): time
 
 predicted spans:
-  (4, 5): adults
+  (4, 6): date
 
 ================================================================================================================
 
@@ -1426,9 +1402,9 @@ idx word            true label      predicted label correct?  lemma           ta
 1   've             O               O                 ✔       've             VBP      aux      'xx            
 2   got             O               O                 ✔       get             VBN      ccomp    xxx            
 3   a               O               O                 ✔       a               DT       det      x              
-4   couple          O               I-date               ✗    couple          NN       dobj     xxxx           
+4   couple          O               O                 ✔       couple          NN       dobj     xxxx           
 5   of              O               O                 ✔       of              IN       prep     xx             
-6   small           O               I-kids               ✗    small           JJ       amod     xxxx           
+6   small           O               O                 ✔       small           JJ       amod     xxxx           
 7   dogs            O               O                 ✔       dog             NNS      pobj     xxxx           
 8   ,               O               O                 ✔       ,               ,        punct    ,              
 9   is              O               O                 ✔       be              VBZ      ROOT     xx             
@@ -1438,8 +1414,6 @@ idx word            true label      predicted label correct?  lemma           ta
 13  I               O               O                 ✔       I               PRP      nsubj    X              
 14  bring           O               O                 ✔       bring           VBP      advcl    xxxx           
 15  them            O               O                 ✔       they            PRP      dobj     xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
 
@@ -1573,24 +1547,23 @@ Analysis:                                                     Additional annotat
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
 0   my              O               O                 ✔       my              PRP$     poss     xx             
-1   daughter        O               I-kids               ✗    daughter        NN       nsubj    xxxx           
+1   daughter        O               O                 ✔       daughter        NN       nsubj    xxxx           
 2   left            O               O                 ✔       leave           VBD      ccomp    xxxx           
 3   left            O               O                 ✔       leave           VBD      xcomp    xxxx           
 4   a               O               O                 ✔       a               DT       det      x              
 5   teddy           O               O                 ✔       teddy           NNP      compound xxxx           
-6   bear            O               O                 ✔       bear            NNP      dobj     xxxx           
-7   downstairs      O               O                 ✔       downstairs      RB       advmod   xxxx           
+6   bear            O               B-person_name        ✗    bear            NNP      dobj     xxxx           
+7   downstairs      O               I-person_name        ✗    downstairs      RB       advmod   xxxx           
 8   did             O               O                 ✔       do              VBD      aux      xxx            
 9   someone         O               O                 ✔       someone         NN       nsubj    xxxx           
 10  hand            O               O                 ✔       hand            VB       ROOT     xxxx           
 11  it              O               O                 ✔       it              PRP      dobj     xx             
 12  in              O               O                 ✔       in              IN       prep     xx             
 
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
-
 true spans:
 
 predicted spans:
+  (6, 8): person_name
 
 ================================================================================================================
 
@@ -1607,13 +1580,12 @@ idx word            true label      predicted label correct?  lemma           ta
 5   on              O               O                 ✔       on              IN       prep     xx             
 6   the             O               O                 ✔       the             DT       det      xxx            
 7   parking         O               O                 ✔       parking         NN       pobj     xxxx           
-8   overnight       B-time_period   B-time_period     ✔       overnight       RB       advmod   xxxx           
+8   overnight       B-time_period   O                    ✗    overnight       RB       advmod   xxxx           
 
 true spans:
   (8, 9): time_period
 
 predicted spans:
-  (8, 9): time_period
 
 ================================================================================================================
 
@@ -1623,17 +1595,16 @@ Analysis:                                                     Additional annotat
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
 0   till            O               O                 ✔       till            IN       ROOT     xxxx           
-1   Friday          B-date_to       B-date_from          ✗    Friday          NNP      compound Xxxxx          
-2   morning         B-time_period   I-time               ✗    morning         NN       pobj     xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+1   Friday          B-date_to       B-date_to         ✔       Friday          NNP      compound Xxxxx          
+2   morning         B-time_period   B-date               ✗    morning         NN       pobj     xxxx           
 
 true spans:
   (1, 2): date_to
   (2, 3): time_period
 
 predicted spans:
-  (1, 3): date_from
+  (1, 2): date_to
+  (2, 3): date
 
 ================================================================================================================
 
@@ -1647,22 +1618,24 @@ idx word            true label      predicted label correct?  lemma           ta
 2   restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
 3   reservation     O               O                 ✔       reservation     NN       dobj     xxxx           
 4   for             O               O                 ✔       for             IN       prep     xxx            
-5   18              B-time          I-time               ✗    18              CD       nummod   dd             
-6   45              I-time          I-time            ✔       45              CD       pobj     dd             
+5   18              B-time          B-people             ✗    18              CD       nummod   dd             
+6   45              I-time          B-time               ✗    45              CD       pobj     dd             
 7   in              I-time          O                    ✗    in              IN       prep     xx             
-8   the             I-time          O                    ✗    the             DT       det      xxx            
-9   evening         I-time          I-time            ✔       evening         NN       pobj     xxxx           
+8   the             I-time          B-date_period        ✗    the             DT       det      xxx            
+9   evening         I-time          O                    ✗    evening         NN       pobj     xxxx           
 10  under           O               O                 ✔       under           IN       prep     xxxx           
-11  sammijo         B-person_name   O                    ✗    sammijo         NNP      compound xxxx           
+11  sammijo         B-person_name   B-person_name     ✔       sammijo         NNP      compound xxxx           
 12  oaks            I-person_name   O                    ✗    oak             VBZ      pobj     xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
   (5, 10): time
   (11, 13): person_name
 
 predicted spans:
+  (5, 6): people
+  (6, 7): time
+  (8, 9): date_period
+  (11, 12): person_name
 
 ================================================================================================================
 
@@ -1675,12 +1648,13 @@ idx word            true label      predicted label correct?  lemma           ta
 1   room            O               O                 ✔       room            NN       compound xxxx           
 2   booking         O               O                 ✔       booking         NN       dobj     xxxx           
 3   under           O               O                 ✔       under           IN       prep     xxxx           
-4   charis          B-person_name   O                    ✗    charis          NNP      pobj     xxxx           
+4   charis          B-person_name   B-person_name     ✔       charis          NNP      pobj     xxxx           
 
 true spans:
   (4, 5): person_name
 
 predicted spans:
+  (4, 5): person_name
 
 ================================================================================================================
 
@@ -1750,9 +1724,9 @@ idx word            true label      predicted label correct?  lemma           ta
 3   room            I-rooms         O                    ✗    room            NN       compound xxxx           
 4   booking         O               O                 ✔       booking         NN       dobj     xxxx           
 5   for             O               O                 ✔       for             IN       prep     xxx            
-6   Saturday        B-date_from     B-date_to            ✗    Saturday        NNP      pobj     Xxxxx          
-7   3               I-date_from     B-date_period        ✗    3               CD       nummod   d              
-8   December        I-date_from     I-date               ✗    December        NNP      npadvmod Xxxxx          
+6   Saturday        B-date_from     B-date_from       ✔       Saturday        NNP      pobj     Xxxxx          
+7   3               I-date_from     I-date_from       ✔       3               CD       nummod   d              
+8   December        I-date_from     I-date_from       ✔       December        NNP      npadvmod Xxxxx          
 9   and             O               O                 ✔       and             CC       cc       xxx            
 10  I               O               O                 ✔       I               PRP      nsubj    X              
 11  am              O               O                 ✔       be              VBP      aux      xx             
@@ -1765,10 +1739,8 @@ idx word            true label      predicted label correct?  lemma           ta
 18  checkout        O               O                 ✔       checkout        NN       compound xxxx           
 19  date            O               O                 ✔       date            NN       dobj     xxxx           
 20  to              O               O                 ✔       to              IN       prep     xx             
-21  December        B-date_to       I-date               ✗    December        NNP      pobj     Xxxxx          
-22  12              I-date_to       B-time               ✗    12              CD       nummod   dd             
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+21  December        B-date_to       B-date_to         ✔       December        NNP      pobj     Xxxxx          
+22  12              I-date_to       I-date_to         ✔       12              CD       nummod   dd             
 
 true spans:
   (2, 4): rooms
@@ -1776,9 +1748,8 @@ true spans:
   (21, 23): date_to
 
 predicted spans:
-  (6, 7): date_to
-  (7, 9): date_period
-  (22, 23): time
+  (6, 9): date_from
+  (21, 23): date_to
 
 ================================================================================================================
 
@@ -1792,17 +1763,17 @@ idx word            true label      predicted label correct?  lemma           ta
 2   restaurant      O               O                 ✔       restaurant      NN       compound xxxx           
 3   reservation     O               O                 ✔       reservation     NN       dobj     xxxx           
 4   to              O               O                 ✔       to              IN       prep     xx             
-5   25              B-time          B-time            ✔       25              CD       quantmod dd             
-6   past            I-time          I-time            ✔       past            JJ       amod     xxxx           
-7   15              I-time          B-time               ✗    15              CD       nummod   dd             
-8   afternoon       I-time          I-time            ✔       afternoon       NN       pobj     xxxx           
+5   25              B-time          B-date_to            ✗    25              CD       quantmod dd             
+6   past            I-time          B-time_to            ✗    past            JJ       amod     xxxx           
+7   15              I-time          I-time_to            ✗    15              CD       nummod   dd             
+8   afternoon       I-time          I-time_to            ✗    afternoon       NN       pobj     xxxx           
 
 true spans:
   (5, 9): time
 
 predicted spans:
-  (5, 7): time
-  (7, 9): time
+  (5, 6): date_to
+  (6, 9): time_to
 
 ================================================================================================================
 
@@ -1816,18 +1787,16 @@ idx word            true label      predicted label correct?  lemma           ta
 2   coming          I-adults        O                    ✗    come            VBG      ROOT     xxxx           
 3   with            I-adults        O                    ✗    with            IN       prep     xxxx           
 4   my              I-adults        O                    ✗    my              PRP$     poss     xx             
-5   dad             I-adults        I-adults          ✔       dad             NN       pobj     xxx            
+5   dad             I-adults        O                    ✗    dad             NN       pobj     xxx            
 6   on              O               O                 ✔       on              IN       prep     xx             
 7   Thursday        B-date_from     B-date_from       ✔       Thursday        NNP      pobj     Xxxxx          
 8   ,               O               O                 ✔       ,               ,        punct    ,              
 9   arriving        O               O                 ✔       arrive          VBG      advcl    xxxx           
 10  around          O               O                 ✔       around          RB       advmod   xxxx           
-11  8               B-time          B-adults             ✗    8               CD       dobj     d              
+11  8               B-time          B-time            ✔       8               CD       dobj     d              
 12  in              I-time          O                    ✗    in              IN       prep     xx             
 13  the             I-time          O                    ✗    the             DT       det      xxx            
-14  evening         I-time          I-time            ✔       evening         NN       pobj     xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+14  evening         I-time          B-time_period        ✗    evening         NN       pobj     xxxx           
 
 true spans:
   (0, 6): adults
@@ -1836,7 +1805,8 @@ true spans:
 
 predicted spans:
   (7, 8): date_from
-  (11, 12): adults
+  (11, 12): time
+  (14, 15): time_period
 
 ================================================================================================================
 
@@ -1865,15 +1835,15 @@ Input: book a room from tomorrow to Saturday for 1
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   book            O               O                 ✔       book            NN       ROOT     xxxx           
-1   a               B-rooms         O                    ✗    a               DT       det      x              
-2   room            I-rooms         O                    ✗    room            NN       appos    xxxx           
+0   book            O               B-rooms              ✗    book            NN       ROOT     xxxx           
+1   a               B-rooms         I-rooms              ✗    a               DT       det      x              
+2   room            I-rooms         I-rooms           ✔       room            NN       appos    xxxx           
 3   from            O               O                 ✔       from            IN       prep     xxxx           
-4   tomorrow        B-date_from     B-date               ✗    tomorrow        NN       pobj     xxxx           
-5   to              O               O                 ✔       to              IN       prep     xx             
-6   Saturday        B-date_to       B-date_to         ✔       Saturday        NNP      pobj     Xxxxx          
+4   tomorrow        B-date_from     B-date_from       ✔       tomorrow        NN       pobj     xxxx           
+5   to              O               I-date_from          ✗    to              IN       prep     xx             
+6   Saturday        B-date_to       I-date_from          ✗    Saturday        NNP      pobj     Xxxxx          
 7   for             O               O                 ✔       for             IN       prep     xxx            
-8   1               B-people        B-date_period        ✗    1               CD       pobj     d              
+8   1               B-people        B-people          ✔       1               CD       pobj     d              
 
 true spans:
   (1, 3): rooms
@@ -1882,9 +1852,9 @@ true spans:
   (8, 9): people
 
 predicted spans:
-  (4, 5): date
-  (6, 7): date_to
-  (8, 9): date_period
+  (0, 3): rooms
+  (4, 7): date_from
+  (8, 9): people
 
 ================================================================================================================
 
@@ -1910,15 +1880,15 @@ Input: 24th Jan 2016
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   24th            B-date          B-date_from          ✗    24th            JJ       amod     ddxx           
-1   Jan             I-date          I-date_from          ✗    Jan             NNP      ROOT     Xxx            
-2   2016            I-date          O                    ✗    2016            CD       nummod   dddd           
+0   24th            B-date          B-date            ✔       24th            JJ       amod     ddxx           
+1   Jan             I-date          I-date            ✔       Jan             NNP      ROOT     Xxx            
+2   2016            I-date          I-date            ✔       2016            CD       nummod   dddd           
 
 true spans:
   (0, 3): date
 
 predicted spans:
-  (0, 2): date_from
+  (0, 3): date
 
 ================================================================================================================
 
@@ -1928,9 +1898,9 @@ Analysis:                                                     Additional annotat
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
 0   A               B-rooms         B-rooms           ✔       a               DT       det      X              
-1   room            I-rooms         O                    ✗    room            NN       ROOT     xxxx           
+1   room            I-rooms         I-rooms           ✔       room            NN       ROOT     xxxx           
 2   for             O               O                 ✔       for             IN       prep     xxx            
-3   three           B-adults        B-date_period        ✗    three           CD       nummod   xxxx           
+3   three           B-adults        B-adults          ✔       three           CD       nummod   xxxx           
 4   adult           O               O                 ✔       adult           NN       compound xxxx           
 5   people          O               O                 ✔       people          NNS      pobj     xxxx           
 6   .               O               O                 ✔       .               .        punct    .              
@@ -1940,8 +1910,8 @@ true spans:
   (3, 4): adults
 
 predicted spans:
-  (0, 1): rooms
-  (3, 4): date_period
+  (0, 2): rooms
+  (3, 4): adults
 
 ================================================================================================================
 
@@ -1955,21 +1925,20 @@ idx word            true label      predicted label correct?  lemma           ta
 2   like            O               O                 ✔       like            VBP      ROOT     xxxx           
 3   to              O               O                 ✔       to              TO       aux      xx             
 4   book            O               O                 ✔       book            VB       xcomp    xxxx           
-5   two             B-rooms         B-adults             ✗    two             CD       nummod   xxx            
+5   two             B-rooms         B-rooms           ✔       two             CD       nummod   xxx            
 6   rooms           I-rooms         O                    ✗    room            NNS      dobj     xxxx           
 7   a               B-date_from     O                    ✗    a               DT       det      x              
-8   fortnight       I-date_from     I-date_period        ✗    fortnight       JJ       dobj     xxxx           
+8   fortnight       I-date_from     B-date_from          ✗    fortnight       JJ       dobj     xxxx           
 9   today           I-date_from     B-date               ✗    today           NN       npadvmod xxxx           
 10  .               O               O                 ✔       .               .        punct    .              
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
   (5, 7): rooms
   (7, 10): date_from
 
 predicted spans:
-  (5, 6): adults
+  (5, 6): rooms
+  (8, 9): date_from
   (9, 10): date
 
 ================================================================================================================
@@ -1981,22 +1950,20 @@ idx word            true label      predicted label correct?  lemma           ta
 ------------------------------------------------------------  --------------------------------------------------
 0   book            O               O                 ✔       book            NN       ROOT     xxxx           
 1   for             O               O                 ✔       for             IN       prep     xxx            
-2   Aug             B-date_from     I-date_from          ✗    Aug             NNP      pobj     Xxx            
+2   Aug             B-date_from     O                    ✗    Aug             NNP      pobj     Xxx            
 3   the             I-date_from     O                    ✗    the             DT       det      xxx            
-4   18th            I-date_from     B-date_from          ✗    18th            NN       appos    ddxx           
+4   18th            I-date_from     B-date_to            ✗    18th            NN       appos    ddxx           
 5   to              O               O                 ✔       to              IN       prep     xx             
-6   August          B-date_to       I-date_from          ✗    August          NNP      compound Xxxxx          
-7   26th            I-date_to       B-date_to            ✗    26th            NN       pobj     ddxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+6   August          B-date_to       B-date_to         ✔       August          NNP      compound Xxxxx          
+7   26th            I-date_to       I-date_to         ✔       26th            NN       pobj     ddxx           
 
 true spans:
   (2, 5): date_from
   (6, 8): date_to
 
 predicted spans:
-  (4, 5): date_from
-  (7, 8): date_to
+  (4, 5): date_to
+  (6, 8): date_to
 
 ================================================================================================================
 
@@ -2005,18 +1972,19 @@ Input: Family room for a weekend break
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   Family          O               O                 ✔       family          NN       compound Xxxxx          
+0   Family          O               B-adults             ✗    family          NN       compound Xxxxx          
 1   room            O               O                 ✔       room            NN       ROOT     xxxx           
 2   for             O               O                 ✔       for             IN       prep     xxx            
-3   a               B-date_period   O                    ✗    a               DT       det      x              
-4   weekend         I-date_period   B-date_period        ✗    weekend         NN       compound xxxx           
-5   break           O               O                 ✔       break           NN       pobj     xxxx           
+3   a               B-date_period   B-date_period     ✔       a               DT       det      x              
+4   weekend         I-date_period   I-date_period     ✔       weekend         NN       compound xxxx           
+5   break           O               I-date_period        ✗    break           NN       pobj     xxxx           
 
 true spans:
   (3, 5): date_period
 
 predicted spans:
-  (4, 5): date_period
+  (0, 1): adults
+  (3, 6): date_period
 
 ================================================================================================================
 
@@ -2025,27 +1993,25 @@ Input: My husband and I will be arriving on Friday 7th of Jan and plan to stay f
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   My              B-adults        O                    ✗    my              PRP$     poss     Xx             
+0   My              B-adults        B-adults          ✔       my              PRP$     poss     Xx             
 1   husband         I-adults        I-adults          ✔       husband         NN       nsubj    xxxx           
-2   and             I-adults        O                    ✗    and             CC       cc       xxx            
+2   and             I-adults        I-adults          ✔       and             CC       cc       xxx            
 3   I               I-adults        O                    ✗    I               PRP      conj     X              
 4   will            O               O                 ✔       will            MD       aux      xxxx           
 5   be              O               O                 ✔       be              VB       aux      xx             
 6   arriving        O               O                 ✔       arrive          VBG      ROOT     xxxx           
 7   on              O               O                 ✔       on              IN       prep     xx             
 8   Friday          B-date_from     B-date_from       ✔       Friday          NNP      compound Xxxxx          
-9   7th             I-date_from     B-date_from          ✗    7th             NN       pobj     dxx            
-10  of              I-date_from     O                    ✗    of              IN       prep     xx             
+9   7th             I-date_from     I-date_from       ✔       7th             NN       pobj     dxx            
+10  of              I-date_from     I-date_from       ✔       of              IN       prep     xx             
 11  Jan             I-date_from     I-date_from       ✔       Jan             NNP      pobj     Xxx            
 12  and             O               O                 ✔       and             CC       cc       xxx            
 13  plan            O               O                 ✔       plan            VBP      conj     xxxx           
 14  to              O               O                 ✔       to              TO       aux      xx             
 15  stay            O               O                 ✔       stay            VB       xcomp    xxxx           
 16  for             O               O                 ✔       for             IN       prep     xxx            
-17  9               B-date_period   B-adults             ✗    9               CD       nummod   d              
-18  days            I-date_period   I-date               ✗    day             NNS      pobj     xxxx           
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
+17  9               B-date_period   B-date_period     ✔       9               CD       nummod   d              
+18  days            I-date_period   I-date_period     ✔       day             NNS      pobj     xxxx           
 
 true spans:
   (0, 4): adults
@@ -2053,9 +2019,9 @@ true spans:
   (17, 19): date_period
 
 predicted spans:
-  (8, 9): date_from
-  (9, 10): date_from
-  (17, 19): adults
+  (0, 3): adults
+  (8, 12): date_from
+  (17, 19): date_period
 
 ================================================================================================================
 
@@ -2070,9 +2036,9 @@ idx word            true label      predicted label correct?  lemma           ta
 3   leaving         O               O                 ✔       leave           VBG      advcl    xxxx           
 4   on              O               O                 ✔       on              IN       prep     xx             
 5   Thursday        B-date_to       B-date_from          ✗    Thursday        NNP      pobj     Xxxxx          
-6   2               B-adults        B-adults          ✔       2               CD       nummod   d              
+6   2               B-adults        I-date_from          ✗    2               CD       nummod   d              
 7   adults          I-adults        O                    ✗    adult           NNS      appos    xxxx           
-8   one             B-kids          O                    ✗    one             CD       nummod   xxx            
+8   one             B-kids          B-kids            ✔       one             CD       nummod   xxx            
 9   child           I-kids          O                    ✗    child           NN       dobj     xxxx           
 
 true spans:
@@ -2083,8 +2049,8 @@ true spans:
 
 predicted spans:
   (2, 3): date_from
-  (5, 6): date_from
-  (6, 7): adults
+  (5, 7): date_from
+  (8, 9): kids
 
 ================================================================================================================
 
@@ -2095,10 +2061,10 @@ idx word            true label      predicted label correct?  lemma           ta
 ------------------------------------------------------------  --------------------------------------------------
 0   in              O               O                 ✔       in              IN       ROOT     xx             
 1   total           O               O                 ✔       total           JJ       amod     xxxx           
-2   5               B-adults        B-date_period        ✗    5               CD       nummod   d              
+2   5               B-adults        B-adults          ✔       5               CD       nummod   d              
 3   adults          O               O                 ✔       adult           NNS      pobj     xxxx           
 4   and             O               O                 ✔       and             CC       cc       xxx            
-5   2               B-kids          B-adults             ✗    2               CD       nummod   d              
+5   2               B-kids          B-kids            ✔       2               CD       nummod   d              
 6   kids            O               O                 ✔       kid             NNS      conj     xxxx           
 
 true spans:
@@ -2106,8 +2072,8 @@ true spans:
   (5, 6): kids
 
 predicted spans:
-  (2, 3): date_period
-  (5, 6): adults
+  (2, 3): adults
+  (5, 6): kids
 
 ================================================================================================================
 
@@ -2119,13 +2085,13 @@ idx word            true label      predicted label correct?  lemma           ta
 0   We              O               O                 ✔       we              PRP      nsubj    Xx             
 1   're             O               O                 ✔       be              VBP      ROOT     'xx            
 2   two             B-adults        B-adults          ✔       two             CD       nummod   xxx            
-3   adults          O               O                 ✔       adult           NNS      attr     xxxx           
+3   adults          O               I-adults             ✗    adult           NNS      attr     xxxx           
 4   with            O               O                 ✔       with            IN       prep     xxxx           
-5   3               B-kids          B-date_period        ✗    3               CD       nummod   d              
+5   3               B-kids          B-adults             ✗    3               CD       nummod   d              
 6   kids            O               O                 ✔       kid             NNS      pobj     xxxx           
 7   traveling       O               O                 ✔       travel          VBG      acl      xxxx           
 8   around          O               O                 ✔       around          IN       prep     xxxx           
-9   Europe          O               O                 ✔       Europe          NNP      pobj     Xxxxx          
+9   Europe          O               B-person_name        ✗    Europe          NNP      pobj     Xxxxx          
 10  .               O               O                 ✔       .               .        punct    .              
 
 true spans:
@@ -2133,8 +2099,9 @@ true spans:
   (5, 6): kids
 
 predicted spans:
-  (2, 3): adults
-  (5, 6): date_period
+  (2, 4): adults
+  (5, 6): adults
+  (9, 10): person_name
 
 ================================================================================================================
 
@@ -2143,14 +2110,14 @@ Input: 1 adult
 Analysis:                                                     Additional annotations:                           
 idx word            true label      predicted label correct?  lemma           tag      dep      shape           
 ------------------------------------------------------------  --------------------------------------------------
-0   1               B-adults        B-date_period        ✗    1               CD       nummod   d              
+0   1               B-adults        B-date_from          ✗    1               CD       nummod   d              
 1   adult           I-adults        O                    ✗    adult           NN       ROOT     xxxx           
 
 true spans:
   (0, 2): adults
 
 predicted spans:
-  (0, 1): date_period
+  (0, 1): date_from
 
 ================================================================================================================
 
@@ -2161,9 +2128,9 @@ idx word            true label      predicted label correct?  lemma           ta
 ------------------------------------------------------------  --------------------------------------------------
 0   Arriving        O               O                 ✔       arrive          VBG      compound Xxxxx          
 1   Saturday        B-date_from     B-date_to            ✗    Saturday        NNP      dobj     Xxxxx          
-2   leave           O               O                 ✔       leave           NN       ROOT     xxxx           
+2   leave           O               B-date_from          ✗    leave           NN       ROOT     xxxx           
 3   on              O               O                 ✔       on              IN       prep     xx             
-4   Wednesday       B-date_to       B-date_to         ✔       Wednesday       NNP      pobj     Xxxxx          
+4   Wednesday       B-date_to       B-date_from          ✗    Wednesday       NNP      pobj     Xxxxx          
 
 true spans:
   (1, 2): date_from
@@ -2171,7 +2138,8 @@ true spans:
 
 predicted spans:
   (1, 2): date_to
-  (4, 5): date_to
+  (2, 3): date_from
+  (4, 5): date_from
 
 ================================================================================================================
 
@@ -2185,12 +2153,10 @@ idx word            true label      predicted label correct?  lemma           ta
 2   the             O               O                 ✔       the             DT       det      xxx            
 3   12th            B-date_to       B-date_from          ✗    12th            NN       pobj     ddxx           
 4   of              I-date_to       O                    ✗    of              IN       prep     xx             
-5   Oct             I-date_to       I-date_from          ✗    Oct             NNP      compound Xxx            
+5   Oct             I-date_to       B-date_from          ✗    Oct             NNP      compound Xxx            
 6   arrive          O               O                 ✔       arrive          NN       pobj     xxxx           
 7   on              O               O                 ✔       on              IN       prep     xx             
 8   Thursday        B-date_from     B-date_from       ✔       Thursday        NNP      pobj     Xxxxx          
-
-!!! Predicted BIO tag sequence is malformed. Some predicted spans were not extracted correctly !!!
 
 true spans:
   (3, 6): date_to
@@ -2198,6 +2164,7 @@ true spans:
 
 predicted spans:
   (3, 4): date_from
+  (5, 6): date_from
   (8, 9): date_from
 
 ================================================================================================================
@@ -2211,13 +2178,13 @@ idx word            true label      predicted label correct?  lemma           ta
 1   'm              O               O                 ✔       be              VBP      aux      'x             
 2   leaving         O               O                 ✔       leave           VBG      ROOT     xxxx           
 3   on              O               O                 ✔       on              IN       prep     xx             
-4   Wednesday       B-date_to       B-date_to         ✔       Wednesday       NNP      pobj     Xxxxx          
+4   Wednesday       B-date_to       B-date_from          ✗    Wednesday       NNP      pobj     Xxxxx          
 
 true spans:
   (4, 5): date_to
 
 predicted spans:
-  (4, 5): date_to
+  (4, 5): date_from
 
 ================================================================================================================
 
@@ -2226,36 +2193,62 @@ Classification report for BIO tags:
 
                precision    recall  f1-score   support
 
-     B-adults       0.27      0.27      0.27        11
-       B-date       0.00      0.00      0.00         9
-  B-date_from       0.38      0.42      0.40        19
-B-date_period       0.06      0.20      0.09         5
-    B-date_to       0.50      0.36      0.42        14
-       B-kids       0.00      0.00      0.00         7
-     B-number       0.00      0.00      0.00         2
-     B-people       0.25      0.20      0.22         5
-B-person_name       0.00      0.00      0.00         5
-      B-rooms       1.00      0.25      0.40         8
-       B-time       0.57      0.40      0.47        10
+     B-adults       0.70      0.64      0.67        11
+       B-date       0.36      0.56      0.43         9
+  B-date_from       0.36      0.47      0.41        19
+B-date_period       0.71      1.00      0.83         5
+    B-date_to       0.55      0.43      0.48        14
+       B-kids       1.00      0.57      0.73         7
+     B-number       0.50      0.50      0.50         2
+     B-people       0.56      1.00      0.71         5
+B-person_name       0.50      0.40      0.44         5
+      B-rooms       0.67      0.50      0.57         8
+       B-time       0.78      0.70      0.74        10
   B-time_from       0.00      0.00      0.00         1
-B-time_period       1.00      0.50      0.67         2
-     I-adults       1.00      0.25      0.40        16
-       I-date       0.33      0.24      0.28        17
-  I-date_from       0.20      0.20      0.20        10
-I-date_period       0.25      0.29      0.27         7
-    I-date_to       0.00      0.00      0.00         8
+B-time_period       0.00      0.00      0.00         2
+    B-time_to       0.00      0.00      0.00         0
+     I-adults       0.71      0.31      0.43        16
+       I-date       0.89      0.47      0.62        17
+  I-date_from       0.42      0.50      0.45        10
+I-date_period       0.83      0.71      0.77         7
+    I-date_to       1.00      0.38      0.55         8
        I-kids       0.00      0.00      0.00         3
      I-number       0.00      0.00      0.00         0
      I-people       0.00      0.00      0.00         0
 I-person_name       0.00      0.00      0.00         3
-      I-rooms       0.00      0.00      0.00         9
-       I-time       0.70      0.39      0.50        18
+      I-rooms       0.50      0.22      0.31         9
+       I-time       0.40      0.11      0.17        18
   I-time_from       0.00      0.00      0.00         3
 I-time_period       0.00      0.00      0.00         0
+    I-time_to       0.00      0.00      0.00         0
 
-    micro avg       0.34      0.23      0.27       192
-    macro avg       0.25      0.15      0.18       192
- weighted avg       0.38      0.23      0.27       192
+    micro avg       0.55      0.44      0.49       192
+    macro avg       0.41      0.34      0.35       192
+ weighted avg       0.58      0.44      0.48       192
 
-!!! Some BIO tag sequences were malformed, so spans may not have been correctly extracted from them !!!
+
+Classification report for slot labels:
+
+              precision    recall  f1-score   support
+
+      adults       0.30      0.27      0.29        11
+        date       0.21      0.33      0.26         9
+   date_from       0.32      0.42      0.36        19
+ date_period       0.43      0.60      0.50         5
+     date_to       0.55      0.43      0.48        14
+        kids       0.75      0.43      0.55         7
+      number       0.50      0.50      0.50         2
+      people       0.56      1.00      0.71         5
+ person_name       0.25      0.20      0.22         5
+       rooms       0.33      0.25      0.29         8
+        time       0.44      0.40      0.42        10
+   time_from       0.00      0.00      0.00         1
+ time_period       0.00      0.00      0.00         2
+     time_to       0.00      0.00      0.00         0
+
+   micro avg       0.37      0.40      0.38        98
+   macro avg       0.33      0.35      0.33        98
+weighted avg       0.39      0.40      0.38        98
+
+
 ####################################################################################################

@@ -271,13 +271,13 @@ train = {
     'most_frequent_tag' : train_tag_mle,
     'logistic_regression' : train_tag_logreg
 }
-default_train = 'most_frequent_tag' 
+default_train = 'logistic_regression' 
 
 predict = {
     'independent_tags' : predict_independent_tags,
     'bio_tags' : predict_bio_tags,
 }
-default_predict = 'independent_tags' 
+default_predict = 'bio_tags' 
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
